@@ -1,0 +1,113 @@
+.window-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.window {
+  background: #f4f4f4;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  animation: windowOpen 0.2s ease-out;
+}
+
+.window-normal {
+  width: 500px;
+  height: 400px;
+}
+
+.window-large {
+  width: 1000px;
+  height: 660px;
+}
+
+.window-maximized {
+  width: 95vw;
+  height: 95vh;
+}
+
+
+.window-header {
+  background: linear-gradient(to right, #d16ba5, #86a8e7);
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  color: white;
+  font-weight: bold;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.control-btn {
+  background: white;
+  border: none;
+  width: 26px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.control-btn:hover {
+  background: #ddd;
+}
+
+.control-btn.close:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+.minimize {
+    background: #9bdc8c;
+}
+
+.maximize {
+    background: #f4e37d;
+}
+
+.close {
+    background: #f06c6c;
+}
+
+.locked {
+  background-color: #2ecc71;
+}
+
+.window-content {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.window-minimized {
+  height: auto !important;
+}
+
+.window-minimized .window-content {
+  display: none;
+}
+
+
+@keyframes windowOpen {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
