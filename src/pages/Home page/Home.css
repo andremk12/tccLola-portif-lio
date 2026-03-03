@@ -56,10 +56,15 @@
     display: flex;
     align-items: center;
     padding: 0 15px;
-    gap: 60px;
     color: white;
 }
 
+.taskbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 .start-button img {
     height: 32px;
     cursor: pointer;
@@ -92,14 +97,12 @@
 
 .notification-toggle {
     cursor: pointer;
-    margin-left: 970px;
     display: flex;
     align-items: center;
     color: white;
 }
 
 .clock {
-    margin-left: auto;
     font-weight: bold;
     padding-left: 20px;
     background: #3a3a3a;

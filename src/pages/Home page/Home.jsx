@@ -90,6 +90,7 @@ function HomePage() {
 
      useEffect(() => {
         if (clickCount === 10) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             unlockAchievements("Cliqueiro Profissional")
         }
      }, [clickCount])
@@ -98,6 +99,7 @@ function HomePage() {
         const hour = new Date().getHours()
 
         if (hour >= 6 && hour < 12) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             showToast("☀️ Bom dia, desenvolvedor!")
         } else if (hour >= 12 && hour < 18) {
             showToast("🌤 Boa tarde! Hora de produzir!")
@@ -111,6 +113,7 @@ function HomePage() {
 
     useEffect(() => {
         if (clickedSkills.length >= 5) {
+             // eslint-disable-next-line react-hooks/set-state-in-effect
              unlockAchievements("Mestre das Ferramentas 🎨")
         }
     }, [clickedSkills])
@@ -158,7 +161,7 @@ function HomePage() {
                    <span onClick={()=> handleSkillClick("Lightroom")}><img src={lr}/></span>
                    <span onClick={()=> handleSkillClick("DaVinci")}><img src={dv}/></span>
                 </div>
-
+            <div className="taskbar-right">
                 <div
                     className="notification-toggle"
                     onClick={() => {{
@@ -175,7 +178,7 @@ function HomePage() {
                         minute: "2-digit"
                     })}
                 </div>
-
+            </div>
             </div>
 
               {openWindow && (
