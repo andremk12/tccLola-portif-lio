@@ -29,6 +29,7 @@
 .window-maximized {
   width: 95vw;
   height: 95vh;
+  margin-left: 50px;
 }
 
 

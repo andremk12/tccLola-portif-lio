@@ -1,0 +1,96 @@
+.works-container{
+display:flex;
+height:100%;
+background:linear-gradient(135deg,#f2f2f2,#e6e9f0);
+overflow:hidden;
+}
+
+.works-sidebar{
+width:200px;
+background:rgba(255,255,255,0.5);
+backdrop-filter:blur(8px);
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.works-sidebar button{
+border: 1px solid #dedede;
+padding:10px;
+border-radius:8px;
+background:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+.works-sidebar button:hover{
+transform:translateX(5px);
+}
+
+.works-grid{
+flex:1;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:30px;
+padding:30px;
+}
+
+.work-card{
+    position:relative;
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    transition:0.35s;
+}
+
+.work-card:hover{
+transform:translateY(-8px) scale(1.02);
+}
+
+.work-card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.work-overlay{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+padding:15px;
+background:linear-gradient(transparent,rgba(0,0,0,0.65));
+color:white;
+opacity:1;
+transition:0.3s;
+}
+
+.work-card:hover .work-overlay{
+opacity:1;
+}
+
+.preview-modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.preview-content{
+background:white;
+padding:30px;
+border-radius:12px;
+max-width:700px;
+text-align:center;
+}
+
+.preview-content img{
+max-width:100%;
+border-radius:8px;
+margin-bottom:15px;
+}

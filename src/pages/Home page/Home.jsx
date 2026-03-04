@@ -260,6 +260,7 @@ function HomePage() {
                 <PopUp
                 type={openWindow}
                 onClose={() => setOpenWindow(null)}
+                unlockAchievements ={unlockAchievements}
                 />
             )
         }

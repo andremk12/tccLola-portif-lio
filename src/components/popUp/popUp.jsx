@@ -5,10 +5,11 @@ import pie from "../../assets/download (8).png"
 import CurriculumWindow from "../windows/curriculum/curriculum"
 import ContactContent from "../windows/contact/contact"
 import Projects from "../windows/projects/projects"
+import Works from "../works/works"
 
 import { useState, useRef } from "react"
 
-function PopUp({type, onClose}){
+function PopUp({type, onClose, unlockAchievements}){
     const [windowState, setWindowState] = useState("normal")
 
     const renderContent = () => {
@@ -19,6 +20,8 @@ function PopUp({type, onClose}){
                 return <ContactContent/>
             case "Projetos":
                 return <Projects/>
+            case "Trabalhos":
+                return <Works unlockAchievements = {unlockAchievements}/>
             case "segredo":
                 return <img src ={pie}/>
         }
