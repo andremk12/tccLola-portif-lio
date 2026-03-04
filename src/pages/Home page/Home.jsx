@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 import {User, FileText, Folder, HelpCircle, Bell, BellOff} from "lucide-react"
 import "./Home.css"
@@ -81,6 +81,65 @@ function HomePage() {
      }
 
 
+
+     const [startMenuOpen, setStartMenuOpen] = useState(false)
+     const [booting, setBooting] = useState(false)
+     const [booted, setBooted] = useState(false)
+
+     const clockClicksRef = useRef(0)
+     const lastClockClickRef = useRef(0)
+     const [glitch, setGlitch] = useState(false)
+  
+        const handleClock = () => {
+            // eslint-disable-next-line react-hooks/purity
+            const now = performance.now()
+
+            if (now - lastClockClickRef.current < 1000) {
+                clockClicksRef.current += 1
+            } else {
+                clockClicksRef.current = 1
+            }
+
+            lastClockClickRef.current = now
+
+            if (clockClicksRef.current === 5) {
+                activateTimeSecret()
+                clockClicksRef.current = 0
+            }
+        }
+
+     const activateTimeSecret = () => {
+        setGlitch(true)
+
+        setTimeout(() => {
+            setGlitch(false)
+        }, 1500)
+
+        unlockAchievements("Manipulador do Tempo ⏳")
+     }
+
+     const [bgClicks, setBgClicks] = useState(0)
+     const [devMode, setDevMode] = useState(false)
+
+     const handleBackgroundClick = (e) => {
+        if (e.target.classList.contains("desktop")) {
+            setBgClicks(prev => prev + 1)
+        }
+     }
+
+     const closeDevMode = () => {
+            setDevMode(false)
+            showToast("Modo Desenvolvedor desativado 📴")
+        }
+
+     useEffect(() => {
+        if (bgClicks === 3) {
+            setDevMode(true)
+            unlockAchievements("Administrador do Sistema 🛠")
+            setBgClicks(0)
+        }
+     }, [bgClicks])
+
      useEffect(() => {
         if (openedWindows.length >= 3) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -119,7 +178,7 @@ function HomePage() {
     }, [clickedSkills])
 
     return(
-        <div className = "desktop">
+        <div className ={`desktop ${glitch ? "glitch" : ""}`} onClick={handleBackgroundClick}>
 
             <div className = "icons">
                 <div className = "icon" onClick={() => handleClick("Contatos")}>
@@ -149,7 +208,23 @@ function HomePage() {
             </div>
 
             <div className="taskbar">
-                <div className="start-button">
+                <div 
+                    className="start-button"
+                    onClick={() => {
+                        if (!booted) {
+                        setBooting(true)
+
+                        setTimeout(() => {
+                            setBooting(false)
+                            setBooted(true)
+                            setStartMenuOpen(true)
+                            unlockAchievements("Sistema incializado 💻")
+                        }, 2500)
+                    } else {
+                        setStartMenuOpen(prev => !prev)
+                    }
+                    }}
+                >
                     <img src={windows}/>
                 </div>
 
@@ -172,7 +247,7 @@ function HomePage() {
                     {notificationsEnabled ? <Bell size ={20}/> : <BellOff size={20}/>}
                 </div>
 
-                <div className ="clock">
+                <div className ="clock" onClick={handleClock}>
                     {hora.toLocaleTimeString("pt-BR", {
                         hour: "2-digit",
                         minute: "2-digit"
@@ -190,7 +265,57 @@ function HomePage() {
         }
 
         {toast && <Toast message={toast}/>}
+
+        
+        { booting && (
+            <div className="boot-screen">
+                <div className="boot-content">
+                    <p>Iniciando sistema...</p>
+                    <p>Carregando módulos...</p>
+                    <p>Preparando portifólio...</p>
+                </div>
+            </div>
+        )
+        }
+
+
+        {devMode && (
+            <div className="dev-panel">
+                <div className="dev-header">
+                    <h4>Modo Desenvolvedor</h4>
+                    <button className="close-dev" onClick={closeDevMode}>✖</button>
+                </div>
+
+                <p>Cliques totais: {clickCount}</p>
+                <p>Janelas abertas: {openedWindows.length}</p>
+                <p>Versão: 1.0.0</p>
+            </div>
+    )}
+
+
+        { startMenuOpen && !booting && (
+            <div className="start-menu">
+                <h3> 🖥 Sistema Heloysa OS</h3>
+
+                <p> 🏆 Conquistas: {achievements.length} </p>
+
+                <div className="achievement-list">
+                    {achievements.map((a, index) => (
+                        <div key = {index}>✔ {a}</div>
+                    ))}
+                </div>
+
+                <hr />
+                
+                <div onClick={() => handleClick("Projetos")}> 📁 Projetos </div>
+                <div onClick={() => handleClick("Curriculum")}> 📄 Curriculum </div>
+                <div onClick={() => handleClick("Contatos")}> 📞 Contatos</div>
+
+            </div>
+            )
+        }
         </div>
+
 
       
     )

@@ -68,6 +68,7 @@
 .start-button img {
     height: 32px;
     cursor: pointer;
+    margin-right: 8px;
 }
 
 .start-button img:hover {
@@ -111,4 +112,120 @@
     font-family: monospace;
     font-size: 15px;
     font-weight: bold;
+}
+
+.boot-screen {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: #00ff88;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 18px;
+    z-index: 9999;
+}
+
+.boot-content {
+    animation: fadeBoot 2.5s ease-in-out;
+}
+
+.start-menu {
+    position: absolute;
+    bottom: 55px;
+    left: 15px;
+    background: #2c2c2c;
+    padding: 20px;
+    border-radius: 8px;
+    width: 250px;
+    color: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.start-menu h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.achievement-list {
+    max-width: 100px;
+    overflow-y: auto;
+    font-size: 12px;
+}
+.glitch {
+    animation: glitchShake 0.15s infinite;
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.glitch::before {
+    background: rgba(255, 0, 0, 0.15);
+    mix-blend-mode: screen;
+    transform: translate(4px, -2px);
+}
+
+.glitch::after {
+    background: rgba(0, 0, 255, 0.15);
+    mix-blend-mode: screen;
+    transform: translate(-4px, 2px);
+}
+
+.dev-panel {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    background: rgba(0,0,0,0.9);
+    color: #00ffcc;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: monospace;
+    box-shadow: 0 0 15px #00ffcc;
+    width: 220px;
+    z-index: 9999;
+}
+
+.dev-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-dev {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.close-dev:hover {
+    transform: scale(1.2);
+}
+
+@keyframes glitchShake {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 2px); }
+    40% { transform: translate(3px, -2px); }
+    60% { transform: translate(-2px, 1px); }
+    80% { transform: translate(2px, -1px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes fadeBoot {
+    from {opacity: 0;}
+    to { opacity: 1; }
 }
