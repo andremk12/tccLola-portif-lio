@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, use} from "react";
 
 import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette} from "lucide-react"
 import "./Home.css"
@@ -13,6 +13,8 @@ import ex from "../../assets/explorer.png"
 
 import PopUp from "../../components/popUp/popUp";
 import Toast from "../../components/toast/toast";
+import Terminal from "../../components/terminal/terminal";
+import MatrixRain from "../../components/matrixRain/matrix";
 
 function HomePage() {
 
@@ -79,6 +81,20 @@ function HomePage() {
 
         setClickCount(prev => prev + 1)
      }
+
+     const konamiCode = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "a"
+
+     ]
+
+     const [konamiIndex, setKonamiIndex] = useState(0)
+     const [showTerminal, setShowTerminal] = useState(false)
 
 
 
@@ -155,6 +171,32 @@ function HomePage() {
         setChangedCursor(true)
      }
 
+     const [matrixMode, setMatrixMode] = useState(false)
+     const [raveMode, setRaveMode] = useState(false)
+
+     useEffect (() => {
+        const handleKeyDown = (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                const next = konamiIndex + 1
+
+                if (next === konamiCode.length) {
+                    setShowTerminal(true)
+                    unlockAchievements("Hacker do Sistema 💻")
+                    setKonamiIndex(0)
+                } else {
+                    setKonamiIndex(next)
+                } 
+                } else {
+                    setKonamiIndex(0)
+            }
+            
+        }
+
+        window.addEventListener("keydown", handleKeyDown)
+
+        return () => window.removeEventListener("keydown", handleKeyDown)
+     }, [konamiIndex])
+
      useEffect(() => {
         if (changedTheme && changedWallpaper && changedCursor) {
             unlockAchievements("Mestre da Personalização 🎨")
@@ -207,7 +249,7 @@ function HomePage() {
     }, [clickedSkills])
 
     return(
-        <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""}`} onClick={handleBackgroundClick}>
+        <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick={handleBackgroundClick}>
 
             <div className = "icons">
                 <div className = "icon" onClick={() => handleClick("Contatos")}>
@@ -355,9 +397,15 @@ function HomePage() {
             </div>
             )
         }
+
+        {showTerminal && (
+            <Terminal onClose={() => setShowTerminal(false)} setMatrixMode={setMatrixMode} setRaveMode={setRaveMode} unlockAchievements={unlockAchievements}/>
+        )}
+       
+         <MatrixRain active={matrixMode}/>
         </div>
 
-
+        
       
     )
 }

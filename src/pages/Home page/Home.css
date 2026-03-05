@@ -356,3 +356,29 @@
     from{opacity:0}
     to{opacity:1}
 }
+
+/* ---------------- Terminal Modes ---------------- */
+
+.matrix-mode {
+  animation: matrixFlash 0.15s infinite;
+  color: #00ff00;
+}
+
+@keyframes matrixFlash {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(90deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+.rave-mode {
+  animation: raveBackground 0.4s infinite;
+}
+
+@keyframes raveBackground {
+  0% { background: #ff0080; }
+  20% { background: #00ffff; }
+  40% { background: #00ff88; }
+  60% { background: #ff00ff; }
+  80% { background: #ffff00; }
+  100% { background: #ff0080; }
+}

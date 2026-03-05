@@ -1,0 +1,75 @@
+.terminal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.terminal-window{
+    width: 600px;
+    height: 400px;
+    background: black;
+    color: #00ff88;
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+}
+
+.terminal-header {
+    background: #111;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.terminal-header button {
+    background: transparent;
+    border: none;
+    color: #00ff88;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.terminal-header button:hover {
+    color: #ff4d4d
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.terminal-body div {
+    margin-bottom: 4px;
+}
+
+.terminal-window form {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #333;
+}
+
+.terminal-window input {
+    flex: 1;
+    background: black;
+    border: none;
+    color:#00ff88;
+    outline: none;
+    font-family: monospace;
+}
+
+.terminal-window input::after {
+    content: "_";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink{
+    0%{opacity: 1;}
+    50%{opacity: 0;}
+    100%{opacity: 1;}
+}
