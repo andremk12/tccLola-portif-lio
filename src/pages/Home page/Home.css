@@ -1,13 +1,15 @@
 .desktop{
     height: 100vh;
     width: 100%;
-    background-color: #2f8f94;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     font-family: 'Pixelify Sans', sans-serif;
-    position: relative
+    position: relative;
+    transition: background 0.4s ease, color 0.3s ease;
 }
+
+/* ---------------- ICONS ---------------- */
 
 .icons {
     padding: 20px;
@@ -31,7 +33,7 @@
 }
 
 .help-icon:hover {
-    background-color: rgba(255, 2555, 255, 0.2);
+    background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
 }
 
@@ -46,13 +48,15 @@
 }
 
 .icon:hover {
-    background-color: rgba(255, 2555, 255, 0.2);
+    background-color: rgba(255,255,255,0.2);
     border-radius: 8px;
 }
 
+/* ---------------- TASKBAR ---------------- */
+
 .taskbar {
     height: 55px;
-    background: linear-gradient(to right, #1a1a1a, #2c2c2c);
+    background: linear-gradient(to right,#1a1a1a,#2c2c2c);
     display: flex;
     align-items: center;
     padding: 0 15px;
@@ -65,6 +69,7 @@
     align-items: center;
     gap: 15px;
 }
+
 .start-button img {
     height: 32px;
     cursor: pointer;
@@ -74,6 +79,8 @@
 .start-button img:hover {
     transform: scale(1.05);
 }
+
+/* ---------------- SKILLS ---------------- */
 
 .skills {
     display: flex;
@@ -96,6 +103,8 @@
     transform: scale(1.1);
 }
 
+/* ---------------- NOTIFICATIONS ---------------- */
+
 .notification-toggle {
     cursor: pointer;
     display: flex;
@@ -111,8 +120,9 @@
     border-radius: 4px;
     font-family: monospace;
     font-size: 15px;
-    font-weight: bold;
 }
+
+/* ---------------- BOOT SCREEN ---------------- */
 
 .boot-screen {
     position: fixed;
@@ -130,6 +140,8 @@
 .boot-content {
     animation: fadeBoot 2.5s ease-in-out;
 }
+
+/* ---------------- START MENU ---------------- */
 
 .start-menu {
     position: absolute;
@@ -156,33 +168,8 @@
     overflow-y: auto;
     font-size: 12px;
 }
-.glitch {
-    animation: glitchShake 0.15s infinite;
-    position: relative;
-}
 
-.glitch::before,
-.glitch::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-}
-
-.glitch::before {
-    background: rgba(255, 0, 0, 0.15);
-    mix-blend-mode: screen;
-    transform: translate(4px, -2px);
-}
-
-.glitch::after {
-    background: rgba(0, 0, 255, 0.15);
-    mix-blend-mode: screen;
-    transform: translate(-4px, 2px);
-}
+/* ---------------- DEV MODE ---------------- */
 
 .dev-panel {
     position: fixed;
@@ -216,16 +203,156 @@
     transform: scale(1.2);
 }
 
-@keyframes glitchShake {
-    0% { transform: translate(0); }
-    20% { transform: translate(-3px, 2px); }
-    40% { transform: translate(3px, -2px); }
-    60% { transform: translate(-2px, 1px); }
-    80% { transform: translate(2px, -1px); }
-    100% { transform: translate(0); }
+/* ---------------- GLITCH EFFECT ---------------- */
+
+.glitch {
+    animation: glitchShake 0.15s infinite;
+    position: relative;
 }
 
-@keyframes fadeBoot {
-    from {opacity: 0;}
-    to { opacity: 1; }
+.glitch::before,
+.glitch::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.glitch::before {
+    background: rgba(255,0,0,0.15);
+    mix-blend-mode: screen;
+    transform: translate(4px,-2px);
+}
+
+.glitch::after {
+    background: rgba(0,0,255,0.15);
+    mix-blend-mode: screen;
+    transform: translate(-4px,2px);
+}
+
+/* ---------------- WALLPAPERS ---------------- */
+
+.wallpaper-default{
+    background:#2f8f94;
+}
+
+.wallpaper-night{
+    background:linear-gradient(180deg,#020617,#0f172a);
+}
+
+.wallpaper-sunset{
+    background:linear-gradient(135deg,#ff7a18,#ffb347);
+}
+
+.wallpaper-galaxy{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+/* ---------------- CURSORS ---------------- */
+
+.cursor-default{
+    cursor:default;
+}
+
+.cursor-pointer{
+    cursor:pointer;
+}
+
+.cursor-crosshair{
+    cursor:crosshair;
+}
+
+/* ---------------- THEMES ---------------- */
+
+/* Default */
+
+.theme-default{
+    color:white;
+}
+
+/* Dark */
+
+.theme-dark{
+    color:#e5e7eb;
+}
+
+.theme-dark .taskbar{
+    background:#111827;
+}
+
+.theme-dark .icon span{
+    color:#e5e7eb;
+}
+
+/* Neon */
+
+.theme-neon{
+    color:#00ffff;
+}
+
+.theme-neon .taskbar{
+    background:#000;
+    border-top:1px solid #00ffff;
+}
+
+.theme-neon .icon span{
+    color:#00ffff;
+    text-shadow:0 0 6px #00ffff;
+}
+
+/* Cyber */
+
+.theme-cyber{
+    color:#ff00ff;
+}
+
+.theme-cyber .taskbar{
+    background:rgba(0,0,0,0.9);
+    border-top:1px solid #ff00ff;
+}
+
+.theme-cyber .icon span{
+    color:#ff00ff;
+    text-shadow:0 0 6px #ff00ff;
+}
+
+.theme-cyber .window-header{
+    background:linear-gradient(90deg,#000,#1e293b);
+    color:#ff00ff;
+}
+
+/* ================= THEME WALLPAPERS ================= */
+
+/* DARK */
+
+.theme-dark.desktop {
+  background: linear-gradient(180deg,#020617,#0f172a);
+}
+
+/* NEON */
+
+.theme-neon.desktop {
+  background: radial-gradient(circle at center,#001f2f,#000);
+}
+
+/* CYBER */
+
+.theme-cyber.desktop {
+  background: linear-gradient(135deg,#050510,#1b1025);
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+
+@keyframes glitchShake{
+    0%{transform:translate(0)}
+    20%{transform:translate(-3px,2px)}
+    40%{transform:translate(3px,-2px)}
+    60%{transform:translate(-2px,1px)}
+    80%{transform:translate(2px,-1px)}
+    100%{transform:translate(0)}
+}
+
+@keyframes fadeBoot{
+    from{opacity:0}
+    to{opacity:1}
 }

@@ -112,3 +112,55 @@
     opacity: 1;
   }
 }
+
+/* -------- THEMES FOR WINDOWS -------- */
+
+/* Default */
+
+.theme-default .window-header {
+  background: linear-gradient(to right,#d16ba5,#86a8e7);
+}
+
+.theme-default .window {
+  background: #f4f4f4;
+  color: #111;
+}
+
+/* Dark */
+
+.theme-dark .window {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+.theme-dark .window-header {
+  background: #1f2937;
+}
+
+/* Neon */
+
+.theme-neon .window {
+  background: #020617;
+  color: #00ffff;
+  box-shadow: 0 0 20px #00ffff44;
+}
+
+.theme-neon .window-header {
+  background: #000;
+  border-bottom: 1px solid #00ffff;
+  color: #00ffff;
+}
+
+/* Cyber */
+
+.theme-cyber .window {
+  background: #0b0b16;
+  color: #ff00ff;
+  box-shadow: 0 0 15px #ff00ff44;
+}
+
+.theme-cyber .window-header {
+  background: linear-gradient(90deg,#000,#1e293b);
+  border-bottom: 1px solid #ff00ff;
+  color: #ff00ff;
+}

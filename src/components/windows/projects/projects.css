@@ -156,6 +156,90 @@
     transform: translateY(2px);
 }
 
+/* ================= THEMES ================= */
+
+/* DEFAULT */
+
+.theme-default .projects-tabs {
+    background: #ddd;
+    border-bottom: 2px solid #aaa;
+}
+
+.theme-default .projects-text {
+    background: rgba(255,255,255,0.4);
+}
+
+/* DARK */
+
+.theme-dark .projects-tabs {
+    background: #1f2937;
+    border-bottom: 2px solid #374151;
+}
+
+.theme-dark .projects-text {
+    background: #111827;
+    color: #e5e7eb;
+    border: 2px solid #374151;
+}
+
+.theme-dark .preview-box {
+    background: repeating-linear-gradient(
+        45deg,
+        #1f2937,
+        #1f2937 10px,
+        #374151 10px,
+        #374151 20px
+    );
+}
+
+/* NEON */
+
+.theme-neon .projects-tabs {
+    background: #000;
+    border-bottom: 1px solid #00ffff;
+}
+
+.theme-neon .projects-text {
+    background: #020617;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+    box-shadow: 0 0 12px #00ffff33;
+}
+
+.theme-neon .preview-box {
+    background: repeating-linear-gradient(
+        45deg,
+        #000,
+        #000 10px,
+        #001a1a 10px,
+        #001a1a 20px
+    );
+}
+
+/* CYBER */
+
+.theme-cyber .projects-tabs {
+    background: #0b0b16;
+    border-bottom: 1px solid #ff00ff;
+}
+
+.theme-cyber .projects-text {
+    background: #050510;
+    color: #ff00ff;
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 10px #ff00ff33;
+}
+
+.theme-cyber .preview-box {
+    background: repeating-linear-gradient(
+        45deg,
+        #0b0b16,
+        #0b0b16 10px,
+        #1b1025 10px,
+        #1b1025 20px
+    );
+}
+
 @keyframes fadeSwitch {
     from {
         opacity: 0;

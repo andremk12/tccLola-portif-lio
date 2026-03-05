@@ -5,7 +5,7 @@ import ap from "../../assets/apple.jpg"
 import tw from "../../assets/twilight.jpg"
 import fl from "../../assets/fluter.jpg"
 
-function Works({ unlockAchievements}) {
+function Works({ unlockAchievements, theme}) {
 
     const works = {
         jogos: [
@@ -41,7 +41,7 @@ function Works({ unlockAchievements}) {
 
     return (
 
-        <div className="works-container">
+        <div className={`works-container theme-${theme}`}>
 
             <div className="works-sidebar">
 

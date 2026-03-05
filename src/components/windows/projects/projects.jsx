@@ -1,7 +1,7 @@
 import "./projects.css"
 import { useState } from "react"
 
-function Projects (){
+function Projects ({theme}){
     
     const projectsData = [
         {
@@ -33,7 +33,7 @@ function Projects (){
     const [activeProject, setActiveProject] = useState(projectsData[0])
 
     return (
-        <div className = "projects-container">
+        <div  className={`projects-container theme-${theme}`}>
                 <div className = "projects-tabs">
                             {projectsData.map( p => (
                                 <button

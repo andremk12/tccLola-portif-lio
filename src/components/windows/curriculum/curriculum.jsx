@@ -13,9 +13,9 @@ import {
     School
 } from "lucide-react"
 
-function CurriculumWindow () {
+function CurriculumWindow ({theme}) {
     return (
-        <div className="curriculum-container">
+        <div className={`curriculum-container theme-${theme}`}>
             <div className="left-panel">
 
         

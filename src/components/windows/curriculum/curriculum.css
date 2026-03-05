@@ -2,7 +2,6 @@
     display: flex;
     gap: 25px;
     padding: 30px;
-    background: #f6a5b8;
     border-radius: 15px;
 }
 
@@ -105,6 +104,85 @@ h2, h3 {
 .bio-card svg,
 .education-card svg {
   opacity: 0.8;
+}
+
+/* ================= THEMES ================= */
+
+/* DEFAULT */
+
+.theme-default .curriculum-container {
+    background: #f6a5b8;
+}
+
+.theme-default .bio-card {
+    background: #f4f2c9;
+}
+
+.theme-default .education-card {
+    background: #d9d9d9;
+}
+
+.theme-default .languages-card {
+    background: #e7e1f2;
+}
+
+
+/* DARK */
+
+.theme-dark.curriculum-container {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+.theme-dark .bio-card,
+.theme-dark .education-card,
+.theme-dark .languages-card {
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+.theme-dark .progress-bar {
+    background: #374151;
+}
+
+
+/* NEON */
+
+.theme-neon.curriculum-container {
+    background: #020617;
+    color: #00ffff;
+}
+
+.theme-neon .bio-card,
+.theme-neon .education-card,
+.theme-neon .languages-card {
+    background: #000;
+    border: 1px solid #00ffff;
+    box-shadow: 0 0 12px #00ffff33;
+}
+
+.theme-neon .progress {
+    background: linear-gradient(90deg,#00ffff,#3b82f6);
+}
+
+
+/* CYBER */
+
+.theme-cyber.curriculum-container {
+    background: #050510;
+    color: #ff00ff;
+}
+
+.theme-cyber .bio-card,
+.theme-cyber .education-card,
+.theme-cyber .languages-card {
+    background: #0b0b16;
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 10px #ff00ff33;
+}
+
+.theme-cyber .progress {
+    background: linear-gradient(90deg,#ff00ff,#8b5cf6);
 }
 
 @keyframes growBar {

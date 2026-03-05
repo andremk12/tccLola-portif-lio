@@ -94,3 +94,93 @@ max-width:100%;
 border-radius:8px;
 margin-bottom:15px;
 }
+
+/* ================= THEMES ================= */
+
+/* DEFAULT */
+
+.theme-default .works-container{
+  background: linear-gradient(135deg,#f2f2f2,#e6e9f0);
+}
+
+.theme-default .works-sidebar{
+  background: rgba(255,255,255,0.5);
+}
+
+.theme-default .preview-content{
+  background: white;
+  color:#222;
+}
+
+
+/* DARK */
+
+.theme-dark .works-container{
+  background: #111827;
+}
+
+.theme-dark .works-sidebar{
+  background: #1f2937;
+  color:#e5e7eb;
+}
+
+.theme-dark .works-sidebar button{
+  background:#374151;
+  color:#e5e7eb;
+  border:1px solid #4b5563;
+}
+
+.theme-dark .preview-content{
+  background:#1f2937;
+  color:#e5e7eb;
+}
+
+
+/* NEON */
+
+.theme-neon .works-container{
+  background:#020617;
+}
+
+.theme-neon .works-sidebar{
+  background:#000;
+  color:#00ffff;
+  border-right:1px solid #00ffff;
+}
+
+.theme-neon .works-sidebar button{
+  background:#000;
+  color:#00ffff;
+  border:1px solid #00ffff;
+}
+
+.theme-neon .preview-content{
+  background:#000;
+  color:#00ffff;
+  box-shadow:0 0 15px #00ffff55;
+}
+
+
+/* CYBER */
+
+.theme-cyber .works-container{
+  background:#050510;
+}
+
+.theme-cyber .works-sidebar{
+  background:#0b0b16;
+  color:#ff00ff;
+  border-right:1px solid #ff00ff;
+}
+
+.theme-cyber .works-sidebar button{
+  background:#111;
+  color:#ff00ff;
+  border:1px solid #ff00ff;
+}
+
+.theme-cyber .preview-content{
+  background:#0b0b16;
+  color:#ff00ff;
+  box-shadow:0 0 12px #ff00ff44;
+}

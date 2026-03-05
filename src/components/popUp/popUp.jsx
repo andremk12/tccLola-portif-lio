@@ -6,22 +6,31 @@ import CurriculumWindow from "../windows/curriculum/curriculum"
 import ContactContent from "../windows/contact/contact"
 import Projects from "../windows/projects/projects"
 import Works from "../works/works"
+import Customize from "../customize/customize"
 
 import { useState, useRef } from "react"
 
-function PopUp({type, onClose, unlockAchievements}){
+function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorStyle, setBackgroundStyle, theme,cursorStyle, backgroundStyle}){
     const [windowState, setWindowState] = useState("normal")
 
     const renderContent = () => {
         switch (type) {
             case "Curriculum":
-                return <CurriculumWindow/>
+                return <CurriculumWindow theme = {theme}/>
             case "Contatos":
-                return <ContactContent/>
+                return <ContactContent theme = {theme}/>
             case "Projetos":
-                return <Projects/>
+                return <Projects theme = {theme}/>
             case "Trabalhos":
-                return <Works unlockAchievements = {unlockAchievements}/>
+                return <Works unlockAchievements = {unlockAchievements} theme = {theme}/>
+            case "Personalizar":
+                return <Customize
+                        setDesktopTheme={setDesktopTheme}
+                        setCursorStyle={setCursorStyle}
+                        setBackgroundStyle={setBackgroundStyle}
+                        currentWallpaper={backgroundStyle}
+                        currentCursor={cursorStyle}
+                />
             case "segredo":
                 return <img src ={pie}/>
         }
@@ -32,6 +41,7 @@ function PopUp({type, onClose, unlockAchievements}){
         if (type === "Curriculum") return "window-large"
         if (type === "Contatos") return "window-normal"
         if (type === "Projetos") return "window-large"
+        if (type === "Personalizar") return "window-large"
         return "window-normal"
     }
 
@@ -80,7 +90,7 @@ function PopUp({type, onClose, unlockAchievements}){
     return (
         <div className="window-overlay">
             <div 
-                className={`window ${getWindowSize()}`}
+                className={`window ${getWindowSize()} theme-${theme}`}
                 style = {{
                         position: windowState === "maximized" ? "fixed" : "absolute",
                         top: windowState === "maximized" ? 0 : position.y,
@@ -105,7 +115,7 @@ function PopUp({type, onClose, unlockAchievements}){
                                 setLocked(newValue)
 
                                  if (newValue) {
-                                    centerWindow
+                                    centerWindow()
                                 }
                             }}
                         >

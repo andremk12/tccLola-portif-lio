@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {User, FileText, Folder, HelpCircle, Bell, BellOff} from "lucide-react"
+import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette} from "lucide-react"
 import "./Home.css"
 
 import windows from "../../assets/windows.png"
@@ -132,6 +132,35 @@ function HomePage() {
             showToast("Modo Desenvolvedor desativado 📴")
         }
 
+     const [desktopTheme, setDesktopTheme] = useState("default")
+     const [cursorStyle, setCursorStyle] = useState("default")
+     const [backGroundStyle, setBackgroundStyle] = useState("default")
+
+     const [changedTheme, setChangedTheme] = useState(false)
+     const [changedWallpaper, setChangedWallpaper] = useState(false)
+     const [changedCursor, setChangedCursor] = useState(false)
+     
+     const handleThemeChange = (theme) => {
+        setDesktopTheme(theme)
+        setChangedTheme(true)
+     }
+
+     const handleWallpaperChange = (wall) => {
+        setBackgroundStyle(wall)
+        setChangedWallpaper(true)
+     }
+
+     const handleCursorChange = (cursor) => {
+        setCursorStyle(cursor)
+        setChangedCursor(true)
+     }
+
+     useEffect(() => {
+        if (changedTheme && changedWallpaper && changedCursor) {
+            unlockAchievements("Mestre da Personalização 🎨")
+        }
+    }, [changedTheme, changedWallpaper, changedCursor])
+    
      useEffect(() => {
         if (bgClicks === 3) {
             setDevMode(true)
@@ -178,7 +207,7 @@ function HomePage() {
     }, [clickedSkills])
 
     return(
-        <div className ={`desktop ${glitch ? "glitch" : ""}`} onClick={handleBackgroundClick}>
+        <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""}`} onClick={handleBackgroundClick}>
 
             <div className = "icons">
                 <div className = "icon" onClick={() => handleClick("Contatos")}>
@@ -199,6 +228,11 @@ function HomePage() {
                 <div className = "icon" onClick={() => handleClick("Projetos")}>
                      <img src={ex}/>
                     <span>Projetos</span>
+                </div>
+                
+                <div className = "icon" onClick={() => handleClick("Personalizar")}>
+                     <Palette size = {40}/>
+                    <span>Personalizar</span>
                 </div>
             </div>
 
@@ -258,9 +292,15 @@ function HomePage() {
 
               {openWindow && (
                 <PopUp
-                type={openWindow}
-                onClose={() => setOpenWindow(null)}
-                unlockAchievements ={unlockAchievements}
+                    type={openWindow}
+                    onClose={() => setOpenWindow(null)}
+                    unlockAchievements ={unlockAchievements}
+                    setDesktopTheme={handleThemeChange}
+                    setCursorStyle={handleCursorChange}
+                    setBackgroundStyle={handleWallpaperChange}
+                    theme={desktopTheme}
+                    currentWallpaper={backGroundStyle}
+                    currentCursor={cursorStyle}
                 />
             )
         }

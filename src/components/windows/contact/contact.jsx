@@ -10,7 +10,7 @@ import {
     Globe
 } from "lucide-react"
 
-function ContactContent() {
+function ContactContent({theme}) {
     
     const initialContacts = [
         {
@@ -100,7 +100,7 @@ function ContactContent() {
     }
 
     return (
-        <div className="contact-container">
+        <div className={`contact-container theme-${theme}`}>
 
             <div className = "contact-sidebar">
                 <h3>Acesso Rápido</h3>
