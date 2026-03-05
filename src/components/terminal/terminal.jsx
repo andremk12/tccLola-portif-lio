@@ -1,14 +1,27 @@
 import "./terminal.css"
 import { useEffect, useState } from "react"
 
-function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements}) {
+function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements}) {
 
     const [input, setInput] = useState("")
     const [ready, setReady] = useState(false)
     const [history,setHistory] = useState([
-        "Heloysa OS Terminal v1.0",
+        "Geração Zee OS Terminal v1.0",
         "Digite 'help' para ver os comandos"
     ])
+
+    const allAchievements = {
+        "Curioso Investigador 🕵️": "Clique no ícone secreto no desktop",
+        "Sistema incializado 💻": "Abra o menu iniciar pela primeira vez",
+        "Explorador do Sistema": "Abra várias janelas do sistema",
+        "Cliqueiro Profissional": "Clique bastante pelo desktop",
+        "Administrador do Sistema 🛠": "Clique no desktop algumas vezes seguidas",
+        "Manipulador do Tempo ⏳": "Clique várias vezes no relógio",
+        "Mestre das Ferramentas 🎨": "Explore todas as ferramentas na taskbar",
+        "Hacker do Sistema 💻": "Descubra o código secreto do terminal",
+        "Mestre da Personalização 🎨": "Altere tema, wallpaper e cursor",
+        "Curador da Galeria 🖼":"Busque uma ordem nos trabalhos"
+    }
 
     const commands = {
         help: () => [
@@ -16,9 +29,11 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements}) {
             "about - sobre o sistema",
             "skills - mostrar skills",
             "clear - limpar terminal",
+            "dev - sobre o desenvolvedor",
             "exit - fechar terminal",
             "matrix - efeito matrix (!!!Luz piscando)",
-            "rave - modo festa (!!!Luz piscando)"
+            "rave - modo festa (!!!Luz piscando)",
+            "achievements - ver progresso das conquistas"
         ],
 
         about: () => [
@@ -26,6 +41,16 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements}) {
             "Sistema interativo criado em React",
             "Portifólio criativo estilo desktop",
             "Criado por: André Michalsky S2"
+        ],
+
+        dev: () => [
+                "Desenvolvedor: André Michalsky",
+                "",
+                "Formado em Ciência da Computação pela Universidade Vila Velha (UVV).",
+                "Atualmente atuo como Analista de Redes, trabalhando com infraestrutura,conectividade e soluções tecnológicas.",
+                "Tenho interesse em desenvolvimento, sistemas interativos e criação de experiências digitais criativas, como este portfólio em formato de sistema operacional.",
+                "",
+                "E acima de tudo: sou feliz fazendo o que gosto. :)"
         ],
 
         skills: () => [
@@ -81,8 +106,24 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements}) {
         return [
             "Easter Egg encontrado"
         ]
-    }
+    },
 
+    achievements: () => {
+        const unlocked = achievements.length
+        const total = Object.keys(allAchievements).length
+
+        const remaining = Object.keys(allAchievements).filter(a => !achievements.includes(a))
+
+        return [
+                `Conquistas desbloqueadas: ${unlocked}/${total}`,
+            "",
+            "Desbloqueadas:",
+            ...achievements,
+            "",
+            "Dicas para as restantes:",
+        ...remaining.map(a => `• ${allAchievements[a]}`)
+        ]
+    }
 
     }
 

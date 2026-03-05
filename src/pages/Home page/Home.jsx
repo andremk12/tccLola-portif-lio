@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, use} from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette} from "lucide-react"
 import "./Home.css"
@@ -403,7 +403,13 @@ function HomePage() {
         }
 
         {showTerminal && (
-            <Terminal onClose={() => setShowTerminal(false)} setMatrixMode={setMatrixMode} setRaveMode={setRaveMode} unlockAchievements={unlockAchievements}/>
+            <Terminal 
+            onClose={() => setShowTerminal(false)} 
+            setMatrixMode={setMatrixMode} 
+            setRaveMode={setRaveMode} 
+            unlockAchievements={unlockAchievements}
+            achievements={achievements}
+            />
         )}
        
          <MatrixRain active={matrixMode}/>
