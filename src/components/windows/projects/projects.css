@@ -163,6 +163,7 @@
 .theme-default .projects-tabs {
     background: #ddd;
     border-bottom: 2px solid #aaa;
+    color: black;
 }
 
 .theme-default .projects-text {

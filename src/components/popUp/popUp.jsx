@@ -8,7 +8,7 @@ import Projects from "../windows/projects/projects"
 import Works from "../works/works"
 import Customize from "../customize/customize"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect} from "react"
 
 function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorStyle, setBackgroundStyle, theme,cursorStyle, backgroundStyle}){
     const [windowState, setWindowState] = useState("normal")
@@ -52,6 +52,8 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
     const handleMouseDown = (e) => {
         if (windowState === "maximized" || locked) return
 
+        e.preventDefault()
+
         dragging.current = true
         offset.current = {
             x: e.clientX - position.x,
@@ -78,14 +80,25 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
         const width = window.innerWidth
         const height = window.innerHeight
 
-        const windowWidth = 500
-        const windowHeight = 400
+        let windowWidth = 500
+        let windowHeight = 400
+
+        if (type === "Curriculum" || type === "Projetos" || type === "Personalizar") {
+            windowHeight = 660
+            windowWidth = 1000
+        }
 
         setPosition({
             x: (width - windowWidth) / 2,
             y: (height - windowHeight) / 2
         })
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            centerWindow()
+        }, 0)
+    }, [])
 
     return (
         <div className="window-overlay">

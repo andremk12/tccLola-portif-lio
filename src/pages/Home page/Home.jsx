@@ -83,12 +83,12 @@ function HomePage() {
      }
 
      const konamiCode = [
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
+        "arrowup",
+        "arrowdown",
+        "arrowleft",
+        "arrowright",
+        "arrowup",
+        "arrowdown",
         "a"
 
      ]
@@ -176,7 +176,11 @@ function HomePage() {
 
      useEffect (() => {
         const handleKeyDown = (e) => {
-            if (e.key === konamiCode[konamiIndex]) {
+           
+            const key = e.key.toLowerCase()
+            console.log(e.key)
+           
+            if (key === konamiCode[konamiIndex]) {
                 const next = konamiIndex + 1
 
                 if (next === konamiCode.length) {
@@ -195,7 +199,7 @@ function HomePage() {
         window.addEventListener("keydown", handleKeyDown)
 
         return () => window.removeEventListener("keydown", handleKeyDown)
-     }, [konamiIndex])
+     }, [konamiIndex, konamiCode])
 
      useEffect(() => {
         if (changedTheme && changedWallpaper && changedCursor) {
