@@ -1,7 +1,8 @@
+import Futebol from "../futebol/futebol"
 import "./terminal.css"
 import { useEffect, useState } from "react"
 
-function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements}) {
+function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements, activatePet}) {
 
     const [input, setInput] = useState("")
     const [ready, setReady] = useState(false)
@@ -30,10 +31,11 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
             "skills - mostrar skills",
             "clear - limpar terminal",
             "dev - sobre o desenvolvedor",
-            "exit - fechar terminal",
+            "futebol - ativa a futebol",
             "matrix - efeito matrix (!!!Luz piscando)",
             "rave - modo festa (!!!Luz piscando)",
-            "achievements - ver progresso das conquistas"
+            "achievements - ver progresso das conquistas",
+            "exit - fechar terminal",
         ],
 
         about: () => [
@@ -123,7 +125,16 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
             "Dicas para as restantes:",
         ...remaining.map(a => `• ${allAchievements[a]}`)
         ]
-    }
+    },
+
+    futebol: () => {
+        activatePet()
+
+        return [
+            "Inicializando módulo...",
+            "A futebol chegou!"
+        ]
+    }   
 
     }
 

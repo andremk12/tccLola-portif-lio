@@ -1,0 +1,12 @@
+.pet {
+    position: fixed;
+    bottom: 60px;
+
+    font-size: 28px;
+
+    transition: left 0.8s linear;
+
+    z-index: 5000;
+
+    pointer-events: none;
+}

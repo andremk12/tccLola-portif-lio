@@ -15,6 +15,7 @@ import PopUp from "../../components/popUp/popUp";
 import Toast from "../../components/toast/toast";
 import Terminal from "../../components/terminal/terminal";
 import MatrixRain from "../../components/matrixRain/matrix";
+import Futebol from "../../components/futebol/futebol";
 
 function HomePage() {
 
@@ -95,6 +96,7 @@ function HomePage() {
 
      const [konamiIndex, setKonamiIndex] = useState(0)
      const [showTerminal, setShowTerminal] = useState(false)
+     const [petActive, setPetActive] = useState(false)
 
 
 
@@ -174,6 +176,22 @@ function HomePage() {
      const [matrixMode, setMatrixMode] = useState(false)
      const [raveMode, setRaveMode] = useState(false)
 
+     const [systemLoading, setSystemLoading] = useState(true)
+     const [progress, setProgress] = useState(0)
+
+     useEffect(() => {
+        const interval = setInterval(() => {
+            setProgress(prev => {
+                if (prev >=100) {
+                    clearInterval(interval)
+                    setTimeout( () => setSystemLoading(false), 500)
+                    return 100
+                }
+                return prev + 5
+            })
+        }, 120)
+     }, [])
+
      useEffect (() => {
         const handleKeyDown = (e) => {
            
@@ -230,6 +248,9 @@ function HomePage() {
      }, [clickCount])
 
     useEffect(() => {
+        
+        if (systemLoading) return
+        
         const hour = new Date().getHours()
 
         if (hour >= 6 && hour < 12) {
@@ -243,7 +264,7 @@ function HomePage() {
             showToast("🌌 Trabalhando de madrugada? Respeito.")
         }
 
-    }, [])
+    }, [systemLoading])
 
     useEffect(() => {
         if (clickedSkills.length >= 5) {
@@ -251,6 +272,31 @@ function HomePage() {
              unlockAchievements("Mestre das Ferramentas 🎨")
         }
     }, [clickedSkills])
+
+    if (systemLoading) {
+        return (
+            <div className="initial-boot">
+
+                <h1 className="boot-logo"> Geração Zee OS </h1>
+
+                <div className="boot-status">
+                    <p>Inicializando sitema</p>
+                    <p>Carregando módulos...</p>
+                    <p>Preparando interface...</p>
+                    <p>Dica: Explore todo o portifolio e para encontrar os mistérios</p>
+                </div>
+
+                <div className="boot-bar-container">
+                    <div className="boot-bar" style={{width: `${progress}%`}}></div>
+                </div>
+
+                <span className="boot-percent">{progress}%</span>
+
+            </div>
+        )
+    }
+
+    
 
     return(
         <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick={handleBackgroundClick}>
@@ -321,7 +367,7 @@ function HomePage() {
                     className="notification-toggle"
                     onClick={() => {{
                         setNotificatoinsEnabled(!notificationsEnabled)
-                        showToast (notificationsEnabled ? "Notificações desativadas 🔕" : "Notificações ativadas 🔔" )
+                        showToast (notificationsEnabled ? "Notificações desativadas 🔕  (a?)" : "Notificações ativadas 🔔" )
                     }}}
                 >   
                     {notificationsEnabled ? <Bell size ={20}/> : <BellOff size={20}/>}
@@ -357,7 +403,7 @@ function HomePage() {
         { booting && (
             <div className="boot-screen">
                 <div className="boot-content">
-                    <p>Iniciando sistema...</p>
+                    <p>Reiniciando sistema...</p>
                     <p>Carregando módulos...</p>
                     <p>Preparando portifólio...</p>
                 </div>
@@ -409,10 +455,13 @@ function HomePage() {
             setRaveMode={setRaveMode} 
             unlockAchievements={unlockAchievements}
             achievements={achievements}
+            activatePet = {() => setPetActive(true)}
             />
         )}
        
          <MatrixRain active={matrixMode}/>
+
+         {petActive && <Futebol booted={!systemLoading}/>}
         </div>
 
         
