@@ -59,6 +59,10 @@
     font-family: 'Pixelify Sans', sans-serif;
     position: relative;
     transition: background 0.4s ease, color 0.3s ease;
+      user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
 }
 
 /* ---------------- ICONS ---------------- */
