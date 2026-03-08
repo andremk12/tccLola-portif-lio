@@ -1,0 +1,31 @@
+.game-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 820px;
+    height: 480px;
+
+    background: #020617;
+    display: flex;
+    flex-direction: column;
+
+    border: 3px solid #808080;
+    box-shadow: 8px 8px 0 #000;
+
+    z-index: 1000;
+}
+
+.game-header {
+    background: #000000;
+    color: white;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+}
+
+.game-screen canvas {
+    flex: 1;
+}
