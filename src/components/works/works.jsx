@@ -4,6 +4,7 @@ import { useState } from "react"
 import ap from "../../assets/apple.jpg"
 import fl from "../../assets/fluter.jpg"
 import img from "../../assets/image.png"
+import tw from "../../assets/twilight.jpg"
 
 import PongGame from "../games/pong/pong"
 
@@ -31,11 +32,29 @@ function Works({ unlockAchievements, theme }) {
             }
         ],
 
-        artes: [
+           artes: [
             {
-                title:"Ilustração digital",
+                title:"Floral Study",
                 img:fl,
-                desc:"Arte digital"
+                tech:"Digital painting",
+                year:"2024",
+                desc:"Estudo de cores e composição inspirado em botânica."
+            },
+
+            {
+                title:"Character Sketch",
+                img:ap,
+                tech:"Digital sketch",
+                year:"2023",
+                desc:"Exploração de personagem em estilo estilizado."
+            },
+
+            {
+                title:"Light Composition",
+                img: tw,
+                tech:"Digital illustration",
+                year:"2024",
+                desc:"Experimento com iluminação e atmosfera."
             }
         ]
     }
@@ -64,17 +83,33 @@ function Works({ unlockAchievements, theme }) {
 
         {
             src:"https://picsum.photos/800/500?random=4",
-            title:"Horizonte azul",
+            title:"Foto teste 1",
+            camera:"ISO 200 • f/8 • 1/250",
+            location:"Florianópolis — 2023"
+        },
+        {
+            src:"https://picsum.photos/800/500?random=5",
+            title:"Foto teste 2",
+            camera:"ISO 200 • f/8 • 1/250",
+            location:"Florianópolis — 2023"
+        },
+        {
+            src:"https://picsum.photos/800/500?random=6",
+            title:"Foto teste 2",
             camera:"ISO 200 • f/8 • 1/250",
             location:"Florianópolis — 2023"
         }
 ]
+
+    
+
     const [category,setCategory] = useState("jogos")
     const [selected,setSelected] = useState(null)
     const [showInfo,setShowInfo] = useState(false)
     const [selectedPhoto,setSelectedPhoto] = useState(null)
     const [navyHistory,setNavyHistory] = useState([])
     const [playing,setPlaying] = useState(false)
+    const [selectedArt, setSelectedArt] = useState(null)
 
     const changeCategory = (cat) => {
 
@@ -114,7 +149,7 @@ function Works({ unlockAchievements, theme }) {
 
             {/* GRID NORMAL */}
 
-            {category !== "fotos" && (
+            {category !== "fotos" && category !== "artes" && (
 
                 <div className="works-grid">
 
@@ -187,6 +222,29 @@ function Works({ unlockAchievements, theme }) {
                    
                 </div>
 
+            )}
+
+            {/* {VIZUALIZADOR DE ARTES} */}
+
+            { category === "artes" && (
+                <div className="art-gallery">
+                    
+                    {works.artes.map((art, i) => (
+                        <div
+                            key={i}
+                            className="art-card"
+                            onClick={() => setSelectedArt(art)}
+                            >
+                            <img src={art.img}/>
+                            
+                            <div className="art-overlay">
+                                <h4>{art.title}</h4>
+                            </div>
+
+                        </div>
+                    ))}
+
+                </div>
             )}
 
 
@@ -300,6 +358,31 @@ function Works({ unlockAchievements, theme }) {
                 </div>
 
             )}
+
+            {selectedArt && (
+                
+                <div 
+                 className="art-view"
+                 onClick={() => setSelectedArt(null)} >
+                    
+                    <div className="art-view-content">
+                        
+                        <img src={selectedArt.img} />
+                        
+                        <div className="art-info">
+                            <h2>{selectedArt.title}</h2>
+
+                            <p>{selectedArt.tech} • {selectedArt.year} </p>
+
+                            <p>{selectedArt.desc}</p>
+                        </div>
+                        
+                    </div>
+                
+                </div>
+            )   
+                
+            }
 
         </div>
     )
