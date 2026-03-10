@@ -19,7 +19,7 @@ function CurriculumWindow ({theme}) {
             <div className="left-panel">
 
         
-            <div className="photo-card">
+            <div className="photo-card-c">
                 <img src={perfil} className="profile-photo"/>
             </div>
             <div className="languages-card">

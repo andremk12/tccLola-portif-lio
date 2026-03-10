@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette} from "lucide-react"
+import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette, Sticker} from "lucide-react"
 import "./Home.css"
 
 import windows from "../../assets/windows.png"
@@ -16,6 +16,7 @@ import Toast from "../../components/toast/toast";
 import Terminal from "../../components/terminal/terminal";
 import MatrixRain from "../../components/matrixRain/matrix";
 import Futebol from "../../components/futebol/futebol";
+import StickerBook from "../../components/stickerbook/sticker";
 
 function HomePage() {
 
@@ -97,6 +98,7 @@ function HomePage() {
      const [konamiIndex, setKonamiIndex] = useState(0)
      const [showTerminal, setShowTerminal] = useState(false)
      const [petActive, setPetActive] = useState(false)
+     const [showStickers, setShowStickers] = useState(false)
 
 
 
@@ -326,12 +328,19 @@ function HomePage() {
                      <Palette size = {40}/>
                     <span>Personalizar</span>
                 </div>
+
+                <div className="icon" onClick={() => setShowStickers(true)}>
+                 <Sticker size={40}/>
+                <span>Albúm de figurinhas</span>
+            </div>
             </div>
 
             <div className="help-icon" onClick={() => handleClick("segredo")}>
                 <HelpCircle size={40}/>
                 <span>segredo super hiper secreto</span>
             </div>
+
+         
 
             <div className="taskbar">
                 <div 
@@ -462,7 +471,11 @@ function HomePage() {
          <MatrixRain active={matrixMode}/>
 
          {petActive && <Futebol booted={!systemLoading}/>}
+       
+         {showStickers && <StickerBook onClose={() => setShowStickers(false)}/>}
+
         </div>
+        
 
         
       

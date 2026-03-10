@@ -88,6 +88,21 @@
     padding: 10px;
 }
 
+
+.sticker-icon {
+    position: absolute;
+    top: 170px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+    padding: 10px;
+}
+
 .help-icon:hover {
     background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
