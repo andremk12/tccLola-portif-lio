@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette, Sticker} from "lucide-react"
+import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette, Sticker, NotebookPen} from "lucide-react"
 import "./Home.css"
 
 import windows from "../../assets/windows.png"
@@ -17,6 +17,8 @@ import Terminal from "../../components/terminal/terminal";
 import MatrixRain from "../../components/matrixRain/matrix";
 import Futebol from "../../components/futebol/futebol";
 import StickerBook from "../../components/stickerbook/sticker";
+import Canvas from "../../components/canvas/canvas";
+
 
 function HomePage() {
 
@@ -99,6 +101,7 @@ function HomePage() {
      const [showTerminal, setShowTerminal] = useState(false)
      const [petActive, setPetActive] = useState(false)
      const [showStickers, setShowStickers] = useState(false)
+     const [showCanvas, setShowCanvas] = useState(false)
 
 
 
@@ -339,6 +342,11 @@ function HomePage() {
                 <HelpCircle size={40}/>
                 <span>segredo super hiper secreto</span>
             </div>
+           
+            <div className="notebook-icon" onClick={() => setShowCanvas(true)}>
+                <NotebookPen size={40}/>
+                <span>Mostre seu talento</span>
+            </div>
 
          
 
@@ -456,6 +464,8 @@ function HomePage() {
             </div>
             )
         }
+
+        {showCanvas && (<Canvas onClose={()=> setShowCanvas(false)}/>)}
 
         {showTerminal && (
             <Terminal 
