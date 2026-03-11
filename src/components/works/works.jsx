@@ -5,8 +5,10 @@ import ap from "../../assets/apple.jpg"
 import fl from "../../assets/fluter.jpg"
 import img from "../../assets/image.png"
 import tw from "../../assets/twilight.jpg"
+import gameA from "../../assets/matarhomis.png"
 
 import PongGame from "../games/pong/pong"
+import AlienGame from "../games/alienGame/alienGame"
 
 function Works({ unlockAchievements, theme }) {
 
@@ -26,9 +28,12 @@ function Works({ unlockAchievements, theme }) {
                 desc:"Runner cyberpunk em uma cidade neon infinita."
             },
             {
-                title:"Chrono Drift",
-                img:ap,
-                desc:"Corrida onde o tempo desacelera em curvas perigosas"
+                title:"Alien Game",
+                img:gameA,
+                desc:"Jogo de matar homis",
+                version:"1.0",
+                developer:"Geração Zee",
+                ideia:"Jogo inspirado no galaga, com objetivo de fazer uma moça chegar em segurança em casa"
             }
         ],
 
@@ -109,6 +114,7 @@ function Works({ unlockAchievements, theme }) {
     const [selectedPhoto,setSelectedPhoto] = useState(null)
     const [navyHistory,setNavyHistory] = useState([])
     const [playing,setPlaying] = useState(false)
+    const [playingAlien, setPlayingAlien] = useState(false)
     const [selectedArt, setSelectedArt] = useState(null)
 
     const changeCategory = (cat) => {
@@ -273,7 +279,15 @@ function Works({ unlockAchievements, theme }) {
                             <div className="launcher-buttons">
                                 <button
                                     className="play-btn"
-                                    onClick={()=>setPlaying(true)}
+                                    onClick={()=> {
+                                        if(selected.title === "Ping pong") {
+                                            setPlaying(true)
+                                        }
+
+                                        if(selected.title === "Alien Game") {
+                                            setPlayingAlien(true)
+                                        }
+                                    }}
                                 >
                                     ▶ Jogar
                                 </button>
@@ -322,6 +336,8 @@ function Works({ unlockAchievements, theme }) {
             {playing && (
                 <PongGame onClose={()=>setPlaying(false)}/>
             )}
+
+            {playingAlien && <AlienGame onClose={() => setPlayingAlien(false)}/>}
 
 
             {/* MODAL SOBRE */}
