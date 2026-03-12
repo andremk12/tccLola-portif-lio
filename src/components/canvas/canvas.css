@@ -1,76 +1,175 @@
-.canvas-overlay {
+/* overlay */
+
+.canvas-overlay{
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0,0,0,0.6);
 
-    z-index: 999;
-}
-.canvas-window {
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4 );
+    z-index:999;
 }
 
-.canvas-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: black;
+/* janela */
+
+.paint-window{
+    width:760px;
+    background:#e8e8e8;
+    border-radius:6px;
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
 }
 
-.canvas-close {
-    background: #ff4d4d;
-    border: none;
-    color: white;
-    font-size: 16px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
+/* cabeçalho */
+
+.paint-titlebar{
+    background:linear-gradient(to right,#d16ba5,#86a8e7);
+    color:white;
+
+    padding:6px 10px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-weight:bold;
 }
 
-.canvas-close:hover {
-    background: #ff2a2a;
+/* botão fechar */
+
+.paint-titlebar button{
+    background:white;
+    border:none;
+
+    width:22px;
+    height:22px;
+
+    border-radius:4px;
+    cursor:pointer;
 }
 
-.sketch-canvas {
-    border: 2px solid #333;
-    background: white;
-    cursor: crosshair;
+.paint-titlebar button:hover{
+    background:#eee;
 }
 
-.canvas-tools {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+/* toolbar */
+
+.paint-toolbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:8px;
+
+    background:#dcdcdc;
+    border-bottom:2px solid #aaa;
+    color: #000;
 }
 
-.canvas-tools label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: black;
+/* botões */
+
+.paint-toolbar button{
+    height:34px;
+    width:34px;
+
+    background:white;
+    border:2px solid #888;
+    border-radius:4px;
+
+    font-size:16px;
+    cursor:pointer;
+
+    transition:0.15s;
 }
 
-.canvas-tools button {
-    padding: 6px 12px;
-    border: none;
-    background: #222;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
+.paint-toolbar button:hover{
+    background:#f3f3f3;
 }
 
-.canvas-tools button:hover {
-    background: #444;
+/* botão ativo */
+
+.paint-toolbar button.active{
+    background:#6a5acd;
+    color:white;
+    border-color:#4c3db8;
 }
 
+/* espessura */
+
+.brush-control{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    margin-left:10px;
+
+    font-size:12px;
+}
+
+/* área canvas */
+
+.paint-canvas-area{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:12px;
+
+    background:#f0f0f0;
+}
+
+/* canvas */
+
+.paint-canvas{
+    background:white;
+    border:2px inset #888;
+    cursor:crosshair;
+}
+
+/* paleta */
+
+.paint-colors{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    padding:8px;
+
+    background:#dcdcdc;
+    border-top:2px solid #aaa;
+}
+
+/* botões de cor */
+
+.paint-colors button{
+    width:22px;
+    height:22px;
+
+    border:2px solid #000;
+    border-radius:3px;
+
+    cursor:pointer;
+}
+
+.paint-colors button:hover{
+    transform:scale(1.1);
+}
+
+/* seletor de cor */
+
+.color-picker{
+    margin-left:10px;
+    cursor:pointer;
+}
+
+.paint-toolbar button.active{
+    background:#6a5acd;
+    color:white;
+}
+
+.paint-canvas.pixo{
+    cursor: cell;
+}
