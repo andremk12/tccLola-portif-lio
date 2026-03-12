@@ -465,7 +465,7 @@ function HomePage() {
             )
         }
 
-        {showCanvas && (<Canvas onClose={()=> setShowCanvas(false)}/>)}
+        {showCanvas && (<Canvas onClose={()=> setShowCanvas(false)} unlockAchievements={unlockAchievements}/>)}
 
         {showTerminal && (
             <Terminal 
