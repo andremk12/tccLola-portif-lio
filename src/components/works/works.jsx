@@ -6,9 +6,11 @@ import fl from "../../assets/fluter.jpg"
 import img from "../../assets/image.png"
 import tw from "../../assets/twilight.jpg"
 import gameA from "../../assets/matarhomis.png"
+import cas from "../../assets/cassino.png"
 
 import PongGame from "../games/pong/pong"
 import AlienGame from "../games/alienGame/alienGame"
+import CassinoGame from "../games/cassino/cassino"
 
 function Works({ unlockAchievements, theme }) {
 
@@ -23,9 +25,12 @@ function Works({ unlockAchievements, theme }) {
                 ideia:"Criar um mini jogo retrô jogável dentro do portfólio para demonstrar interação e criatividade."
             },
             {
-                title:"Neon Runner",
-                img:fl,
-                desc:"Runner cyberpunk em uma cidade neon infinita."
+                title:"Cassino Zee",
+                img:cas,
+                desc:"Cassino Retrô, teste sua sorte.",
+                version:"1.0",
+                developer:"Geração Zee",
+                ideia:"Cassino recriado em JavaScript (Java convertido para p5.js) para ser um projeto grafico e interativo"
             },
             {
                 title:"Alien Game",
@@ -115,7 +120,9 @@ function Works({ unlockAchievements, theme }) {
     const [navyHistory,setNavyHistory] = useState([])
     const [playing,setPlaying] = useState(false)
     const [playingAlien, setPlayingAlien] = useState(false)
+    const [playingCassino, setPlayingCassino] = useState(false)
     const [selectedArt, setSelectedArt] = useState(null)
+    console.log(navyHistory)
 
     const changeCategory = (cat) => {
 
@@ -287,6 +294,10 @@ function Works({ unlockAchievements, theme }) {
                                         if(selected.title === "Alien Game") {
                                             setPlayingAlien(true)
                                         }
+
+                                        if(selected.title === "Cassino Zee") {
+                                            setPlayingCassino(true)
+                                        }
                                     }}
                                 >
                                     ▶ Jogar
@@ -338,6 +349,8 @@ function Works({ unlockAchievements, theme }) {
             )}
 
             {playingAlien && <AlienGame onClose={() => setPlayingAlien(false)}/>}
+
+            {playingCassino && <CassinoGame onClose={() => setPlayingCassino(false)}/>}
 
 
             {/* MODAL SOBRE */}

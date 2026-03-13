@@ -1,0 +1,110 @@
+.cassino-overlay {
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 1008px;
+    height: 640px;
+
+    background: #020617;
+    display: flex;
+    flex-direction: column;
+
+    border: 3px solid #808080; 
+
+
+    z-index: 1000;
+}
+
+.cassino-header {
+
+    height: 40px;
+    background: linear-gradient(#1e293b, #020617);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 10px;
+
+    color: white;
+    font-family: monospace;
+    font-size: 14px;
+
+    border-bottom: 2px solid #555;
+}
+
+.cassino-header button {
+
+    background: #ef4444;
+    border: none;
+    color: white;
+
+    width: 28px;
+    height: 24px;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cassino-header button:hover {
+    background: #dc2626;
+}
+
+
+.cassino-game{
+
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: black;
+}
+
+
+.cassino-game canvas{
+
+    display: block;
+
+    width: 1000px;
+    height: 600px;
+
+}
+
+.cassino-loading {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: #00ff9c;
+    font-family: monospace;
+    font-size: 18px;
+
+}
+
+.loading-bar {
+
+    width: 300px;
+    height: 18px;
+
+    border: 2px solid #00ff9c;
+
+    margin: 15px 0;
+}
+
+.loading-fill {
+
+    height: 100%;
+    height: 18px;
+
+    border: 2px solid #00ff9c;
+
+    margin: 15px 0;
+}
