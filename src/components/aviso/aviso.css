@@ -1,0 +1,133 @@
+/* overlay */
+
+.aviso-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:5000;
+}
+
+/* janela */
+
+.retro-window{
+    width:420px;
+
+    background:#c0c0c0;
+
+    border-top:2px solid #ffffff;
+    border-left:2px solid #ffffff;
+
+    border-right:2px solid #404040;
+    border-bottom:2px solid #404040;
+
+    box-shadow:4px 4px 0 #000;
+    
+    font-family: "Tahoma", sans-serif;
+}
+
+/* barra superior */
+
+.retro-titlebar{
+    background:linear-gradient(
+        to right,
+        #000080,
+        #1084d0
+    );
+
+    color:white;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:6px 8px;
+
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* botão fechar */
+
+.retro-close{
+    width:20px;
+    height:20px;
+
+    background:#c0c0c0;
+
+    border-top:2px solid #fff;
+    border-left:2px solid #fff;
+
+    border-right:2px solid #404040;
+    border-bottom:2px solid #404040;
+
+    cursor:pointer;
+}
+
+/* conteúdo */
+
+.retro-content{
+    display:flex;
+    gap:16px;
+
+    padding:22px 24px 10px 24px;
+}
+
+.retro-icon{
+    font-size:30px;
+    margin-top: 4px;
+}
+
+/* texto */
+
+.retro-text{
+    font-size:14px;
+    line-height:1.4;
+    max-width: 320px;
+}
+.retro-text p{
+    margin-bottom: 12px;
+}
+
+.retro-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* rodapé */
+
+.retro-footer{
+    display:flex;
+    justify-content:center;
+
+    padding:16px 20px 20px;
+}
+
+/* botão retrô */
+
+.retro-footer button{
+    padding:6px 20px;
+
+    background:#c0c0c0;
+
+    border-top:2px solid #fff;
+    border-left:2px solid #fff;
+
+    border-right:2px solid #404040;
+    border-bottom:2px solid #404040;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+.retro-footer button:active{
+    border-top:2px solid #404040;
+    border-left:2px solid #404040;
+
+    border-right:2px solid #fff;
+    border-bottom:2px solid #fff;
+}

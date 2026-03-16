@@ -18,10 +18,11 @@ import MatrixRain from "../../components/matrixRain/matrix";
 import Futebol from "../../components/futebol/futebol";
 import StickerBook from "../../components/stickerbook/sticker";
 import Canvas from "../../components/canvas/canvas";
+import AvisoPop from "../../components/aviso/aviso";
 
 
 function HomePage() {
-
+    const [mostrarAviso, setMostrarAviso] = useState(true)
     const [hora, setHora] = useState(new Date())
    
 
@@ -304,7 +305,11 @@ function HomePage() {
     
 
     return(
-        <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick={handleBackgroundClick}>
+       <>
+         {mostrarAviso && (
+            <AvisoPop onClose={() => setMostrarAviso(false)}/>
+         )}
+       <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick={handleBackgroundClick}>
 
             <div className = "icons">
                 <div className = "icon" onClick={() => handleClick("Contatos")}>
@@ -486,7 +491,7 @@ function HomePage() {
 
         </div>
         
-
+        </>
         
       
     )

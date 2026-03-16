@@ -11,6 +11,7 @@ function Canvas({ onClose, unlockAchievements }) {
     const [tool, setTool] = useState("brush")
     const [drawCount, setDrawCount] = useState(0)
 
+
     const startDraw = (e) => {
 
         const canvas = canvasRef.current
