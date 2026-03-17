@@ -309,7 +309,7 @@ function HomePage() {
          {mostrarAviso && (
             <AvisoPop onClose={() => setMostrarAviso(false)}/>
          )}
-       <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick={handleBackgroundClick}>
+       <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick= { handleBackgroundClick}>
 
             <div className = "icons">
                 <div className = "icon" onClick={() => handleClick("Contatos")}>
@@ -487,7 +487,7 @@ function HomePage() {
 
          {petActive && <Futebol booted={!systemLoading}/>}
        
-         {showStickers && <StickerBook onClose={() => setShowStickers(false)}/>}
+         {showStickers && <StickerBook onClose={() => setShowStickers(false)} unlockAchievements ={unlockAchievements}/>}
 
         </div>
         

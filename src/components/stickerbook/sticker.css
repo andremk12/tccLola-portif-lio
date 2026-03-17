@@ -523,22 +523,40 @@
     z-index:4000;
 }
 
-/* FIGURINHA REVELADA */
-
-/* .revealed-stickers img {
-    position: absolute;
-    top:2%;
-    left:-5%;
-
-    width: 160%;
-} */
+.pack-slot {
+    width: 160px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
 
 .revealed-sticker{
-    width:160px;
+    position: relative;
+    width: 190%;
+    height: auto ;
 
-    filter:drop-shadow(0 20px 30px rgba(0,0,0,.45));
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, .45));
+    animation: stickerPop .6s ease forwards;
+}
 
-    animation:stickerPop .6s ease forwards;
+.revealed-sticker.cat {
+    top: 55%;
+    left: 50%
+}
+
+.revealed-sticker.disco {
+    width: 180%;
+    top: 50%;
+    left: 20%
+}
+
+.revealed-sticker.morango {
+    width: 140%;
+    top: 25%;
+    left: 10%
 }
 
 @keyframes stickerPop{
@@ -572,3 +590,51 @@
 
     cursor:pointer;
 }
+
+.empty-slot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed rgba(0, 0, 0, .2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 28px;
+    color: #555;
+    backdrop-filter: blur(4px);
+
+}
+
+.sticker-glue {
+    animation: glueIn .8s ease forwards;
+    z-index: 10;
+}
+
+.sticker-glue::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, .4), transparente 70%);
+    mix-blend-mode: overlay;
+    opacity: .6;
+}
+
+@keyframes glueIn {
+    0% {
+        transform: translate(-500px) scale(1.6) rotate(-25deg);
+        opacity: 0;
+    }
+
+    40% {
+        transform: translateY(40px) scale(1.15) rotate(10deg);
+    }
+
+    70% {
+        transform: translateY(-10px) scale(1.05) rotate(-4deg);
+    }
+    100% {
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+

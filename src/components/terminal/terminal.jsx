@@ -22,7 +22,8 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         "Hacker do Sistema 💻": "Descubra o código secreto do terminal",
         "Mestre da Personalização 🎨": "Altere tema, wallpaper e cursor",
         "Curador da Galeria 🖼":"Busque uma ordem nos trabalhos",
-        "Artista do Caos 🔥": "Rabisque bastante no quadro"
+        "Artista do Caos 🔥": "Rabisque bastante no quadro",
+        "Colecionador 🎉": "Complete o album de figurinhas"
     }
 
     const commands = {
