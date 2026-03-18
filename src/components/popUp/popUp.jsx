@@ -7,6 +7,7 @@ import ContactContent from "../windows/contact/contact"
 import Projects from "../windows/projects/projects"
 import Works from "../works/works"
 import Customize from "../customize/customize"
+import SecretWindow from "../windows/segredo/segredo"
 
 import { useState, useRef, useEffect} from "react"
 
@@ -32,7 +33,7 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
                         currentCursor={cursorStyle}
                 />
             case "segredo":
-                return <img src ={pie}/>
+                return <SecretWindow />
         }
     }
 
