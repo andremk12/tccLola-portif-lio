@@ -61,7 +61,7 @@ function SecretWindow() {
             <h3>De André para Lola</h3>
 
             <p>
-              Você pode estar estressada agora, mas respira… vai dar tudo certo.
+              Sei que estressada agora, por mudanças na rotina, mas respira… vai dar tudo certo.
               Você é talentosa, capaz e eu sempre vou estar aqui por você.
               <br />
               <br />
