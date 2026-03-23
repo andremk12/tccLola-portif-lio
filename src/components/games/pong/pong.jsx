@@ -36,6 +36,10 @@ function PongGame({ onClose }) {
     let gameOver = false;
     let winner = null;
 
+    // 🎯 IA
+    let aiTarget = canvas.height / 2;
+    let reactionDelay = 0;
+
     function resetBall() {
       ballX = canvas.width / 2;
       ballY = canvas.height / 2;
@@ -86,19 +90,23 @@ function PongGame({ onClose }) {
         ctx.font = "40px monospace";
         ctx.textAlign = "center";
 
-        if (winner === "PLAYER") {
-          ctx.fillText("YOU WIN", canvas.width / 2, canvas.height / 2);
-        } else {
-          ctx.fillText("YOU LOSE", canvas.width / 2, canvas.height / 2);
-        }
+        ctx.fillText(
+          winner === "PLAYER" ? "YOU WIN" : "YOU LOSE",
+          canvas.width / 2,
+          canvas.height / 2
+        );
 
         ctx.font = "18px monospace";
-        ctx.fillText("Press R to restart", canvas.width / 2, canvas.height / 2 + 40);
+        ctx.fillText(
+          "Press R to restart",
+          canvas.width / 2,
+          canvas.height / 2 + 40
+        );
 
         return;
       }
 
-      /* ================= MIDDLE LINE ================= */
+      /* ================= LINHA CENTRAL ================= */
 
       ctx.strokeStyle = "#00ffff";
       ctx.setLineDash([10, 10]);
@@ -122,13 +130,11 @@ function PongGame({ onClose }) {
 
       ctx.shadowColor = "#00ffff";
       ctx.shadowBlur = 10;
-
       ctx.fillRect(20, playerY, paddleWidth, paddleHeight);
 
       /* ================= AI ================= */
 
       ctx.fillRect(canvas.width - 30, aiY, paddleWidth, paddleHeight);
-
       ctx.shadowBlur = 0;
 
       /* ================= BALL ================= */
@@ -142,76 +148,74 @@ function PongGame({ onClose }) {
 
       ctx.shadowBlur = 0;
 
-      /* ================= MOVEMENT ================= */
+      /* ================= MOVIMENTO ================= */
 
       ballX += ballVX;
       ballY += ballVY;
 
-      /* ================= WALL COLLISION ================= */
+      /* ================= COLISÕES ================= */
 
       if (ballY - ballRadius < 0 || ballY + ballRadius > canvas.height) {
         ballVY *= -1;
       }
 
-      /* ================= PLAYER COLLISION ================= */
-
+      // player
       if (
         ballX - ballRadius < 30 &&
         ballY > playerY &&
         ballY < playerY + paddleHeight
       ) {
-        ballVX *= -1;
+        ballVX *= -1.05; // leve aceleração
         ballX = 30 + ballRadius;
       }
 
-      /* ================= AI COLLISION ================= */
-
+      // AI
       if (
         ballX + ballRadius > canvas.width - 30 &&
         ballY > aiY &&
         ballY < aiY + paddleHeight
       ) {
-        ballVX *= -1;
+        ballVX *= -1.05;
         ballX = canvas.width - 30 - ballRadius;
       }
 
       /* ================= SCORE ================= */
 
       if (ballX < 0) {
-
         aiScore++;
-
         if (aiScore >= maxScore) {
           gameOver = true;
           winner = "AI";
         }
-
         resetBall();
       }
 
       if (ballX > canvas.width) {
-
         playerScore++;
-
         if (playerScore >= maxScore) {
           gameOver = true;
           winner = "PLAYER";
         }
-
         resetBall();
       }
 
-      /* ================= AI MOVEMENT ================= */
+      /* ================= IA (NERFADA E SUAVE) ================= */
+
+      const aiSpeed = 1.5;
+
+      reactionDelay++;
+
+      if (reactionDelay > 10) {
+        const aiOffset = (Math.random() - 0.5) * 60;
+        aiTarget = ballY + aiOffset;
+        reactionDelay = 0;
+      }
 
       const aiCenter = aiY + paddleHeight / 2;
 
-      const aiSpeed = 2
-      const aiOffset = (Math.random() -  0.5) *20
-      const target = ballY + aiOffset
-
-      if (aiCenter < ballY - 10) {
+      if (aiCenter < aiTarget - 10) {
         aiY += aiSpeed;
-      } else if (aiCenter > ballY + 10) {
+      } else if (aiCenter > aiTarget + 10) {
         aiY -= aiSpeed;
       }
 
@@ -220,10 +224,9 @@ function PongGame({ onClose }) {
 
     draw();
 
-    /* ================= PLAYER CONTROL ================= */
+    /* ================= CONTROLE PLAYER ================= */
 
     function move(e) {
-
       const rect = canvas.getBoundingClientRect();
 
       playerY = e.clientY - rect.top - paddleHeight / 2;
@@ -237,21 +240,16 @@ function PongGame({ onClose }) {
 
     /* ================= RESTART ================= */
 
-   function restart(e){
-
-    if(e.key === "r" || e.key === "R"){
-
-        playerScore = 0
-        aiScore = 0
-
-        gameOver = false
-        winner = null
-
-        resetBall()
-
-        requestAnimationFrame(draw) // reinicia o loop
+    function restart(e) {
+      if (e.key.toLowerCase() === "r") {
+        playerScore = 0;
+        aiScore = 0;
+        gameOver = false;
+        winner = null;
+        resetBall();
+        requestAnimationFrame(draw);
+      }
     }
-}
 
     window.addEventListener("keydown", restart);
 
@@ -263,18 +261,14 @@ function PongGame({ onClose }) {
   }, []);
 
   return (
-
     <div className="game-screen">
-
       <div className="game-header">
         <span>NeonPong.exe</span>
         <button onClick={onClose}>X</button>
       </div>
 
       <canvas ref={canvasRef}></canvas>
-
     </div>
-
   );
 }
 
