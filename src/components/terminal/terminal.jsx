@@ -23,7 +23,9 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         "Mestre da Personalização 🎨": "Altere tema, wallpaper e cursor",
         "Curador da Galeria 🖼":"Busque uma ordem nos trabalhos",
         "Artista do Caos 🔥": "Rabisque bastante no quadro",
-        "Colecionador 🎉": "Complete o album de figurinhas"
+        "Colecionador 🎉": "Complete o album de figurinhas",
+        "Segredo descoberto 🔐": "Descubra o segredo",
+        "Sobrevivente 🔋": "E se a bateria acabar?"
     }
 
     const commands = {

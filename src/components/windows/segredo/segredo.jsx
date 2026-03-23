@@ -2,7 +2,7 @@ import "./segredo.css";
 import { useEffect, useState } from "react";
 import nos from "../../../assets/nos.jpeg";
 
-function SecretWindow() {
+function SecretWindow({unlockAchievements}) {
   const [code, setCode] = useState(["", "", "", "", ""]);
   const [unlocked, setUnlocked] = useState(false);
   const [hint, setHint] = useState("");
@@ -26,6 +26,7 @@ function SecretWindow() {
 
     if (entered === SECRET) {
       setUnlocked(true);
+      unlockAchievements("Segredo descoberto 🔐")
     } else {
       setError(true);
       setTimeout(() => setError(false), 800);
@@ -94,10 +95,17 @@ function SecretWindow() {
           />
         ))}
       </div>
+      
+      <div className="code-tools">
+            <button className="enter-btn" onClick={handleSubmit}>
+               ENTER
+            </button>
 
-      <button className="enter-btn" onClick={handleSubmit}>
-        ENTER
-      </button>
+            <button className="enter-btn" onClick={() => setCode(["", "", "", "", ""])}>
+                RESET
+            </button>
+      </div>
+    
 
       {hint && <p className="hint">{hint}</p>}
 

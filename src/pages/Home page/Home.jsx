@@ -109,11 +109,14 @@ function HomePage() {
      const [startMenuOpen, setStartMenuOpen] = useState(false)
      const [booting, setBooting] = useState(false)
      const [booted, setBooted] = useState(false)
+     const [battery, setBattery] = useState(100)
+     const [wifi, setWifi] = useState(4)
+
 
      const clockClicksRef = useRef(0)
      const lastClockClickRef = useRef(0)
      const [glitch, setGlitch] = useState(false)
-  
+
         const handleClock = () => {
             // eslint-disable-next-line react-hooks/purity
             const now = performance.now()
@@ -187,10 +190,39 @@ function HomePage() {
 
      useEffect(() => {
         const interval = setInterval(() => {
+            setBattery(prev => {
+                if (prev <= 5) return 100
+                return prev - 1
+            })
+
+            setWifi(prev => {
+                const variation = Math.random() > 0.7 ? 1 : -1
+                const next = prev + variation
+                return Math.max(0, Math.min(4, next))
+            })
+        }, 7000)
+
+        return () => clearInterval(interval)
+     }, [])
+
+     useEffect(() => {
+        if (battery === 20) {
+            showToast(" ⚠️ Bateria fraca! ")
+        }
+
+        if (battery === 1) {
+            unlockAchievements("Sobrevivente 🔋")
+        }
+     }, [battery])
+
+
+
+     useEffect(() => {
+        const interval = setInterval(() => {
             setProgress(prev => {
                 if (prev >=100) {
                     clearInterval(interval)
-                    setTimeout( () => setSystemLoading(false), 500)
+                    setTimeout( () => setSystemLoading(false), 800)
                     return 100
                 }
                 return prev + 5
@@ -289,7 +321,7 @@ function HomePage() {
                     <p>Inicializando sitema</p>
                     <p>Carregando módulos...</p>
                     <p>Preparando interface...</p>
-                    <p>Dica: Explore todo o portifolio e para encontrar os mistérios</p>
+                    <p>Dica: Explore todo o portifolio e para encontrar os mistérios, Clique bastante!</p>
                 </div>
 
                 <div className="boot-bar-container">
@@ -393,6 +425,26 @@ function HomePage() {
                     }}}
                 >   
                     {notificationsEnabled ? <Bell size ={20}/> : <BellOff size={20}/>}
+                </div>
+
+                <div className="system-icons">
+
+                    <div 
+                        className = "wifi"
+                        title={`Sinal: ${wifi/4}`}
+                        onClick={() => showToast("Conectado à rede: Geração_zee_net")}>
+                            {[0, 1, 2, 3].map((level) => (
+                                <span
+                                    key={level}
+                                    className={`bar ${wifi > level ? "active": ""}`}
+                                />
+                            ))}
+                    </div>
+
+                    <div className="battery">
+                        🔋{battery}%
+                    </div>
+
                 </div>
 
                 <div className ="clock" onClick={handleClock}>

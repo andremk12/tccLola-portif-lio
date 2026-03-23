@@ -33,7 +33,7 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
                         currentCursor={cursorStyle}
                 />
             case "segredo":
-                return <SecretWindow />
+                return <SecretWindow unlockAchievements  = {unlockAchievements}/>
         }
     }
 
