@@ -43,6 +43,7 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
         if (type === "Contatos") return "window-normal"
         if (type === "Projetos") return "window-large"
         if (type === "Personalizar") return "window-large"
+        if (type === "Trabalhos") return "window-large"
         return "window-normal"
     }
 

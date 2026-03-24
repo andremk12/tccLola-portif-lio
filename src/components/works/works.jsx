@@ -7,6 +7,7 @@ import img from "../../assets/image.png"
 import tw from "../../assets/twilight.jpg"
 import gameA from "../../assets/matarhomis.png"
 import cas from "../../assets/cassino.png"
+import hqa from "../../assets/artes/quadrinnhuui.png"
 
 import PongGame from "../games/pong/pong"
 import AlienGame from "../games/alienGame/alienGame"
@@ -66,6 +67,17 @@ function Works({ unlockAchievements, theme }) {
                 year:"2024",
                 desc:"Experimento com iluminação e atmosfera."
             }
+        ],
+
+        hqs: [
+            {
+                title: "Uma curiosa mancha no chão",
+                img: hqa,
+                desc: "Descrição do quadrinho (avaliar se é necessário)",
+                year: "2025",
+                pages: [hqa]
+
+            }
         ]
     }
 
@@ -111,7 +123,6 @@ function Works({ unlockAchievements, theme }) {
         }
 ]
 
-    
 
     const [category,setCategory] = useState("jogos")
     const [selected,setSelected] = useState(null)
@@ -156,13 +167,14 @@ function Works({ unlockAchievements, theme }) {
                 <button onClick={()=>changeCategory("jogos")}>🎮 Jogos</button>
                 <button onClick={()=>changeCategory("fotos")}>📷 Fotografia</button>
                 <button onClick={()=>changeCategory("artes")}>🎨 Artes</button>
+                <button onClick={()=>changeCategory("hqs")}> Quadrinhos</button>
 
             </div>
 
 
             {/* GRID NORMAL */}
 
-            {category !== "fotos" && category !== "artes" && (
+            {category !== "fotos" && category !== "artes" && category !== "hqs" && (
 
                 <div className="works-grid">
 
@@ -319,10 +331,35 @@ function Works({ unlockAchievements, theme }) {
 
             )}
 
+            {category === "hqs" && (
+                <div className="hq-grid">
+                    
+                    {works.hqs.map((hq, i) => (
+                        <div 
+                            key={i}
+                            className="hq-card"
+                            onClick={() => setSelected(hq)}
+                            >
+                                <img src={hq.img}/>
+
+                                <div className="hq-badge">NEW</div>
+
+                                <div className="hq-info">
+                                    <h3>{hq.title}</h3>
+                                    <p>{hq.year}</p>
+                                </div>
+                        </div>
+                    ))}
+                
+                </div>
+            )
+
+            }
+
 
             {/* PREVIEW ARTES */}
 
-            {selected && category !== "jogos" && category !== "fotos" && (
+            {selected && category !== "jogos" && category !== "fotos" &&  category !== "hqs" && (
 
                 <div
                     className="preview-modal"
@@ -410,10 +447,40 @@ function Works({ unlockAchievements, theme }) {
                 
                 </div>
             )   
-                
             }
 
-        </div>
+            {selected && category === "hqs" && (
+
+                    <div className="hq-modal" onClick={() => setSelected(null)}>
+                            <div
+                                className="hq-modal-content"
+                                onClick={() => setSelected(null)}
+                            >
+                                <button 
+                                    className="hq-close"
+                                    onClick={() => setSelected(null)}
+                                    >
+                                        X
+                                </button>
+
+                                 <div className="hq-reader">
+
+                                        <img 
+                                            src={selected.pages[0]}
+                                            alt={selected.title} 
+                                        />
+                                    </div>
+
+                                    <div className="hq-meta">
+                                            <h2>{selected.title}</h2>
+                                            <p>{selected.year}</p>
+                                            <p>{selected.desc}</p>
+                                    </div>
+                            </div>
+                        
+                    </div>
+            )}
+            </div>
     )
 }
 
