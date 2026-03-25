@@ -42,12 +42,10 @@
 }
 
 .folder:hover {
-  background: #000080;
   color: white;
 }
 
 .folder.active {
-  background: #000080;
   color: white;
   border: 2px inset #fff;
 }
@@ -121,6 +119,7 @@
 
 .work-card img {
   width: 100%;
+  height: 100%;
   aspect-ratio: 16/10;
   object-fit: cover;
   display: block;
@@ -202,6 +201,7 @@
   grid-template-columns: 180px 1fr;
   gap: 20px;
   padding: 20px;
+  color: black;
 }
 
 .launcher-body img {
@@ -394,6 +394,42 @@
   background: #f4d35e;
   border: 4px solid black;
   cursor: pointer;
+  transition: transform 0.15s ease, box shadow 0.15s ease;
+  transform-origin: center;
+}
+
+.hq-card:hover {
+  animation: hqBounce 0.4s ease;
+  box-shadow: 8px 8px 0 black;
+}
+
+
+@keyframes hqBounce {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  30% {
+    transform: scale(1.1, 0.9) rotate(-2deg);
+  }
+
+  60% {
+    transform: scale(0.95, 1.05) rotate(2deg);
+  }
+
+  80% {
+    transform: scale(1.03, 0.97) rotate(-1deg);
+  }
+
+  100% {
+    transform: scale(1.05) rotate(0deg);
+  }
+
+}
+
+.hq-card:hover .hq-badge {
+  transform: rotate(-10deg) scale(1.2);
+  transition: 0.2s;
 }
 
 .hq-card img {
@@ -521,4 +557,62 @@
 .theme-cyber .explorer-container {
   background: #050510;
   color: #ff00ff;
+}
+
+.theme-default .folder {
+  color: black;
+}
+
+.theme-default .folder:hover {
+  background: linear-gradient(to right, #d16ba5, #86a8e7);
+  color: white;
+}
+
+.theme-default .folder.active {
+   background: linear-gradient(to right, #d16ba5, #86a8e7);
+  color: white;
+  border: 2px inset #fff;
+}
+
+.theme-dark .folder {
+  color: #e5e7eb;
+}
+
+.theme-dark .folder:hover {
+  background: #374151;
+}
+
+.theme-dark .folder.active {
+  background: #4b5563;
+  border: 2px inset #6b7280;
+}
+
+.theme-neon .folder {
+  color: #00ffff;
+}
+
+.theme-neon .folder:hover {
+  background: #00ffff22;
+  box-shadow: 0 0 10px #00ffff;
+}
+
+.theme-neon .folder.active {
+  background: #00ffff;
+  color: black;
+  box-shadow: 0 0 12px #00ffff;
+}
+
+.theme-cyber .folder {
+  color: #ff00ff;
+}
+
+.theme-cyber .folder:hover {
+  background: #ff00ff22;
+  box-shadow: 0 0 8px #ff00ff;
+}
+
+.theme-cyber .folder.active {
+  background: #ff00ff;
+  color: black;
+  box-shadow: 0 0 12px #ff00ff;
 }

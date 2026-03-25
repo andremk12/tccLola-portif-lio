@@ -12,6 +12,7 @@ import hqa from "../../assets/artes/quadrinnhuui.png";
 import PongGame from "../games/pong/pong";
 import AlienGame from "../games/alienGame/alienGame";
 import CassinoGame from "../games/cassino/cassino";
+import { Target } from "lucide-react";
 
 function Works({ unlockAchievements, theme }) {
   const works = {
@@ -35,7 +36,7 @@ function Works({ unlockAchievements, theme }) {
           "Cassino recriado em JavaScript (Java convertido para p5.js) para ser um projeto grafico e interativo",
       },
       {
-        title: "Alien Game",
+        title: "Matar homis",
         img: gameA,
         desc: "Jogo de matar homis",
         version: "1.0",
@@ -142,13 +143,23 @@ function Works({ unlockAchievements, theme }) {
     setShowInfo(false);
 
     setNavyHistory((prev) => {
-      const updated = [...prev, cat].slice(-4);
+      const updated = [...prev, cat]
 
-      if (updated.join("-") === "jogos-fotos-artes-jogos") {
-        unlockAchievements("Curador da Galeria 🖼");
+      const target = ["hqs", "fotos", "jogos", "artes"]
+
+      let matchIndex = 0;
+
+      for (let item of updated) {
+        if (item === target[matchIndex]){
+            matchIndex++
+        }
       }
 
-      return updated;
+      if (matchIndex === target.length) {
+        unlockAchievements("Curador da galeria 🖼")
+      }
+      return updated.slice(-5)
+      
     });
   };
 
@@ -186,7 +197,7 @@ function Works({ unlockAchievements, theme }) {
         </div>
 
           <div className="explorer-content">
-            <div className="explorer-path">C:\Portifolio\{category}</div>
+            <div className="explorer-path">C:\Portifolio\Trabalhos\{category}</div>
 
             <div className="explorer-files">
               {/* GRID NORMAL */}
@@ -295,7 +306,7 @@ function Works({ unlockAchievements, theme }) {
                               setPlaying(true);
                             }
 
-                            if (selected.title === "Alien Game") {
+                            if (selected.title === "Matar homis") {
                               setPlayingAlien(true);
                             }
 

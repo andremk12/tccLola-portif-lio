@@ -23,8 +23,8 @@ function StickerSLot({ sticker, collected, animatingStickers }) {
     <div className={`sticker-wrapper ${sticker.type}`}>
       <div className="sticker-card">
         {(isCollected || isAnimating) ? (
-          <img 
-            src={sticker.img} 
+          <img
+            src={sticker.img}
             className={`sticker ${sticker.type} ${isAnimating ? "sticker-glue" : ""}`} />
         ) : (
           <div className="empty-slot">
@@ -73,6 +73,7 @@ function StickerBook({ onClose, unlockAchievements }) {
   const [packStickers, setPackStickers] = useState([]);
   const [collected, setCollected] = useState([]);
   const [animatingStickers, setAnimatingStickers] = useState([])
+  const [pendingSticker, setPendingSticker] = useState([])
 
   const generateRandomPack = () => {
     const shuffled = [...stickers].sort(() => 0.5 - Math.random());
@@ -83,182 +84,189 @@ function StickerBook({ onClose, unlockAchievements }) {
 
   useEffect(() => {
     if (collected.length === stickers.length) {
-        unlockAchievements("Colecionador 🎉")
+      unlockAchievements("Colecionador 🎉")
     }
   }, [collected])
 
-  return (
-    <div className="stickerbook-overlay">
-      <button className="nav-left" onClick={prevPage}>
-        ◀
-      </button>
+  useEffect(() => {
+    if (pendingSticker.length === 0) return;
+   
+    setTimeout(() => {
+      setTimeout(() => {
+      setAnimatingStickers(pendingSticker)
 
-      <button className="nav-right" onClick={nextPage}>
-        ▶
-      </button>
+      setCollected(prev => {
+        const ids = new Set(prev)
+        pendingSticker.forEach(s => ids.add(s.id))
+        return [...ids]
+      })
 
-      <div className="stickerbook-window">
-        <div className="album-header">
-          <button
-            className="open-pack"
-            onClick={() => {
-              generateRandomPack();
-              setShowPack(true);
-              setPackStage("closed");
-            }}
-          >
-            🎁 Abrir pacote
-          </button>
+      setAnimatingStickers([])
+      setPendingSticker([])
+                        
+  }, 1400)
+}, 300)
+}, [pendingSticker])
 
-          <button className="close-book" onClick={onClose}>
-            ✖
-          </button>
-        </div>
+return (
+  <div className="stickerbook-overlay">
+    <button className="nav-left" onClick={prevPage}>
+      ◀
+    </button>
 
-        <HTMLFlipBook
-          width={420}
-          height={550}
-          showCover={true}
-          drawShadow={true}
-          maxShadowOpacity={0.5}
-          ref={bookRef}
+    <button className="nav-right" onClick={nextPage}>
+      ▶
+    </button>
+
+    <div className="stickerbook-window">
+      <div className="album-header">
+        <button
+          className="open-pack"
+          onClick={() => {
+            generateRandomPack();
+            setShowPack(true);
+            setPackStage("closed");
+          }}
         >
-          <div className="page cover">
-            <div className="cover-content">
-              <h1>Meus adesivos</h1>
-              <p>Geração Zee Collection</p>
-              <p>Clique para navegar</p>
-            </div>
-          </div>
+          🎁 Abrir pacote
+        </button>
 
-          <div className="page">
-            <div className="album-page">
-              <h2>Página 1</h2>
-
-              <div className="sticker-grid">
-                {stickers.slice(0, 4).map((sticker) => (
-                    <StickerSLot
-                        key = {sticker.id}
-                        sticker={sticker}
-                        collected={collected}
-                        animatingStickers={animatingStickers}
-                    />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="page">
-            <div className="album-page">
-              <h2>Página 2</h2>
-
-              <div className="sticker-grid">
-                {stickers.slice(4, 8).map((sticker) => (
-                    <StickerSLot
-                        key = {sticker.id}
-                        sticker={sticker}
-                        collected={collected}
-                        animatingStickers={animatingStickers}
-                    />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="page">
-            <div className="album-page">
-              <h2>Página 3</h2>
-
-              <div className="sticker-grid">
-                {stickers.slice(8, 10).map((sticker) => (
-                    <StickerSLot
-                        key = {sticker.id}
-                        sticker={sticker}
-                        collected={collected}
-                        animatingStickers={animatingStickers}
-                    />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="page back-cover">
-            <div className="cover-content">
-              <h1>Fim do Álbum</h1>
-              <p>Mais figurinhas em breve...</p>
-            </div>
-          </div>
-        </HTMLFlipBook>
+        <button className="close-book" onClick={onClose}>
+          ✖
+        </button>
       </div>
 
-      {showPack && (
-        <div className="pack-overlay">
-          <div className={`pack ${packStage}`}>
-            <button
-              className="close-pack-top"
-              onClick={() => setShowPack(false)}
-            >
-              ✕
-            </button>
-
-            {packStage === "closed" && (
-              <button
-                className="tear-pack"
-                onClick={() => {
-                  setPackStage("opening");
-
-                  setTimeout(() => {
-                    setPackStage("opened");
-                  }, 600);
-                }}
-              >
-                Rasgar pacote
-              </button>
-            )}
+      <HTMLFlipBook
+        width={420}
+        height={550}
+        showCover={true}
+        drawShadow={true}
+        maxShadowOpacity={0.5}
+        ref={bookRef}
+      >
+        <div className="page cover">
+          <div className="cover-content">
+            <h1>Meus adesivos</h1>
+            <p>Geração Zee Collection</p>
+            <p>Clique para navegar</p>
           </div>
+        </div>
 
-          {packStage === "opened" && (
-            <div className="revealed-stickers">
-              {packStickers.map((s) => (
-                <div className="pack-slot" key={s.id}>
-                  <div className="sticker-wrapper">
-                    <div className="sticker-card">
-                      <img
-                        src={s.img}
-                        className={`revealed-sticker ${s.type}`}
-                      />
-                    </div>
-                  </div>
-                </div>
+        <div className="page">
+          <div className="album-page">
+            <h2>Página 1</h2>
+
+            <div className="sticker-grid">
+              {stickers.slice(0, 4).map((sticker) => (
+                <StickerSLot
+                  key={sticker.id}
+                  sticker={sticker}
+                  collected={collected}
+                  animatingStickers={animatingStickers}
+                />
               ))}
-
-              <button 
-                className="close-pack" 
-                onClick={() => {
-                    setAnimatingStickers(packStickers)
-
-
-                    setTimeout(() => {
-                        setCollected(prev => {
-                            const ids = new Set(prev)
-                            packStickers.forEach(s => ids.add(s.id))
-                            return [...ids]
-                        })
-
-                          setAnimatingStickers([])
-                          setShowPack(false)
-                    
-                    }, 1400)
-                  
-                }}>
-                Guardar
-              </button>
             </div>
+          </div>
+        </div>
+
+        <div className="page">
+          <div className="album-page">
+            <h2>Página 2</h2>
+
+            <div className="sticker-grid">
+              {stickers.slice(4, 8).map((sticker) => (
+                <StickerSLot
+                  key={sticker.id}
+                  sticker={sticker}
+                  collected={collected}
+                  animatingStickers={animatingStickers}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="page">
+          <div className="album-page">
+            <h2>Página 3</h2>
+
+            <div className="sticker-grid">
+              {stickers.slice(8, 10).map((sticker) => (
+                <StickerSLot
+                  key={sticker.id}
+                  sticker={sticker}
+                  collected={collected}
+                  animatingStickers={animatingStickers}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="page back-cover">
+          <div className="cover-content">
+            <h1>Fim do Álbum</h1>
+            <p>Mais figurinhas em breve...</p>
+          </div>
+        </div>
+      </HTMLFlipBook>
+    </div>
+
+    {showPack && (
+      <div className="pack-overlay">
+        <div className={`pack ${packStage}`}>
+          <button
+            className="close-pack-top"
+            onClick={() => setShowPack(false)}
+          >
+            ✕
+          </button>
+
+          {packStage === "closed" && (
+            <button
+              className="tear-pack"
+              onClick={() => {
+                setPackStage("opening");
+
+                setTimeout(() => {
+                  setPackStage("opened");
+                }, 600);
+              }}
+            >
+              Rasgar pacote
+            </button>
           )}
         </div>
-      )}
-    </div>
-  );
+
+        {packStage === "opened" && (
+          <div className="revealed-stickers">
+            {packStickers.map((s) => (
+              <div className="pack-slot" key={s.id}>
+                <div className="sticker-wrapper">
+                  <div className="sticker-card">
+                    <img
+                      src={s.img}
+                      className={`revealed-sticker ${s.type}`}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <button
+              className="close-pack"
+              onClick={() => {
+                setPendingSticker(packStickers)
+                setShowPack(false)
+              }}>
+              Guardar
+            </button>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+);
 }
 
 export default StickerBook;

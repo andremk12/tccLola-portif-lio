@@ -32,7 +32,7 @@ function SecretWindow({unlockAchievements}) {
       setTimeout(() => setError(false), 800);
 
       if (entered === "00000") setHint("Nada é tão vazio assim...");
-      else if (entered === "12345") setHint("Muito óbvio 😏");
+      else if (entered === "12345") setHint("Muito óbvio 😏, tente ao contrario");
       else if (entered === "54321") setHint(" oıʌqo̗ oʇınW");
       else if (entered === "99999") setHint("Quase... ou não 👀");
       else setHint("");
