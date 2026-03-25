@@ -36,7 +36,7 @@ function AvisoPop({ onClose }) {
 
                         <p>
                             Caso encontre algum problema ou tenha alguma sugestão de melhoria, fique à vontade para nos avisar! 
-                            Tanto para a Lola quanto para mim (@andre_michalsky no insta).
+                            Aqui temos um "APP" especial para isso
                         </p>
 
                     </div>

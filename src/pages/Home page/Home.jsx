@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette, Sticker, NotebookPen} from "lucide-react"
+import {User, FileText, Folder, HelpCircle, Bell, BellOff, Palette, Sticker, NotebookPen, Archive} from "lucide-react"
 import "./Home.css"
 
 import windows from "../../assets/windows.png"
@@ -19,6 +19,7 @@ import Futebol from "../../components/futebol/futebol";
 import StickerBook from "../../components/stickerbook/sticker";
 import Canvas from "../../components/canvas/canvas";
 import AvisoPop from "../../components/aviso/aviso";
+import SugestionsForm from "../../components/form/form";
 
 
 function HomePage() {
@@ -103,6 +104,7 @@ function HomePage() {
      const [petActive, setPetActive] = useState(false)
      const [showStickers, setShowStickers] = useState(false)
      const [showCanvas, setShowCanvas] = useState(false)
+     const [showForm, setShowForm] = useState(false)
 
 
 
@@ -385,6 +387,11 @@ function HomePage() {
                 <span>Mostre seu talento</span>
             </div>
 
+             <div className="form-icon" onClick={() => setShowForm(true)}>
+                <Archive size={40}/>
+                <span>Colabore!</span>
+            </div>
+
          
 
             <div className="taskbar">
@@ -523,6 +530,7 @@ function HomePage() {
         }
 
         {showCanvas && (<Canvas onClose={()=> setShowCanvas(false)} unlockAchievements={unlockAchievements}/>)}
+        {showForm && <SugestionsForm onClose={() => setShowForm(false) } unlockAchievements={unlockAchievements}/>}
 
         {showTerminal && (
             <Terminal 
@@ -536,6 +544,8 @@ function HomePage() {
         )}
        
          <MatrixRain active={matrixMode}/>
+
+        
 
          {petActive && <Futebol booted={!systemLoading}/>}
        

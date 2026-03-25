@@ -25,7 +25,8 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         "Artista do Caos 🔥": "Rabisque bastante no quadro",
         "Colecionador 🎉": "Complete o album de figurinhas",
         "Segredo descoberto 🔐": "Descubra o segredo",
-        "Sobrevivente 🔋": "E se a bateria acabar?"
+        "Sobrevivente 🔋": "E se a bateria acabar?",
+        "Muito Obrigado🤩": "Ajude com um feedback"
     }
 
     const commands = {
