@@ -85,7 +85,7 @@ function PopUp({type, onClose, unlockAchievements, setDesktopTheme, setCursorSty
         let windowWidth = 500
         let windowHeight = 400
 
-        if (type === "Curriculum" || type === "Projetos" || type === "Personalizar") {
+        if (type === "Curriculum" || type === "Projetos" || type === "Personalizar" || type == "Trabalhos") {
             windowHeight = 660
             windowWidth = 1000
         }

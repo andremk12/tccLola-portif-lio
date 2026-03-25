@@ -1,487 +1,454 @@
-import "./work.css"
-import { useState } from "react"
+import "./work.css";
+import { useState } from "react";
 
-import ap from "../../assets/apple.jpg"
-import fl from "../../assets/fluter.jpg"
-import img from "../../assets/image.png"
-import tw from "../../assets/twilight.jpg"
-import gameA from "../../assets/matarhomis.png"
-import cas from "../../assets/cassino.png"
-import hqa from "../../assets/artes/quadrinnhuui.png"
+import ap from "../../assets/apple.jpg";
+import fl from "../../assets/fluter.jpg";
+import img from "../../assets/image.png";
+import tw from "../../assets/twilight.jpg";
+import gameA from "../../assets/matarhomis.png";
+import cas from "../../assets/cassino.png";
+import hqa from "../../assets/artes/quadrinnhuui.png";
 
-import PongGame from "../games/pong/pong"
-import AlienGame from "../games/alienGame/alienGame"
-import CassinoGame from "../games/cassino/cassino"
+import PongGame from "../games/pong/pong";
+import AlienGame from "../games/alienGame/alienGame";
+import CassinoGame from "../games/cassino/cassino";
 
 function Works({ unlockAchievements, theme }) {
+  const works = {
+    jogos: [
+      {
+        title: "Ping pong",
+        img: img,
+        desc: "Ping pong com estética retro bem legal",
+        version: "1.0",
+        developer: "André Michalsky",
+        ideia:
+          "Criar um mini jogo retrô jogável dentro do portfólio para demonstrar interação e criatividade.",
+      },
+      {
+        title: "Cassino Zee",
+        img: cas,
+        desc: "Cassino Retrô, teste sua sorte.",
+        version: "1.0",
+        developer: "Geração Zee",
+        ideia:
+          "Cassino recriado em JavaScript (Java convertido para p5.js) para ser um projeto grafico e interativo",
+      },
+      {
+        title: "Alien Game",
+        img: gameA,
+        desc: "Jogo de matar homis",
+        version: "1.0",
+        developer: "Geração Zee",
+        ideia:
+          "Jogo inspirado no galaga, com objetivo de fazer uma moça chegar em segurança em casa",
+      },
+    ],
 
-    const works = {
-        jogos: [
-            {
-                title:"Ping pong",
-                img:img,
-                desc:"Ping pong com estética retro bem legal",
-                version:"1.0",
-                developer:"André Michalsky",
-                ideia:"Criar um mini jogo retrô jogável dentro do portfólio para demonstrar interação e criatividade."
-            },
-            {
-                title:"Cassino Zee",
-                img:cas,
-                desc:"Cassino Retrô, teste sua sorte.",
-                version:"1.0",
-                developer:"Geração Zee",
-                ideia:"Cassino recriado em JavaScript (Java convertido para p5.js) para ser um projeto grafico e interativo"
-            },
-            {
-                title:"Alien Game",
-                img:gameA,
-                desc:"Jogo de matar homis",
-                version:"1.0",
-                developer:"Geração Zee",
-                ideia:"Jogo inspirado no galaga, com objetivo de fazer uma moça chegar em segurança em casa"
-            }
-        ],
+    artes: [
+      {
+        title: "Floral Study",
+        img: fl,
+        tech: "Digital painting",
+        year: "2024",
+        desc: "Estudo de cores e composição inspirado em botânica.",
+      },
 
-           artes: [
-            {
-                title:"Floral Study",
-                img:fl,
-                tech:"Digital painting",
-                year:"2024",
-                desc:"Estudo de cores e composição inspirado em botânica."
-            },
+      {
+        title: "Character Sketch",
+        img: ap,
+        tech: "Digital sketch",
+        year: "2023",
+        desc: "Exploração de personagem em estilo estilizado.",
+      },
 
-            {
-                title:"Character Sketch",
-                img:ap,
-                tech:"Digital sketch",
-                year:"2023",
-                desc:"Exploração de personagem em estilo estilizado."
-            },
+      {
+        title: "Light Composition",
+        img: tw,
+        tech: "Digital illustration",
+        year: "2024",
+        desc: "Experimento com iluminação e atmosfera.",
+      },
+    ],
 
-            {
-                title:"Light Composition",
-                img: tw,
-                tech:"Digital illustration",
-                year:"2024",
-                desc:"Experimento com iluminação e atmosfera."
-            }
-        ],
+    hqs: [
+      {
+        title: "Uma curiosa mancha no chão",
+        img: hqa,
+        desc: "Descrição do quadrinho (avaliar se é necessário)",
+        year: "2025",
+        pages: [hqa],
+      },
+    ],
+  };
 
-        hqs: [
-            {
-                title: "Uma curiosa mancha no chão",
-                img: hqa,
-                desc: "Descrição do quadrinho (avaliar se é necessário)",
-                year: "2025",
-                pages: [hqa]
+  const photos = [
+    {
+      src: "https://picsum.photos/800/500?random=1",
+      title: "Aurora no campo",
+      camera: "ISO 200 • f/2.8 • 1/500",
+      location: "São Paulo — 2024",
+    },
 
-            }
-        ]
-    }
+    {
+      src: "https://picsum.photos/800/500?random=2",
+      title: "Luz da manhã",
+      camera: "ISO 100 • f/4 • 1/320",
+      location: "Curitiba — 2023",
+    },
 
-    const photos = [
-        {
-            src:"https://picsum.photos/800/500?random=1",
-            title:"Aurora no campo",
-            camera:"ISO 200 • f/2.8 • 1/500",
-            location:"São Paulo — 2024"
-        },
+    {
+      src: "https://picsum.photos/800/500?random=3",
+      title: "Reflexos urbanos",
+      camera: "ISO 400 • f/5.6 • 1/125",
+      location: "Rio de Janeiro — 2024",
+    },
 
-        {
-            src:"https://picsum.photos/800/500?random=2",
-            title:"Luz da manhã",
-            camera:"ISO 100 • f/4 • 1/320",
-            location:"Curitiba — 2023"
-        },
+    {
+      src: "https://picsum.photos/800/500?random=4",
+      title: "Foto teste 1",
+      camera: "ISO 200 • f/8 • 1/250",
+      location: "Florianópolis — 2023",
+    },
+    {
+      src: "https://picsum.photos/800/500?random=5",
+      title: "Foto teste 2",
+      camera: "ISO 200 • f/8 • 1/250",
+      location: "Florianópolis — 2023",
+    },
+    {
+      src: "https://picsum.photos/800/500?random=6",
+      title: "Foto teste 2",
+      camera: "ISO 200 • f/8 • 1/250",
+      location: "Florianópolis — 2023",
+    },
+  ];
 
-        {
-            src:"https://picsum.photos/800/500?random=3",
-            title:"Reflexos urbanos",
-            camera:"ISO 400 • f/5.6 • 1/125",
-            location:"Rio de Janeiro — 2024"
-        },
+  const [category, setCategory] = useState("jogos");
+  const [selected, setSelected] = useState(null);
+  const [showInfo, setShowInfo] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [navyHistory, setNavyHistory] = useState([]);
+  const [playing, setPlaying] = useState(false);
+  const [playingAlien, setPlayingAlien] = useState(false);
+  const [playingCassino, setPlayingCassino] = useState(false);
+  const [selectedArt, setSelectedArt] = useState(null);
+  console.log(navyHistory);
 
-        {
-            src:"https://picsum.photos/800/500?random=4",
-            title:"Foto teste 1",
-            camera:"ISO 200 • f/8 • 1/250",
-            location:"Florianópolis — 2023"
-        },
-        {
-            src:"https://picsum.photos/800/500?random=5",
-            title:"Foto teste 2",
-            camera:"ISO 200 • f/8 • 1/250",
-            location:"Florianópolis — 2023"
-        },
-        {
-            src:"https://picsum.photos/800/500?random=6",
-            title:"Foto teste 2",
-            camera:"ISO 200 • f/8 • 1/250",
-            location:"Florianópolis — 2023"
-        }
-]
+  const changeCategory = (cat) => {
+    setCategory(cat);
+    setSelected(null);
+    setSelectedPhoto(null);
+    setShowInfo(false);
 
+    setNavyHistory((prev) => {
+      const updated = [...prev, cat].slice(-4);
 
-    const [category,setCategory] = useState("jogos")
-    const [selected,setSelected] = useState(null)
-    const [showInfo,setShowInfo] = useState(false)
-    const [selectedPhoto,setSelectedPhoto] = useState(null)
-    const [navyHistory,setNavyHistory] = useState([])
-    const [playing,setPlaying] = useState(false)
-    const [playingAlien, setPlayingAlien] = useState(false)
-    const [playingCassino, setPlayingCassino] = useState(false)
-    const [selectedArt, setSelectedArt] = useState(null)
-    console.log(navyHistory)
+      if (updated.join("-") === "jogos-fotos-artes-jogos") {
+        unlockAchievements("Curador da Galeria 🖼");
+      }
 
-    const changeCategory = (cat) => {
+      return updated;
+    });
+  };
 
-        setCategory(cat)
-        setSelected(null)
-        setSelectedPhoto(null)
-        setShowInfo(false)
+  return (
+    <div className={`explorer-window theme-${theme}`}>
+      <div className="explorer-body">
+        <div className="explorer-sidebar">
+          <div
+            className={`folder ${category === "jogos" ? "active" : ""}`}
+            onClick={() => changeCategory("jogos")}
+          >
+            📁 jogos
+          </div>
 
-        setNavyHistory(prev => {
+          <div
+            className={`folder ${category === "fotos" ? "active" : ""}`}
+            onClick={() => changeCategory("fotos")}
+          >
+            📁 Fotografias
+          </div>
 
-            const updated = [...prev, cat].slice(-4)
+          <div
+            className={`folder ${category === "artes" ? "active" : ""}`}
+            onClick={() => changeCategory("artes")}
+          >
+            📁 Artes
+          </div>
 
-            if (updated.join("-") === "jogos-fotos-artes-jogos") {
-                unlockAchievements("Curador da Galeria 🖼")
-            }
+          <div
+            className={`folder ${category === "hqs" ? "active" : ""}`}
+            onClick={() => changeCategory("hqs")}
+          >
+            📁 Quadrinhos
+          </div>
+        </div>
 
-            return updated
-        })
-    }
+          <div className="explorer-content">
+            <div className="explorer-path">C:\Portifolio\{category}</div>
 
-    return (
+            <div className="explorer-files">
+              {/* GRID NORMAL */}
 
-        <div className={`works-container theme-${theme}`}>
+              {category !== "fotos" &&
+                category !== "artes" &&
+                category !== "hqs" && (
+                  <div className="works-grid">
+                    {works[category].map((item, i) => (
+                      <div
+                        className="work-card"
+                        key={i}
+                        onClick={() => setSelected(item)}
+                      >
+                        <img src={item.img} alt={item.title} />
 
-            {/* SIDEBAR */}
-
-            <div className="works-sidebar">
-
-                <h3>Galeria</h3>
-
-                <button onClick={()=>changeCategory("jogos")}>🎮 Jogos</button>
-                <button onClick={()=>changeCategory("fotos")}>📷 Fotografia</button>
-                <button onClick={()=>changeCategory("artes")}>🎨 Artes</button>
-                <button onClick={()=>changeCategory("hqs")}> Quadrinhos</button>
-
-            </div>
-
-
-            {/* GRID NORMAL */}
-
-            {category !== "fotos" && category !== "artes" && category !== "hqs" && (
-
-                <div className="works-grid">
-
-                    {works[category].map((item,i)=>(
-                        <div
-                            className="work-card"
-                            key={i}
-                            onClick={()=>setSelected(item)}
-                        >
-
-                            <img src={item.img} alt={item.title}/>
-
-                            <div className="work-overlay">
-                                <h4>{item.title}</h4>
-                                <p>{item.desc}</p>
-                            </div>
-
+                        <div className="work-overlay">
+                          <h4>{item.title}</h4>
+                          <p>{item.desc}</p>
                         </div>
+                      </div>
                     ))}
+                  </div>
+                )}
 
-                </div>
+              {/* GALERIA DE FOTOS */}
 
-            )}
-
-
-            {/* GALERIA DE FOTOS */}
-
-            {category === "fotos" && (
-
+              {category === "fotos" && (
                 <div className="photo-gallery">
-
-                    {photos.map((photo,i)=>(
-                        <div
-                            key={i}
-                            className="photo-card"
-                            onClick={()=>setSelectedPhoto(photo)}
-                        >
-                            <img src={photo.src} alt="photo"/>
-
-
-                        </div>
-                    ))}
-
-                </div>
-
-            )}
-
-
-            {/* VISUALIZADOR DE FOTO */}
-
-            {selectedPhoto && (
-
-                <div
-                    className="photo-view"
-                    onClick={()=>setSelectedPhoto(null)}
-                >
-                    <div className="photo-view-content">
-                         <img src={selectedPhoto.src} alt="view"/>
-
-                         <div className="photo-info">
-                             <h3>{selectedPhoto.title}</h3>
-
-                             <p>{selectedPhoto.camera}</p>
-
-                             <p>{selectedPhoto.location}</p>
-                         </div>
+                  {photos.map((photo, i) => (
+                    <div
+                      key={i}
+                      className="photo-card"
+                      onClick={() => setSelectedPhoto(photo)}
+                    >
+                      <img src={photo.src} alt="photo" />
                     </div>
-
-
-                   
+                  ))}
                 </div>
+              )}
 
-            )}
+              {/* VISUALIZADOR DE FOTO */}
 
-            {/* {VIZUALIZADOR DE ARTES} */}
+              {selectedPhoto && (
+                <div
+                  className="photo-view"
+                  onClick={() => setSelectedPhoto(null)}
+                >
+                  <div className="photo-view-content">
+                    <img src={selectedPhoto.src} alt="view" />
 
-            { category === "artes" && (
+                    <div className="photo-info">
+                      <h3>{selectedPhoto.title}</h3>
+
+                      <p>{selectedPhoto.camera}</p>
+
+                      <p>{selectedPhoto.location}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* {VIZUALIZADOR DE ARTES} */}
+
+              {category === "artes" && (
                 <div className="art-gallery">
-                    
-                    {works.artes.map((art, i) => (
-                        <div
-                            key={i}
-                            className="art-card"
-                            onClick={() => setSelectedArt(art)}
-                            >
-                            <img src={art.img}/>
-                            
-                            <div className="art-overlay">
-                                <h4>{art.title}</h4>
-                            </div>
+                  {works.artes.map((art, i) => (
+                    <div
+                      key={i}
+                      className="art-card"
+                      onClick={() => setSelectedArt(art)}
+                    >
+                      <img src={art.img} />
 
-                        </div>
-                    ))}
-
+                      <div className="art-overlay">
+                        <h4>{art.title}</h4>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-            )}
+              )}
 
+              {/* LAUNCHER DOS JOGOS */}
 
-            {/* LAUNCHER DOS JOGOS */}
-
-            {selected && category === "jogos" && (
-
+              {selected && category === "jogos" && (
                 <div className="launcher-modal">
-
-                    <div className="launcher-window">
-
-                        <div className="launcher-header">
-                            <span>{selected.title}.exe</span>
-                            <button onClick={()=>setSelected(null)}>X</button>
-                        </div>
-
-                        <div className="launcher-body">
-
-                            <img src={selected.img} alt={selected.title}/>
-
-                            <div className="launcher-info">
-                                <h2>{selected.title}</h2>
-                                <p>{selected.desc}</p>
-                            </div>
-
-                            <div className="launcher-buttons">
-                                <button
-                                    className="play-btn"
-                                    onClick={()=> {
-                                        if(selected.title === "Ping pong") {
-                                            setPlaying(true)
-                                        }
-
-                                        if(selected.title === "Alien Game") {
-                                            setPlayingAlien(true)
-                                        }
-
-                                        if(selected.title === "Cassino Zee") {
-                                            setPlayingCassino(true)
-                                        }
-                                    }}
-                                >
-                                    ▶ Jogar
-                                </button>
-
-                                <button
-                                    className="info-btn"
-                                    onClick={()=>setShowInfo(true)}
-                                >
-                                    📖 Sobre
-                                </button>
-                            </div>
-
-                        </div>
-
+                  <div className="launcher-window">
+                    <div className="launcher-header">
+                      <span>{selected.title}.exe</span>
+                      <button onClick={() => setSelected(null)}>X</button>
                     </div>
 
-                </div>
+                    <div className="launcher-body">
+                      <img src={selected.img} alt={selected.title} />
 
-            )}
-
-            {category === "hqs" && (
-                <div className="hq-grid">
-                    
-                    {works.hqs.map((hq, i) => (
-                        <div 
-                            key={i}
-                            className="hq-card"
-                            onClick={() => setSelected(hq)}
-                            >
-                                <img src={hq.img}/>
-
-                                <div className="hq-badge">NEW</div>
-
-                                <div className="hq-info">
-                                    <h3>{hq.title}</h3>
-                                    <p>{hq.year}</p>
-                                </div>
-                        </div>
-                    ))}
-                
-                </div>
-            )
-
-            }
-
-
-            {/* PREVIEW ARTES */}
-
-            {selected && category !== "jogos" && category !== "fotos" &&  category !== "hqs" && (
-
-                <div
-                    className="preview-modal"
-                    onClick={()=>setSelected(null)}
-                >
-
-                    <div className="preview-content">
-
-                        <img src={selected.img} alt={selected.title}/>
+                      <div className="launcher-info">
                         <h2>{selected.title}</h2>
                         <p>{selected.desc}</p>
+                      </div>
 
+                      <div className="launcher-buttons">
+                        <button
+                          className="play-btn"
+                          onClick={() => {
+                            if (selected.title === "Ping pong") {
+                              setPlaying(true);
+                            }
+
+                            if (selected.title === "Alien Game") {
+                              setPlayingAlien(true);
+                            }
+
+                            if (selected.title === "Cassino Zee") {
+                              setPlayingCassino(true);
+                            }
+                          }}
+                        >
+                          ▶ Jogar
+                        </button>
+
+                        <button
+                          className="info-btn"
+                          onClick={() => setShowInfo(true)}
+                        >
+                          📖 Sobre
+                        </button>
+                      </div>
                     </div>
-
+                  </div>
                 </div>
+              )}
 
-            )}
+              {category === "hqs" && (
+                <div className="hq-grid">
+                  {works.hqs.map((hq, i) => (
+                    <div
+                      key={i}
+                      className="hq-card"
+                      onClick={() => setSelected(hq)}
+                    >
+                      <img src={hq.img} />
 
+                      <div className="hq-badge">NEW</div>
 
-            {/* JOGO */}
+                      <div className="hq-info">
+                        <h3>{hq.title}</h3>
+                        <p>{hq.year}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            {playing && (
-                <PongGame onClose={()=>setPlaying(false)}/>
-            )}
+              {/* PREVIEW ARTES */}
 
-            {playingAlien && <AlienGame onClose={() => setPlayingAlien(false)}/>}
+              {selected &&
+                category !== "jogos" &&
+                category !== "fotos" &&
+                category !== "hqs" && (
+                  <div
+                    className="preview-modal"
+                    onClick={() => setSelected(null)}
+                  >
+                    <div className="preview-content">
+                      <img src={selected.img} alt={selected.title} />
+                      <h2>{selected.title}</h2>
+                      <p>{selected.desc}</p>
+                    </div>
+                  </div>
+                )}
 
-            {playingCassino && <CassinoGame onClose={() => setPlayingCassino(false)}/>}
+              {/* JOGO */}
 
+              {playing && <PongGame onClose={() => setPlaying(false)} />}
 
-            {/* MODAL SOBRE */}
+              {playingAlien && (
+                <AlienGame onClose={() => setPlayingAlien(false)} />
+              )}
 
-            {showInfo && selected && (
+              {playingCassino && (
+                <CassinoGame onClose={() => setPlayingCassino(false)} />
+              )}
 
+              {/* MODAL SOBRE */}
+
+              {showInfo && selected && (
                 <div className="info-modal">
+                  <div className="info-window">
+                    <div className="info-header">
+                      <span>Sobre {selected.title}</span>
 
-                    <div className="info-window">
-
-                        <div className="info-header">
-
-                            <span>Sobre {selected.title}</span>
-
-                            <button onClick={()=>setShowInfo(false)}>X</button>
-
-                        </div>
-
-                        <div className="info-content">
-
-                            <h2>{selected.title}</h2>
-
-                            <p><b>Versão:</b> {selected.version || "N/A"}</p>
-                            <p><b>Desenvolvedor:</b> {selected.developer || "N/A"}</p>
-
-                            <p><b>Ideia:</b></p>
-
-                            <p>{selected.ideia || "Descrição não disponível."}</p>
-
-                        </div>
-
+                      <button onClick={() => setShowInfo(false)}>X</button>
                     </div>
 
+                    <div className="info-content">
+                      <h2>{selected.title}</h2>
+
+                      <p>
+                        <b>Versão:</b> {selected.version || "N/A"}
+                      </p>
+                      <p>
+                        <b>Desenvolvedor:</b> {selected.developer || "N/A"}
+                      </p>
+
+                      <p>
+                        <b>Ideia:</b>
+                      </p>
+
+                      <p>{selected.ideia || "Descrição não disponível."}</p>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-            )}
+              {selectedArt && (
+                <div className="art-view" onClick={() => setSelectedArt(null)}>
+                  <div className="art-view-content">
+                    <img src={selectedArt.img} />
 
-            {selectedArt && (
-                
-                <div 
-                 className="art-view"
-                 onClick={() => setSelectedArt(null)} >
-                    
-                    <div className="art-view-content">
-                        
-                        <img src={selectedArt.img} />
-                        
-                        <div className="art-info">
-                            <h2>{selectedArt.title}</h2>
+                    <div className="art-info">
+                      <h2>{selectedArt.title}</h2>
 
-                            <p>{selectedArt.tech} • {selectedArt.year} </p>
+                      <p>
+                        {selectedArt.tech} • {selectedArt.year}{" "}
+                      </p>
 
-                            <p>{selectedArt.desc}</p>
-                        </div>
-                        
+                      <p>{selectedArt.desc}</p>
                     </div>
-                
+                  </div>
                 </div>
-            )   
-            }
+              )}
 
-            {selected && category === "hqs" && (
+              {selected && category === "hqs" && (
+                <div className="hq-modal" onClick={() => setSelected(null)}>
+                  <div
+                    className="hq-modal-content"
+                    onClick={() => setSelected(null)}
+                  >
+                    <button
+                      className="hq-close"
+                      onClick={() => setSelected(null)}
+                    >
+                      X
+                    </button>
 
-                    <div className="hq-modal" onClick={() => setSelected(null)}>
-                            <div
-                                className="hq-modal-content"
-                                onClick={() => setSelected(null)}
-                            >
-                                <button 
-                                    className="hq-close"
-                                    onClick={() => setSelected(null)}
-                                    >
-                                        X
-                                </button>
-
-                                 <div className="hq-reader">
-
-                                        <img 
-                                            src={selected.pages[0]}
-                                            alt={selected.title} 
-                                        />
-                                    </div>
-
-                                    <div className="hq-meta">
-                                            <h2>{selected.title}</h2>
-                                            <p>{selected.year}</p>
-                                            <p>{selected.desc}</p>
-                                    </div>
-                            </div>
-                        
+                    <div className="hq-reader">
+                      <img src={selected.pages[0]} alt={selected.title} />
                     </div>
-            )}
+
+                    <div className="hq-meta">
+                      <h2>{selected.title}</h2>
+                      <p>{selected.year}</p>
+                      <p>{selected.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-    )
+          </div>
+      </div>
+    </div>
+  );
 }
 
-export default Works
+export default Works;
