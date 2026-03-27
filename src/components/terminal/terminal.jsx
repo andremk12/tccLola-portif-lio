@@ -2,7 +2,7 @@ import Futebol from "../futebol/futebol"
 import "./terminal.css"
 import { useEffect, useState } from "react"
 
-function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements, activatePet}) {
+function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements, activatePet, deactivatePet}) {
 
     const [input, setInput] = useState("")
     const [ready, setReady] = useState(false)
@@ -26,7 +26,8 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         "Colecionador 🎉": "Complete o album de figurinhas",
         "Segredo descoberto 🔐": "Descubra o segredo",
         "Sobrevivente 🔋": "E se a bateria acabar?",
-        "Muito Obrigado🤩": "Ajude com um feedback"
+        "Muito Obrigado 🤩": "Ajude com um feedback",
+        "Melhor Amiga 🐱": "Faça muito carinho na futebol"
     }
 
     const commands = {
@@ -37,6 +38,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
             "clear - limpar terminal",
             "dev - sobre o desenvolvedor",
             "futebol - ativa a futebol",
+            "tchaufutebol - desativa a futebol",
             "matrix - efeito matrix (!!!Luz piscando)",
             "rave - modo festa (!!!Luz piscando)",
             "achievements - ver progresso das conquistas",
@@ -139,7 +141,15 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
             "Inicializando módulo...",
             "A futebol chegou!"
         ]
-    }   
+    },
+
+    tchaufutebol: () => {
+        deactivatePet()
+
+        return [
+            "Miaaau (Em Gatês, significa tchau)"
+        ]
+    }
 
     }
 

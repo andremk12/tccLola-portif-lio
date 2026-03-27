@@ -540,6 +540,7 @@ function HomePage() {
             unlockAchievements={unlockAchievements}
             achievements={achievements}
             activatePet = {() => setPetActive(true)}
+            deactivatePet={() => setPetActive(false)}
             />
         )}
        
@@ -547,7 +548,7 @@ function HomePage() {
 
         
 
-         {petActive && <Futebol booted={!systemLoading}/>}
+         {petActive && <Futebol booted={!systemLoading}  unlockAchievements ={unlockAchievements}/>}
        
          {showStickers && <StickerBook onClose={() => setShowStickers(false)} unlockAchievements ={unlockAchievements}/>}
 
