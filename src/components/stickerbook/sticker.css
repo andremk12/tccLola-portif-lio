@@ -559,6 +559,235 @@
     left: 10%
 }
 
+.shop-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 5000;
+}
+
+.shop-window {
+  background: #1e1b3a;
+  padding: 20px;
+  border-radius: 16px;
+  color: white;
+
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  overflow: hidden;
+}
+
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+
+
+.shop-item {
+  background: #2a2650;
+  border-radius: 12px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 180px;
+
+  position: relative;
+
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.shop-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.4);
+}
+
+
+.shop-item img {
+  max-width: 80%;
+  max-height: 70px;
+
+  object-fit: contain;
+
+  display: block;
+  margin: 5px auto;
+}
+
+.shop-img {
+  max-width: 80%;
+  max-height: 70px;
+
+  object-fit: contain;
+
+  display: block;
+  margin: auto;
+
+  transition: transform .2s;
+}
+
+/* GATOS */
+.shop-img.cat {
+  position: relative;
+  transform: scale(3.2);
+  top: 45%;
+  left: 30%
+}
+
+/* DISCO */
+.shop-img.disco {
+    position: relative;
+    transform: scale(5);
+   top: 65%;
+   left: 32%;
+}
+
+/* MORANGO */
+.shop-img.morango {
+  position: relative;
+  transform: scale(1.95);
+  top: 15%;
+}
+
+/* CAMARÃO */
+.shop-img.camarao {
+  transform: scale(1.15);
+  
+}
+
+/* PINGUIM */
+.shop-img.penguim {
+  transform: scale(1.05);
+}
+
+.shop-item p {
+  font-size: 13px;
+  text-align: center;
+  margin: 4px 0;
+}
+
+.shop-item span {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.close-shop {
+  position: absolute;
+  top: 90px;
+  right: 445px;
+
+  width: 28px;
+  height: 28px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #ff8fa3;
+  color: #222;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,.3);
+
+  transition: .2s;
+}
+
+.close-shop:hover {
+  transform: rotate(90deg) scale(1.1);
+  background: #ff4d6d;
+}
+
+.shop-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.shop-grid::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.shop-grid::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8fd3ff, #b69cff);
+  border-radius: 10px;
+}
+
+.shop-grid::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #5c9cff, #9f7aea);
+}
+
+.btn-buy {
+  margin-top: auto;
+
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+
+.shop-item.common {
+  border: 2px solid #aaa;
+}
+
+.shop-item.rare {
+  border: 2px solid #4dabf7;
+  box-shadow: 0 0 10px rgba(77, 171, 247, .4);
+}
+
+.shop-item.legendary {
+  border: 2px solid gold;
+  box-shadow: 0 0 15px rgba(255, 215, 0, .6);
+}
+
+
+.btn-buy.common {
+  background: #ccc;
+  color: #222;
+}
+
+.btn-buy.rare {
+  background: linear-gradient(135deg, #4dabf7, #74c0fc);
+  color: white;
+}
+
+.btn-buy.legendary {
+  background: linear-gradient(135deg, gold, orange);
+  color: #222;
+}
+
 @keyframes stickerPop{
     0%{
         transform:translateY(200px) scale(.4) rotate(-20deg);

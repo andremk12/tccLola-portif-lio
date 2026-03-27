@@ -11,6 +11,8 @@ import gato7 from "../../assets/stickers/gato7.png";
 import gato8 from "../../assets/stickers/gato8.png";
 import globo from "../../assets/stickers/globooopronto.png";
 import morango from "../../assets/stickers/moranguus.png";
+import camarao from "../../assets/stickers/camaraoManeiro.png"
+import penguim from "../../assets/stickers/penguim.png"
 
 import { useState, useRef, useEffect } from "react";
 
@@ -37,20 +39,22 @@ function StickerSLot({ sticker, collected, animatingStickers }) {
 }
 
 function StickerBook({ onClose, unlockAchievements }) {
-  const stickers = [
-    { id: 1, img: gato1, name: "Gato Laranja", type: "cat" },
-    { id: 2, img: gato2, name: "Gato Preto e Branco", type: "cat" },
-    { id: 3, img: gato3, name: "Gato Preto", type: "cat" },
-    { id: 4, img: gato4, name: "Gato Branco", type: "cat" },
-    { id: 5, img: gato5, name: "Gato Siamês", type: "cat" },
-    { id: 6, img: gato6, name: "Gato Cinza", type: "cat" },
-    { id: 7, img: gato7, name: "Gato Rajado", type: "cat" },
-    { id: 8, img: gato8, name: "Gato Laranja Claro", type: "cat" },
+ const stickers = [
+  { id: 1, img: gato1, name: "Gato Laranja", type: "cat", rarity: "common" },
+  { id: 2, img: gato2, name: "Gato Preto e Branco", type: "cat", rarity: "legendary" }, // MAIS RARO
+  { id: 3, img: gato3, name: "Gato Preto", type: "cat", rarity: "rare" },
+  { id: 4, img: gato4, name: "Gato Branco", type: "cat", rarity: "common" },
+  { id: 5, img: gato5, name: "Gato Siamês", type: "cat", rarity: "rare" },
+  { id: 6, img: gato6, name: "Gato Cinza", type: "cat", rarity: "common" },
+  { id: 7, img: gato7, name: "Gato Rajado", type: "cat", rarity: "rare" },
+  { id: 8, img: gato8, name: "Gato Laranja Claro", type: "cat", rarity: "common" },
 
-    { id: 9, img: globo, name: "Disco", type: "disco" },
-    { id: 10, img: morango, name: "morango", type: "morango" },
-  ];
+  { id: 9, img: globo, name: "Disco", type: "disco", rarity: "legendary" },
+  { id: 10, img: morango, name: "Morango", type: "morango", rarity: "common" },
 
+  { id: 11, img: camarao, name: "Camarão", type: "camarao", rarity: "rare" },
+  { id: 12, img: penguim, name: "Pinguim", type: "penguim", rarity: "common" },
+];
   const bookRef = useRef(null);
 
   const nextPage = () => {
@@ -67,6 +71,7 @@ function StickerBook({ onClose, unlockAchievements }) {
     bookRef.current.pageFlip().flip(page - 1);
   };
 
+
   const [packStage, setPackStage] = useState("closed");
   const [showPack, setShowPack] = useState(false);
 
@@ -75,12 +80,39 @@ function StickerBook({ onClose, unlockAchievements }) {
   const [animatingStickers, setAnimatingStickers] = useState([])
   const [pendingSticker, setPendingSticker] = useState([])
 
-  const generateRandomPack = () => {
-    const shuffled = [...stickers].sort(() => 0.5 - Math.random());
-    const pack = shuffled.slice(0, 3);
+  const randomFrom = (arr) => 
+    arr[Math.floor(Math.random() * arr.length)]
+  
 
-    setPackStickers(pack);
-  };
+  const getRandomSticker = () => {
+    const rand = Math.random()
+
+    if (rand < 0.6) {
+      return randomFrom(stickers.filter(s => s.rarity === "common"))
+    } else if (rand < 0.9) {
+      return randomFrom(stickers.filter(s => s.rarity === "rare"))
+    } else {
+      return randomFrom(stickers.filter(s => s.rarity === "legendary"))
+    }
+  }
+
+  const generateRandomPack = () => {
+  const pack = []
+
+  while (pack.length < 3) {
+    const sticker = getRandomSticker()
+
+    if (!pack.find(s => s.id === sticker.id)) {
+      pack.push(sticker)
+    }
+  }
+
+  setPackStickers(pack)
+}
+  
+  const [coins, setCoins] = useState(0)
+
+
 
   useEffect(() => {
     if (collected.length === stickers.length) {
@@ -88,25 +120,55 @@ function StickerBook({ onClose, unlockAchievements }) {
     }
   }, [collected])
 
-  useEffect(() => {
-    if (pendingSticker.length === 0) return;
-   
-    setTimeout(() => {
-      setTimeout(() => {
-      setAnimatingStickers(pendingSticker)
+ useEffect(() => {
+  if (pendingSticker.length === 0) return;
 
-      setCollected(prev => {
-        const ids = new Set(prev)
-        pendingSticker.forEach(s => ids.add(s.id))
-        return [...ids]
-      })
+  setTimeout(() => {
+    setAnimatingStickers(pendingSticker);
 
-      setAnimatingStickers([])
-      setPendingSticker([])
-                        
-  }, 1400)
-}, 300)
-}, [pendingSticker])
+    setCollected(prev => {
+      const ids = new Set(prev);
+
+      pendingSticker.forEach(s => {
+        if (ids.has(s.id)) {
+          if (s.rarity === "common") setCoins(c => c + 1);
+          if (s.rarity === "rare") setCoins(c => c + 3);
+          if (s.rarity === "legendary") setCoins(c => c + 8);
+        } else {
+          ids.add(s.id);
+          setCoins(c => c + 1);
+        }
+      });
+
+      return [...ids];
+    });
+
+    setAnimatingStickers([]);
+    setPendingSticker([]);
+  }, 1200);
+}, [pendingSticker]);
+
+const [showShop, setShowShop] = useState(false)
+
+const getPrice = (rarity) => {
+  if (rarity === "common") return 5
+  if (rarity === "rare") return 12
+  if (rarity === "legendary") return 25
+}
+
+const buySticker = (sticker) => {
+  const price = getPrice(sticker.rarity)
+
+  if (coins < price) return
+
+  setCoins(c => c - price)
+
+  setCollected(prev => {
+    if (prev.includes(sticker.id)) return prev
+    return [...prev, sticker.id]
+  })
+}
+
 
 return (
   <div className="stickerbook-overlay">
@@ -120,6 +182,11 @@ return (
 
     <div className="stickerbook-window">
       <div className="album-header">
+        
+        <button onClick={() => setShowShop(true)} className="open-pack">
+            🛒 Loja
+        </button>
+        
         <button
           className="open-pack"
           onClick={() => {
@@ -191,7 +258,7 @@ return (
             <h2>Página 3</h2>
 
             <div className="sticker-grid">
-              {stickers.slice(8, 10).map((sticker) => (
+              {stickers.slice(8, 12).map((sticker) => (
                 <StickerSLot
                   key={sticker.id}
                   sticker={sticker}
@@ -265,6 +332,39 @@ return (
         )}
       </div>
     )}
+
+
+    {showShop && (
+      <div className="shop-overlay">
+        <div className="shop-window">
+            <button className="close-shop" onClick={() => setShowShop(false)}>
+              ✕
+            </button>
+            
+            <h2>🛒 Loja de Figurinhas (Compra em desenvolvimento)</h2>
+            <p>💰 Moedas: {coins}</p>
+
+            <div className="shop-grid">
+                {stickers.map(s => (
+                  <div key= {s.id} className={`shop-item ${s.rarity}`}>
+                      <img src={s.img} className={`shop-img ${s.type}`}/>
+
+                      <p>{s.name}</p>
+                      <span>{s.rarity}</span>
+
+                      <button disabled={coins < getPrice(s.rarity)} onClick={() => buySticker(s)} className={`btn btn-buy ${s.rarity}`}>
+                          Comprar ({getPrice(s.rarity)})
+                      </button>
+
+                  </div>
+                ))}
+            </div>
+        </div>
+      </div>
+    )
+
+    }
+
   </div>
 );
 }
