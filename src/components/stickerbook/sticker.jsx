@@ -342,6 +342,22 @@ return (
             </button>
             
             <h2>🛒 Loja de Figurinhas (Compra em desenvolvimento)</h2>
+
+            <div className="physical-banner">
+                <div className="physical-badge"> Os adesivos são reais! </div>
+                <div className="physical-content">
+                  <p>Todos os meus adesivos podem ser adiquiridos fisicamente! Entre em contato</p>
+
+                  <button
+                    className="btn-contact-s"
+                    onClick={onClose}
+                  >
+                      📲 Entrar em contato
+                  </button>
+                </div>
+            </div>
+
+
             <p>💰 Moedas: {coins}</p>
 
             <div className="shop-grid">
