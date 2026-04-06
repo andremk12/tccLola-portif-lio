@@ -1,6 +1,6 @@
 import "./popUp.css"
 import {Minus, Square, X, Pin} from "lucide-react"
-import pie from "../../assets/download (8).png"
+
 
 import CurriculumWindow from "../windows/curriculum/curriculum"
 import ContactContent from "../windows/contact/contact"
