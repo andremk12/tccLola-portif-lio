@@ -55,6 +55,11 @@
 .pet-jumpLong{
     animation: jumpLong 1s steps(8) forwards;
 }
+
+.pet-jumpLand{
+    background-position: -224px -128px; /* último frame da linha 5 */
+    animation: none;
+}
 @keyframes jumpLong{
     from{background-position:0 -128px;}
     to{background-position:-256px -128px;}
@@ -62,11 +67,11 @@
 
 /* 6 - SLEEP */
 .pet-sleep{
-    animation: sleep 2.5s steps(8) infinite;
+    animation: sleep 2s steps(4) infinite;
 }
 @keyframes sleep{
     from{background-position:0 -160px;}
-    to{background-position:-256px -160px;}
+    to{background-position:-127px -160px;}
 }
 
 /* 7 - PLAY BALL */
@@ -80,7 +85,12 @@
 
 /* 8 - JUMP + SIT */
 .pet-sitJump{
-    animation: sitJump 1.4s steps(8) forwards;
+    animation: sitJump 1.4s steps(8);
+}
+
+.pet-sitIdle{
+    background-position: -224px -224px; 
+    animation: none;
 }
 @keyframes sitJump{
     from{background-position:0 -224px;}
