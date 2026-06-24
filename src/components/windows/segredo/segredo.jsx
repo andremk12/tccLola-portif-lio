@@ -7,6 +7,7 @@ import tw from "../../../assets/twilight.jpg";
 import rbd from "../../../assets/rbd.jpg";
 import pp from "../../../assets/pikie.png";
 import rar from "../../../assets/rarity.jpg";
+import fut from "../../../assets/futebol.jpeg"
 
 function SecretWindow({ unlockAchievements }) {
   const [code, setCode] = useState(["", "", "", "", ""]);
@@ -14,6 +15,9 @@ function SecretWindow({ unlockAchievements }) {
   const [hint, setHint] = useState("");
   const [error, setError] = useState(false);
   const [surprise, setSurprise] = useState(false);
+  const [step, setStep] = useState(0)
+  const [answers, setAnswers] = useState([])
+  const [result, setResult] = useState(null)
   const SECRET = "55555";
 
 const poneis = [
@@ -55,11 +59,103 @@ const poneis = [
   },
 ];
 
-  const [currentPony, setCurrentPony] = useState(poneis[0]);
+const questions = [
+  {
+    question: "Qual sua atividade favorita?",
+    options: [
+      { text: "Ler livros", pony: "Twilight Sparkle" },
+      { text: "Praticar esportes", pony: "Rainbow Dash" },
+      { text: "Ir para festas", pony: "Pinkie Pie" },
+      { text: "Cuidar de animais", pony: "Fluttershy" },
+      { text: "Moda e arte", pony: "Rarity" },
+      { text: "Trabalho ao ar livre", pony: "Apple Jack" }
+    ]
+  },
 
-  const randomPonei = () => {
-    const random = poneis[Math.floor(Math.random() * poneis.length)]
-    setCurrentPony(random)
+  {
+    question: "Como seus amigos te descrevem?",
+    options: [
+      { text: "Inteligente", pony: "Twilight Sparkle" },
+      { text: "Corajoso", pony: "Rainbow Dash" },
+      { text: "Engraçado", pony: "Pinkie Pie" },
+      { text: "Gentil", pony: "Fluttershy" },
+      { text: "Elegante", pony: "Rarity" },
+      { text: "Confiável", pony: "Apple Jack" }
+    ]
+  },
+
+  {
+    question: "Qual defeito combina mais com você?",
+    options: [
+      { text: "Perfeccionismo", pony: "Twilight Sparkle" },
+      { text: "Impulsividade", pony: "Rainbow Dash" },
+      { text: "Agitação", pony: "Pinkie Pie" },
+      { text: "Timidez", pony: "Fluttershy" },
+      { text: "Vaidade", pony: "Rarity" },
+      { text: "Teimosia", pony: "Apple Jack" }
+    ]
+  },
+
+  {
+    question: "O que você faria num apocalipse?",
+    options: [
+      { text: "Montaria um plano", pony: "Twilight Sparkle" },
+      { text: "Viraria herói", pony: "Rainbow Dash" },
+      { text: "Tentaria animar todos", pony: "Pinkie Pie" },
+      { text: "Salvaria os animais", pony: "Fluttershy" },
+      { text: "Continuaria fabuloso", pony: "Rarity" },
+      { text: "Resolveria na força bruta", pony: "Apple Jack" }
+    ]
+  },
+
+  {
+    question: "Escolha uma comida:",
+    options: [
+      { text: "Sanduíche", pony: "Twilight Sparkle" },
+      { text: "Energético", pony: "Rainbow Dash" },
+      { text: "Bolo", pony: "Pinkie Pie" },
+      { text: "Salada", pony: "Fluttershy" },
+      { text: "Macaron francês", pony: "Rarity" },
+      { text: "Torta de maçã", pony: "Apple Jack" }
+    ]
+  }
+]
+
+  const calculateResult = (answersList) => {
+
+    // eslint-disable-next-line react-hooks/purity
+    if (Math.random() < 0.05) {
+      setResult({
+        name: "Futebol",
+        desc: "Você não é um ponei. Você é um gato",
+        img: fut,
+        color: "#ff7675"
+      })
+      return
+    }
+
+    const scores = {}
+
+    answersList.forEach(answer => {
+      scores[answer] = (scores[answer] || 0) + 1
+    })
+
+    const winner = Object.keys(scores).reduce((a, b)=> scores[a] > scores[b] ? a:b) 
+
+    const pony = poneis.find(p => p.name === winner)
+
+    setResult(pony)
+  }
+
+  const answersQuestion = (pony) => {
+    const newAnswers = [...answers, pony]
+    setAnswers(newAnswers)
+
+    if(step + 1 >= questions.length) {
+      calculateResult(newAnswers)
+    } else {
+      setStep(step + 1)
+    }
   }
 
   const handleChange = (value, index) => {
@@ -137,39 +233,78 @@ const poneis = [
     );
   }
 
-  if (unlocked) {
+  if (unlocked && !result) {
+   
+    const currentQuestion = questions[step]
+
     return (
-      <div className="secret-container pony-mode">
-          <h2 className="secret-title">🦄 Gerador de Poneis 🦄</h2>
+        <div className="secret-container pony-mode">
+            <h2>Qual pônei você é</h2>
+        
+        <div className="quiz-box">
 
-          <div className="pony-box" style  = {{ boxShadow: `0 0 25px ${currentPony.color}`,  border: `1px solid ${currentPony.color}`}}>
-              <img src={currentPony.img} className="pony-img"/>
-
-              <h3>{currentPony.name}</h3>
-              <p>{currentPony.desc}</p>
-
-              <div className="code-tools">
-                  <button className ="enter-btn" onClick={randomPonei}>
-                      TROCAR
-                  </button>
+            <div className="quiz-progress">
+              Pergunta {step + 1}/{questions.length}
+            </div>
 
 
-                  <button
-                    className="enter-btn"
-                    onClick={() => {
-                      setUnlocked(false);
-                      setCode(["", "", "", "", ""])
-                    }}
-                    >
-                      VOLTAR
-                  </button>
-              </div>
-          </div>
+            <p>{currentQuestion.question}</p>
 
-          <div className="scanlines"/>
+            {currentQuestion.options.map(option => (
+                <button
+                  key = {option.text}
+                  className="enter-btn"
+                  onClick={() => answersQuestion(option.pony)}
+                >
+                  {option.text}
+                </button>
+            ))}
+
+        </div>
       </div>
+      
     )
   }
+  
+  if (result) {
+    return(
+
+      <div className="secret-container pony-mode">
+          <h2>✨ Resultado ✨</h2>
+
+
+            <div
+                className="pony-box"
+                style={{
+                    boxShadow: `0 0 25px ${result.color}`,
+                    border: `1px solid ${result.color}`
+                }}
+            >
+                <img
+                    src={result.img}
+                    className="pony-img"
+                />
+
+                <h3>{result.name}</h3>
+
+                <p>{result.desc}</p>
+
+                <button
+                    className="enter-btn"
+                    onClick={() => {
+                        setStep(0)
+                        setAnswers([])
+                        setResult(null)
+                    }}
+                >
+                    Fazer novamente
+                </button>
+            </div>
+      </div>
+
+    )
+  } 
+
 
   return (
     <div className={`secret-container ${error ? "shake" : ""}`}>

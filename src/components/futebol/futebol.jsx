@@ -164,7 +164,8 @@ function Futebol({ booted,  unlockAchievements}) {
                 { name: "idle", time: 3000 },
                 { name: "lick", time: 2500 },
                 { name: "stretch", time: 2000 },
-                { name: "sitJump", time: 2000, hasEnd: true }
+                { name: "sitJump", time: 2000, hasEnd: true },
+                { name: "jumpLong", time: 1000, hasEnd: true}
             ]
 
             if (Math.random() < 0.4) {
@@ -175,20 +176,30 @@ function Futebol({ booted,  unlockAchievements}) {
                 setLocked(true)
                 setState(action.name)
 
-              setTimeout(() => {
+          setTimeout(() => {
 
-                        if (action.name === "sitJump") {
-                            setState("sitIdle")
+    if (action.name === "sitJump") {
 
-                            setTimeout(() => {
-                                setLocked(false)
-                                setState(direction === 1 ? "walkRight" : "walkLeft")
-                            }, 800)
+        setState("sitIdle")
 
-                        } else {
-                            setLocked(false)
-                            setState(direction === 1 ? "walkRight" : "walkLeft")
-                        }
+        setTimeout(() => {
+            setLocked(false)
+            setState(direction === 1 ? "walkRight" : "walkLeft")
+        }, 800)
+
+    } else if (action.name === "jumpLong") {
+
+        setState("jumpLand")
+
+        setTimeout(() => {
+            setLocked(false)
+            setState(direction === 1 ? "walkRight" : "walkLeft")
+        }, 400)
+
+    } else {
+        setLocked(false)
+        setState(direction === 1 ? "walkRight" : "walkLeft")
+    }
 
 }, action.time)
             }

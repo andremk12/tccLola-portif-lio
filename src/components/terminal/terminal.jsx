@@ -10,6 +10,8 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         "Geração Zee OS Terminal v1.0",
         "Digite 'help' para ver os comandos"
     ])
+    const [commandHistory, setCommandHistory] = useState([])
+    const [historyIndex, setHistoryIndex] = useState(-1)
 
     const allAchievements = {
         "Curioso Investigador 🕵️": "Clique no ícone secreto no desktop",
@@ -43,6 +45,8 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
             "rave - modo festa (!!!Luz piscando)",
             "achievements - ver progresso das conquistas",
             "exit - fechar terminal",
+            "",
+            "Dica: pressione TAB para autocompletar comandos."
         ],
 
         about: () => [
@@ -153,6 +157,50 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
 
     }
 
+
+    const commandList = Object.keys(commands)
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Tab") {
+            e.preventDefault()
+        
+
+        const matches = commandList.filter(cmd => cmd.startsWith(input.toLowerCase()))
+
+        if (matches.length === 1) {
+            setInput(matches[0])
+        }
+     }
+
+     if (e.key === "ArrowUp") {
+        e.preventDefault()
+
+        if (commandHistory.length === 0) return
+        
+        const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
+
+        setHistoryIndex(newIndex)
+        setInput(commandHistory[newIndex])
+     }
+
+     if (e.key === "ArrowDown") {
+        e.preventDefault()
+
+        if (historyIndex === -1) return
+        
+        const newIndex = historyIndex + 1
+
+        if(newIndex >= commandHistory.length) {
+            setHistoryIndex(-1)
+            setInput("")
+            return
+        }
+
+        setHistoryIndex(newIndex)
+        setInput(commandHistory[newIndex])
+     }
+    }
+
     const handleCommand = (cmd) => {
         const command = cmd.toLowerCase()
 
@@ -180,6 +228,9 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         if (!input) return
 
         handleCommand(input)
+
+        setCommandHistory(prev => [...prev, input])
+        setHistoryIndex(-1)
 
         setInput("")
 
@@ -214,6 +265,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
                                 if(!ready) return
                                 setInput(e.target.value)
                             }}
+                            onKeyDown={handleKeyDown}
                             autoFocus
                         />
                     </form>
