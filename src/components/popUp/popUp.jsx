@@ -83,7 +83,7 @@ function PopUp({ type, onClose, unlockAchievements, setDesktopTheme, setCursorSt
             <button className="control-btn close" aria-label="Fechar janela" onClick={onClose}><X size={14} /></button>
           </div>
         </div>
-        <div className="window-content">{renderContent()}</div>
+        <div className={`window-content${type === 'Contatos' ? ' window-content--contacts' : type === 'segredo' ? ' window-content--secret' : ''}`}>{renderContent()}</div>
       </section>
     </div>
   )
