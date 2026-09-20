@@ -8,7 +8,7 @@ import { poneis, questions } from "../../../data/quiz";
 
 function SecretWindow({ unlockAchievements }) {
   const inputs = useRef([]);
-  const { schedule } = useTimeouts();
+  const { schedule, cancel } = useTimeouts();
   const [code, setCode] = useState(["", "", "", "", ""]);
   const [unlocked, setUnlocked] = useState(false);
   const [hint, setHint] = useState("");
@@ -67,6 +67,26 @@ function SecretWindow({ unlockAchievements }) {
     }
   };
 
+  const resetCode = () => {
+    cancel("shake");
+    setCode(["", "", "", "", ""]);
+    setHint("");
+    setError(false);
+    inputs.current[0]?.focus();
+  };
+
+  const handlePaste = (event, index) => {
+    const pasted = event.clipboardData.getData("text").trim();
+    if (!/^\d+$/.test(pasted)) return;
+    event.preventDefault();
+    const start = pasted.length === code.length ? 0 : index;
+    const digits = pasted.slice(0, code.length - start).split("");
+    const next = [...code];
+    digits.forEach((digit, offset) => { next[start + offset] = digit });
+    setCode(next);
+    inputs.current[Math.min(code.length - 1, start + digits.length)]?.focus();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const entered = code.join("");
@@ -92,11 +112,11 @@ function SecretWindow({ unlockAchievements }) {
   if (surprise) {
     return (
       <div className="secret-love">
-        <div className="love-card-horizontal big">
+        <div className="love-card-horizontal">
           <div className="love-photo-wrapper">
             <img src={nos} alt="Nós dois" className="love-photo-horizontal" />
 
-            <div className="photo-glow"></div>
+            <div className="photo-glow" aria-hidden="true"></div>
           </div>
 
           <div className="love-content">
@@ -106,14 +126,12 @@ function SecretWindow({ unlockAchievements }) {
               Sei que estressada agora, por mudanças na rotina, mas respira… vai
               dar tudo certo. Você é talentosa, capaz e eu sempre vou estar aqui
               por você.
-              <br />
-              <br />
+            </p>
+            <p>
               Sei que não é muita coisa, mas foi de coração. Você é muito
               importante para mim!
-              <br />
-              <br />
-              Te amo ❤️
             </p>
+            <p>Te amo ❤️</p>
 
             <div className="hearts">💗 💖 💕</div>
           </div>
@@ -132,13 +150,14 @@ function SecretWindow({ unlockAchievements }) {
 
         <div className="quiz-box">
 
-            <div className="quiz-progress">
+            <div className="quiz-progress" aria-live="polite">
               Pergunta {step + 1}/{questions.length}
             </div>
 
 
             <p>{currentQuestion.question}</p>
 
+            <div className="quiz-options">
             {currentQuestion.options.map(option => (
                 <button
                   key = {option.text}
@@ -148,6 +167,7 @@ function SecretWindow({ unlockAchievements }) {
                   {option.text}
                 </button>
             ))}
+            </div>
 
         </div>
       </div>
@@ -210,6 +230,13 @@ function SecretWindow({ unlockAchievements }) {
             value={digit}
             maxLength={1}
             onChange={(e) => handleChange(e.target.value, i)}
+            onPaste={(event) => handlePaste(event, i)}
+            onKeyDown={(event) => {
+              if (event.key === "Backspace" && !digit && i > 0) {
+                event.preventDefault();
+                inputs.current[i - 1]?.focus();
+              }
+            }}
           />
         ))}
       </div>
@@ -222,15 +249,15 @@ function SecretWindow({ unlockAchievements }) {
         <button
           className="enter-btn"
           type="button"
-          onClick={() => { setCode(["", "", "", "", ""]); inputs.current[0]?.focus() }}
+          onClick={resetCode}
         >
           RESET
         </button>
       </div>
 
-      {hint && <p className="hint">{hint}</p>}
+      {hint && <p className="hint" role="status">{hint}</p>}
 
-      <div className="scanlines" />
+      <div className="scanlines" aria-hidden="true" />
     </form>
   );
 }

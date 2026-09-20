@@ -1,6 +1,6 @@
 import "./contact.css"
 
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { initialContacts } from "../../../data/contacts"
 import { readContactOrder, saveContactOrder } from "../../../utils/contacts"
 import {
@@ -24,28 +24,30 @@ function ContactContent({theme}) {
 }
 
     const [contacts, setContacts] = useState(() => readContactOrder(initialContacts))
-    const [dragIndex, setDragIndex] = useState(null)
+    const draggedName = useRef(null)
+    const focusAfterMove = useRef(null)
+    const contactElements = useRef(new Map())
 
-    const handleDragStart = (index) => {
-        setDragIndex(index)
-    }
+    useLayoutEffect(() => {
+        if (!focusAfterMove.current) return
+        contactElements.current.get(focusAfterMove.current)?.focus()
+        focusAfterMove.current = null
+    }, [contacts])
 
-    const handleDragOver = (e) => {
-        e.preventDefault()
-    }
-
-    const handleDrop = (dropIndex) => {
-        if (dragIndex === null) return
-
+    const moveContact = (name, target, restoreFocus = false) => {
+        const from = contacts.findIndex(item => item.name === name)
+        if (from < 0 || target < 0 || target >= contacts.length || from === target) return
         const updated = [...contacts]
-        const draggedItem = updated[dragIndex]
-
-        updated.splice(dragIndex, 1)
-        updated.splice(dropIndex, 0, draggedItem)
-
+        updated.splice(target, 0, updated.splice(from, 1)[0])
+        if (restoreFocus) focusAfterMove.current = name
         setContacts(updated)
         saveContactOrder(updated)
-        setDragIndex(null)
+    }
+
+    const handleDrop = (event, dropIndex) => {
+        event.preventDefault()
+        moveContact(draggedName.current, dropIndex)
+        draggedName.current = null
     }
 
     return (
@@ -53,9 +55,11 @@ function ContactContent({theme}) {
 
             <div className = "contact-sidebar">
                 <h3>Acesso Rápido</h3>
+                <div className="contact-shortcuts">
                 <p>Desktop</p>
                 <p className="active">Contatos</p>
                 <p>Músicas</p>
+                </div>
             </div>
 
             <div className = "contact-main">
@@ -63,9 +67,9 @@ function ContactContent({theme}) {
 
                 <div className = "contact-toolbar">
                         <div className="toolbar-left">
-                            <button>📁 Arquivo</button>
-                            <button>✉️ Enviar</button>
-                            <button>⭐ Favoritos</button>
+                            <button type="button" disabled title="Em desenvolvimento">📁 Arquivo</button>
+                            <button type="button" disabled title="Em desenvolvimento">✉️ Enviar</button>
+                            <button type="button" disabled title="Em desenvolvimento">⭐ Favoritos</button>
                         </div>
                             <div className="toolbar-right">
                         <span>{contacts.length} itens</span>
@@ -78,32 +82,40 @@ function ContactContent({theme}) {
                     {contacts.map((item, i) => (
                         <a
                             key={item.name}
+                            ref={element => {
+                                if (element) contactElements.current.set(item.name, element)
+                                else contactElements.current.delete(item.name)
+                            }}
                             href={item.link && item.link !== "#" ? item.link : undefined}
                             aria-disabled={!item.link || item.link === "#"}
                             tabIndex={0}
-                            title="Alt + setas para reordenar"
+                            title={`${!item.link || item.link === "#" ? "Contato ainda não configurado. " : ""}Alt + setas para reordenar`}
                             onKeyDown={(event) => {
                                 if (!event.altKey || !["ArrowLeft", "ArrowRight"].includes(event.key)) return
                                 event.preventDefault()
                                 const target = Math.max(0, Math.min(contacts.length - 1, i + (event.key === "ArrowLeft" ? -1 : 1)))
-                                const updated = [...contacts]
-                                updated.splice(target, 0, updated.splice(i, 1)[0])
-                                setContacts(updated)
-                                saveContactOrder(updated)
+                                moveContact(item.name, target, true)
                             }}
                             target="_blank"
                             rel = "noreferrer"
                             className="contact-item"
                             draggable
-                            onDragStart={() => handleDragStart(i)}
-                            onDragEnd={() => setDragIndex(null)}
-                            onDragOver={handleDragOver}
-                            onDrop = {() => handleDrop(i)}
+                            onDragStart={(event) => {
+                                draggedName.current = item.name
+                                event.dataTransfer.effectAllowed = "move"
+                                event.dataTransfer.setData("text/plain", item.name)
+                            }}
+                            onDragEnd={() => { draggedName.current = null }}
+                            onDragOver={(event) => {
+                                event.preventDefault()
+                                event.dataTransfer.dropEffect = draggedName.current ? "move" : "none"
+                            }}
+                            onDrop={(event) => handleDrop(event, i)}
                             style = {{"--accent": item.color}}
                             >
                         <div className="icon-wrapper">
                                 {iconMap[item.name]}
-                                <span className={`status ${item.status}`}></span>
+                                <span className={`status ${item.status}`} aria-hidden="true"></span>
                         </div>
                             <span>{item.name}</span>
                         </a>
