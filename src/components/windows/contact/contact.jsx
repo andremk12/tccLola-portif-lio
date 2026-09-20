@@ -1,6 +1,8 @@
 import "./contact.css"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { initialContacts } from "../../../data/contacts"
+import { readContactOrder, saveContactOrder } from "../../../utils/contacts"
 import {
     Linkedin,
     Instagram,
@@ -12,45 +14,6 @@ import {
 
 function ContactContent({theme}) {
     
-    const initialContacts = [
-        {
-            name:"LinkedIn",
-            link: "https://linkedin.com",
-            color: "#0A66C2",
-            status: "online"
-        },
-        {
-            name:"Instagram",
-            link: "https://instagram.com",
-            color: "#E1306C",
-            status: "online"
-        },
-        {
-            name:"Email",
-            link: "",
-            color: "#EA4355",
-            status: "offline"
-        },
-        {
-            name:"Telefone",
-            link: "",
-            color: "#34A853",
-            status: "offline"
-        },
-        {
-            name:"Github",
-            link: "https://github.com",
-            color: "#333",
-            status: "offline"
-        },
-        {
-            name:"Portifólio",
-            link: "#",
-            color: "#8E44AD",
-            status: "online"
-        },
-    ]
-
     const iconMap = {
         LinkedIn: <Linkedin size={50} />,
         Instagram: <Instagram size={50} />,
@@ -60,23 +23,8 @@ function ContactContent({theme}) {
         Portifólio: <Globe size={50} />
 }
 
-    const [contacts, setContacts] = useState([])
+    const [contacts, setContacts] = useState(() => readContactOrder(initialContacts))
     const [dragIndex, setDragIndex] = useState(null)
-
-    useEffect(() => {
-        const saved = localStorage.getItem("contactsOrder")
-        if (saved) {
-            setContacts(JSON.parse(saved))
-        } else {
-            setContacts(initialContacts)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (contacts.length > 0) {
-            localStorage.setItem("contactsOrder", JSON.stringify(contacts))
-        }
-    }, [contacts])
 
     const handleDragStart = (index) => {
         setDragIndex(index)
@@ -96,6 +44,7 @@ function ContactContent({theme}) {
         updated.splice(dropIndex, 0, draggedItem)
 
         setContacts(updated)
+        saveContactOrder(updated)
         setDragIndex(null)
     }
 
@@ -128,13 +77,26 @@ function ContactContent({theme}) {
                 <div className="contact-grid">
                     {contacts.map((item, i) => (
                         <a 
-                            key ={i}
-                            href={item.link}
+                            key={item.name}
+                            href={item.link && item.link !== "#" ? item.link : undefined}
+                            aria-disabled={!item.link || item.link === "#"}
+                            tabIndex={0}
+                            title="Alt + setas para reordenar"
+                            onKeyDown={(event) => {
+                                if (!event.altKey || !["ArrowLeft", "ArrowRight"].includes(event.key)) return
+                                event.preventDefault()
+                                const target = Math.max(0, Math.min(contacts.length - 1, i + (event.key === "ArrowLeft" ? -1 : 1)))
+                                const updated = [...contacts]
+                                updated.splice(target, 0, updated.splice(i, 1)[0])
+                                setContacts(updated)
+                                saveContactOrder(updated)
+                            }}
                             target="_blank"
                             rel = "noreferrer"
                             className="contact-item"
                             draggable
                             onDragStart={() => handleDragStart(i)}
+                            onDragEnd={() => setDragIndex(null)}
                             onDragOver={handleDragOver}
                             onDrop = {() => handleDrop(i)}
                             style = {{"--accent": item.color}}

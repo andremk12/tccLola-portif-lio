@@ -1,9 +1,11 @@
-import Futebol from "../futebol/futebol"
+import { allAchievements } from "../../data/achievements"
+import { useTimeouts } from "../../hooks/useTimeouts"
 import "./terminal.css"
 import { useEffect, useState } from "react"
 
 function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements, activatePet, deactivatePet}) {
 
+    const { schedule } = useTimeouts()
     const [input, setInput] = useState("")
     const [ready, setReady] = useState(false)
     const [history,setHistory] = useState([
@@ -12,25 +14,6 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     ])
     const [commandHistory, setCommandHistory] = useState([])
     const [historyIndex, setHistoryIndex] = useState(-1)
-
-    const allAchievements = {
-        "Curioso Investigador 🕵️": "Clique no ícone secreto no desktop",
-        "Sistema incializado 💻": "Abra o menu iniciar pela primeira vez",
-        "Explorador do Sistema": "Abra várias janelas do sistema",
-        "Cliqueiro Profissional": "Clique bastante pelo desktop",
-        "Administrador do Sistema 🛠": "Clique no desktop algumas vezes seguidas",
-        "Manipulador do Tempo ⏳": "Clique várias vezes no relógio",
-        "Mestre das Ferramentas 🎨": "Explore todas as ferramentas na taskbar",
-        "Hacker do Sistema 💻": "Descubra o código secreto do terminal",
-        "Mestre da Personalização 🎨": "Altere tema, wallpaper e cursor",
-        "Curador da Galeria 🖼":"Busque uma ordem nos trabalhos",
-        "Artista do Caos 🔥": "Rabisque bastante no quadro",
-        "Colecionador 🎉": "Complete o album de figurinhas",
-        "Segredo descoberto 🔐": "Descubra o segredo",
-        "Sobrevivente 🔋": "E se a bateria acabar?",
-        "Muito Obrigado 🤩": "Ajude com um feedback",
-        "Melhor Amiga 🐱": "Faça muito carinho na futebol"
-    }
 
     const commands = {
         help: () => [
@@ -89,7 +72,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
 
                 setMatrixMode(true)
 
-                setTimeout(() => {
+                schedule("matrix", () => {
                     setMatrixMode(false)
                 }, 8000)
 
@@ -103,7 +86,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     rave: () => {
         setRaveMode(true)
 
-        setTimeout(() => {
+        schedule("rave", () => {
             setRaveMode(false)
         }, 5000)
 
@@ -202,10 +185,11 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     }
 
     const handleCommand = (cmd) => {
-        const command = cmd.toLowerCase()
+        const command = cmd.trim().toLowerCase()
 
-        if (commands[command]) {
+        if (Object.hasOwn(commands, command)) {
             const result = commands[command]()
+            if (command === "clear" || command === "exit") return
 
             setHistory(prev => [
                 ...prev,
@@ -225,7 +209,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         
         e.preventDefault()
 
-        if (!input) return
+        if (!input.trim()) return
 
         handleCommand(input)
 
@@ -237,17 +221,23 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     }
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setReady(true)
         },100)
+        return () => clearTimeout(timer)
     }, [])
+
+    useEffect(() => () => {
+        setMatrixMode(false)
+        setRaveMode(false)
+    }, [setMatrixMode, setRaveMode])
 
     return (
       <div className="terminal-overlay">
             <div className="terminal-window">
                     <div className ="terminal-header">
                             <span>Terminal</span>
-                            <button onClick={onClose}>X</button>
+                            <button onClick={onClose} aria-label="Fechar terminal">X</button>
                     </div>
 
                     <div className="terminal-body">
@@ -260,6 +250,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
                         <span>{">"}</span>
 
                         <input
+                            aria-label="Comando do terminal"
                             value={input}
                             onChange={(e) => {
                                 if(!ready) return

@@ -4,11 +4,6 @@ import perfil from "../../../assets/lindaprincesa.png"
 import {
     User,
     GraduationCap,
-    Briefcase,
-    Mail,
-    Phone,
-    MapPin,
-    Code,
     Languages,
     School
 } from "lucide-react"
@@ -20,7 +15,7 @@ function CurriculumWindow ({theme}) {
 
         
             <div className="photo-card-c">
-                <img src={perfil} className="profile-photo"/>
+                <img alt="Lola, Geração Zee" src={perfil} className="profile-photo"/>
             </div>
             <div className="languages-card">
                 <h3> <Languages size ={18}/>IDIOMAS</h3>

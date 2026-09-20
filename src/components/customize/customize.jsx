@@ -1,53 +1,7 @@
 import "./customize.css"
-import { useState, useEffect } from "react"
+import { wallpapers, cursors, themes } from "../../data/customization"
 
 function Customize({ setDesktopTheme, setCursorStyle, setBackgroundStyle, theme, currentWallpaper, currentCursor}) {
-
-    const [selectedWallpaper, setSelectedWallpaper] = useState(currentWallpaper)
-    const [selectedCursor, setSelectedCursor] = useState(currentCursor)
-    const [selectedTheme, setSelectedTheme] = useState(theme)
-
-    const wallpapers = [
-        { id: "default", label: "Default", color: "#2f8f94" },
-        { id: "night", label: "Night", color: "#1b1b2f" },
-        { id: "sunset", label: "Sunset", color: "#ff7a18" },
-        { id: "galaxy", label: "Galaxy", color: "#0b0f2a" }
-    ]
-
-    const cursors = [
-        { id: "default", label: "Normal" },
-        { id: "pointer", label: "Pointer" },
-        { id: "crosshair", label: "Crosshair" }
-    ]
-
-    const themes = [
-        { id: "default", label: "Default" },
-        { id: "dark", label: "Dark" },
-        { id: "neon", label: "Neon" },
-        { id: "cyber", label: "Cyber" }
-    ]
-
-    const changeWallpaper = (wall) => {
-        setSelectedWallpaper(wall.id)
-        setBackgroundStyle(wall.id)
-    }
-
-    const changeCursor = (cursor) => {
-        setSelectedCursor(cursor.id)
-        setCursorStyle(cursor.id)
-    }
-
-    const changeTheme = (theme) => {
-        setSelectedTheme(theme.id)
-        setDesktopTheme(theme.id)
-    }
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSelectedWallpaper(currentWallpaper)
-        setSelectedCursor(currentCursor)
-
-    }, [currentWallpaper, currentCursor])
 
     return (
         <div className="customize-container">
@@ -68,14 +22,16 @@ function Customize({ setDesktopTheme, setCursorStyle, setBackgroundStyle, theme,
 
                 <div className="wallpaper-grid">
                     {wallpapers.map(w => (
-                        <div
+                        <button
+                            type="button"
+                            aria-pressed={currentWallpaper === w.id}
                             key={w.id}
-                            className={`wallpaper-card ${selectedWallpaper === w.id ? "active" : ""}`}
+                            className={`wallpaper-card ${currentWallpaper === w.id ? "active" : ""}`}
                             style={{ background: w.color }}
-                            onClick={() => changeWallpaper(w)}
+                            onClick={() => setBackgroundStyle(w.id)}
                         >
                             <span>{w.label}</span>
-                        </div>
+                        </button>
                     ))}
                 </div>
 
@@ -86,8 +42,8 @@ function Customize({ setDesktopTheme, setCursorStyle, setBackgroundStyle, theme,
                     {cursors.map(c => (
                         <button
                             key={c.id}
-                            className={selectedCursor === c.id ? "active" : ""}
-                            onClick={() => changeCursor(c)}
+                            className={currentCursor === c.id ? "active" : ""}
+                            onClick={() => setCursorStyle(c.id)}
                         >
                             {c.label}
                         </button>
@@ -101,8 +57,8 @@ function Customize({ setDesktopTheme, setCursorStyle, setBackgroundStyle, theme,
                     {themes.map(t => (
                         <button
                             key={t.id}
-                            className={selectedTheme === t.id ? "active" : ""}
-                            onClick={() => changeTheme(t)}
+                            className={theme === t.id ? "active" : ""}
+                            onClick={() => setDesktopTheme(t.id)}
                             style={{
                             background:
                                 t.id === "dark"

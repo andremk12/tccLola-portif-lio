@@ -2,7 +2,7 @@ import "./toast.css"
 
 function Toast({message}) {
     return (
-        <div className="toast">
+        <div className="toast" role="status">
             {message}
         </div>
     )
