@@ -32,7 +32,7 @@
 }
 
 .form-header {
-    background: linear-gradient(to right, #d16ba5, #86a8e7);
+    background: var(--window-gradient);
     padding: 10px 12px;
     display: flex;
     justify-content: space-between;
@@ -43,7 +43,7 @@
 }
 
 .form-header button {
-  background-color: #ff5c5c; 
+  background-color: #ff5c5c;
   border: none;
   width: 26px;
   height: 22px;
@@ -93,7 +93,7 @@
 }
 
 
-form-content input:focus,.form-content textarea:focus, .form-content select:focus {
+.form-content input:focus,.form-content textarea:focus, .form-content select:focus {
     border-color: #00ff9f;
     box-shadow: 0 0 6px rgba(0, 255, 159, 0.4);
 }
@@ -125,16 +125,16 @@ form-content input:focus,.form-content textarea:focus, .form-content select:focu
     text-align: center;
     font-size: 13px;
     color: #00ff9f;
-    animation: fadeIn 0.3s ease;
+    animation: feedbackFadeIn 0.3s ease;
 }
 
 .loading p {
     margin: 6px 0;
-    animation: blink 1s infinite alternate;
+    animation: feedbackBlink 1s infinite alternate;
 }
 
-@keyframes blink {
-    form { opacity: 0.4;}
+@keyframes feedbackBlink {
+    from { opacity: 0.4;}
     to {opacity: 1;}
 }
 
@@ -142,30 +142,36 @@ form-content input:focus,.form-content textarea:focus, .form-content select:focu
     padding: 25px;
     text-align: center;
     color: #00ff9f;
-    animation: fadeIn 0.3s ease;
+    animation: feedbackFadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes feedbackFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 
-textarea::-webkit-scrollbar {
+.form-content textarea::-webkit-scrollbar {
   width: 6px;
 }
 
-textarea::-webkit-scrollbar-thumb {
+.form-content textarea::-webkit-scrollbar-thumb {
   background: #00ff9f;
   border-radius: 4px;
 }
 
-textarea::-webkit-scrollbar-track {
+.form-content textarea::-webkit-scrollbar-track {
   background: #111;
 }
 
 @media (max-width: 500px) {
-  .window {
+  .form-window {
     width: 90%;
   }
 }
+
+.form-overlay { z-index: 2100; color: white; }
+.form-window { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); overflow-y: auto; }
+.form-error { color: #ffb7b7; }
+.form-content input::placeholder, .form-content textarea::placeholder { color: #aaa; }
+.form-content button:disabled { opacity: 0.6; }

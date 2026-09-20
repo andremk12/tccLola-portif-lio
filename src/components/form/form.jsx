@@ -1,8 +1,10 @@
+import { useDialog } from "../../hooks/useDialog"
 import { useEffect, useRef, useState } from 'react'
 import { sendFeedback } from '../../services/feedback'
 import './form.css'
 
 function SuggestionsForm({ onClose, unlockAchievements }) {
+  const dialogRef = useDialog(onClose)
   const [status, setStatus] = useState('idle')
   const inFlight = useRef(false)
   const mounted = useRef(false)
@@ -42,7 +44,7 @@ function SuggestionsForm({ onClose, unlockAchievements }) {
   }
 
   return (
-    <div className="form-overlay">
+    <div ref={dialogRef} tabIndex={-1} className="form-overlay">
       <section className="form-window" role="dialog" aria-modal="true" aria-label="Deixe seu Feedback">
         <div className="form-header">
           <span>📡 Deixe seu Feedback</span>
@@ -83,4 +85,3 @@ function SuggestionsForm({ onClose, unlockAchievements }) {
 }
 
 export default SuggestionsForm
-

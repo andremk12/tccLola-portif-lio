@@ -32,7 +32,7 @@
 }
 
 .window-header {
-  background: linear-gradient(to right, #d16ba5, #86a8e7);
+  background: var(--window-gradient);
   padding: 8px 12px;
   display: flex;
   justify-content: space-between;
@@ -91,13 +91,6 @@
   overflow-y: auto;
 }
 
-.window-minimized {
-  height: auto !important;
-}
-
-.window-minimized .window-content {
-  display: none;
-}
 
 
 @keyframes windowOpen {
@@ -116,7 +109,7 @@
 /* Default */
 
 .theme-default .window-header {
-  background: linear-gradient(to right,#d16ba5,#86a8e7);
+  background: var(--window-gradient);
 }
 
 .theme-default .window {
@@ -162,3 +155,9 @@
   border-bottom: 1px solid #ff00ff;
   color: #ff00ff;
 }
+
+.window { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); min-width: 0; }
+.window-maximized { height: 95dvh; }
+.window-content { min-height: 0; min-width: 0; }
+.window-header { flex-shrink: 0; touch-action: none; }
+@media (max-width: 760px) { .window-content { padding: 8px; } }

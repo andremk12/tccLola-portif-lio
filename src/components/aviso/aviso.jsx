@@ -1,8 +1,10 @@
+import { useDialog } from "../../hooks/useDialog"
 import "./aviso.css"
 
 function AvisoPop({ onClose }) {
+  const dialogRef = useDialog(onClose)
     return (
-        <div className="aviso-overlay">
+        <div ref={dialogRef} tabIndex={-1} className="aviso-overlay">
 
             <div className="retro-window">
 
@@ -35,7 +37,7 @@ function AvisoPop({ onClose }) {
                         </p>
 
                         <p>
-                            Caso encontre algum problema ou tenha alguma sugestão de melhoria, fique à vontade para nos avisar! 
+                            Caso encontre algum problema ou tenha alguma sugestão de melhoria, fique à vontade para nos avisar!
                             Aqui temos um "APP" especial para isso
                         </p>
 

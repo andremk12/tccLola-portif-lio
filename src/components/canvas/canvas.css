@@ -26,7 +26,7 @@
 /* cabeçalho */
 
 .paint-titlebar{
-    background:linear-gradient(to right,#d16ba5,#86a8e7);
+    background:var(--window-gradient);
     color:white;
 
     padding:6px 10px;
@@ -165,11 +165,11 @@
     cursor:pointer;
 }
 
-.paint-toolbar button.active{
-    background:#6a5acd;
-    color:white;
-}
 
 .paint-canvas.pixo{
     cursor: cell;
 }
+
+.paint-window { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); overflow-y: auto; }
+.paint-toolbar, .paint-colors { flex-wrap: wrap; }
+.paint-canvas { display: block; max-width: 100%; height: auto; touch-action: none; }

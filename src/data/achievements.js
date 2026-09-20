@@ -17,4 +17,3 @@ export const allAchievements = {
         "Essa tava obvia 😁": "Encontre o comando escondido no terminal",
         "Melhor Amiga 🐱": "Faça muito carinho na futebol"
     }
-

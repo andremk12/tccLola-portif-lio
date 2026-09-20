@@ -57,7 +57,7 @@ function HomePage() {
         )
     }
 
-    
+
 
     return(
        <>
@@ -67,83 +67,83 @@ function HomePage() {
        <div className ={`desktop theme-${desktopTheme} cursor-${cursorStyle} wallpaper-${backGroundStyle} ${glitch ? "glitch" : ""} ${matrixMode ? "matrix-mode": ""} ${raveMode ? "rave-mode" : ""}`} onClick= { handleBackgroundClick}>
 
             <div className = "icons">
-                <div className = "icon" onClick={() => handleClick("Contatos")}>
+                <button type="button" className = "icon desktop-button" onClick={() => handleClick("Contatos")}>
                     <User size = {40}/>
                     <span>Contatos</span>
-                </div>
+                </button>
 
-                <div className = "icon" onClick={() => handleClick("Curriculum")}>
+                <button type="button" className = "icon desktop-button" onClick={() => handleClick("Curriculum")}>
                     <FileText size = {40}/>
                     <span>Curriculum</span>
-                </div>
+                </button>
 
-                <div className = "icon" onClick={() => handleClick("Trabalhos")}>
+                <button type="button" className = "icon desktop-button" onClick={() => handleClick("Trabalhos")}>
                     <Folder size = {40}/>
                     <span>Trabalhos</span>
-                </div>
+                </button>
 
-                <div className = "icon" onClick={() => handleClick("Projetos")}>
-                     <img src={ex}/>
+                <button type="button" className = "icon desktop-button" onClick={() => handleClick("Projetos")}>
+                     <img src={ex} alt=""/>
                     <span>Projetos</span>
-                </div>
-                
-                <div className = "icon" onClick={() => handleClick("Personalizar")}>
+                </button>
+
+                <button type="button" className = "icon desktop-button" onClick={() => handleClick("Personalizar")}>
                      <Palette size = {40}/>
                     <span>Personalizar</span>
-                </div>
+                </button>
 
-                <div className="icon" onClick={() => setShowStickers(true)}>
+                <button type="button" className="icon desktop-button" onClick={() => setShowStickers(true)}>
                  <Sticker size={40}/>
                 <span>Albúm de figurinhas</span>
-            </div>
+            </button>
             </div>
 
-            <div className="help-icon" onClick={() => handleClick("segredo")}>
+            <button type="button" className="help-icon desktop-button" onClick={() => handleClick("segredo")}>
                 <HelpCircle size={40}/>
                 <span>segredo super hiper secreto</span>
-            </div>
-           
-            <div className="notebook-icon" onClick={() => setShowCanvas(true)}>
+            </button>
+
+            <button type="button" className="notebook-icon desktop-button" onClick={() => setShowCanvas(true)}>
                 <NotebookPen size={40}/>
                 <span>Mostre seu talento</span>
-            </div>
+            </button>
 
-             <div className="form-icon" onClick={() => setShowForm(true)}>
+             <button type="button" className="form-icon desktop-button" onClick={() => setShowForm(true)}>
                 <Archive size={40}/>
                 <span>Colabore!</span>
-            </div>
+            </button>
 
-         
+
 
             <div className="taskbar">
-                <div 
-                    className="start-button"
+                <button type="button"
+                    className="start-button desktop-button" aria-label="Iniciar" aria-expanded={startMenuOpen}
                     onClick={handleStart}
                 >
-                    <img src={windows}/>
-                </div>
+                    <img src={windows} alt="Iniciar"/>
+                </button>
 
                 <div className="skills">
                    <span>Skills:</span>
-                   <span onClick={()=> handleSkillClick("Photoshop")}><img src={ps}/></span>
-                   <span onClick={()=> handleSkillClick("illustrator")}><img src={ai}/></span>
-                   <span onClick={()=> handleSkillClick("Procreate")}><img src={pincel}/></span>
-                   <span onClick={()=> handleSkillClick("Lightroom")}><img src={lr}/></span>
-                   <span onClick={()=> handleSkillClick("DaVinci")}><img src={dv}/></span>
+                   <button className="desktop-button" type="button" aria-label="Photoshop" onClick={()=> handleSkillClick("Photoshop")}><img src={ps} alt="Photoshop"/></button>
+                   <button className="desktop-button" type="button" aria-label="Illustrator" onClick={()=> handleSkillClick("illustrator")}><img src={ai} alt="Illustrator"/></button>
+                   <button className="desktop-button" type="button" aria-label="Procreate" onClick={()=> handleSkillClick("Procreate")}><img src={pincel} alt="Procreate"/></button>
+                   <button className="desktop-button" type="button" aria-label="Lightroom" onClick={()=> handleSkillClick("Lightroom")}><img src={lr} alt="Lightroom"/></button>
+                   <button className="desktop-button" type="button" aria-label="DaVinci" onClick={()=> handleSkillClick("DaVinci")}><img src={dv} alt="DaVinci"/></button>
                 </div>
             <div className="taskbar-right">
-                <div
-                    className="notification-toggle"
+                <button type="button"
+                    className="notification-toggle desktop-button" aria-label="Notificações" aria-pressed={notificationsEnabled}
                     onClick={toggleNotifications}
-                >   
+                >
                     {notificationsEnabled ? <Bell size ={20}/> : <BellOff size={20}/>}
-                </div>
+                </button>
 
                 <div className="system-icons">
 
-                    <div 
-                        className = "wifi"
-                        title={`Sinal: ${wifi/4}`}
+                    <button type="button"
+                        className = "wifi desktop-button"
+                        aria-label="Rede Wi-Fi" title={`Sinal: ${wifi}/4`}
                         onClick={() => showToast("Conectado à rede: Geração_zee_net")}>
                             {[0, 1, 2, 3].map((level) => (
                                 <span
@@ -151,7 +151,7 @@ function HomePage() {
                                     className={`bar ${wifi > level ? "active": ""}`}
                                 />
                             ))}
-                    </div>
+                    </button>
 
                     <div className="battery">
                         🔋{battery}%
@@ -181,7 +181,7 @@ function HomePage() {
 
         {toast && <Toast key={toast.id} message={toast.message}/>}
 
-        
+
         { booting && (
             <div className="boot-screen">
                 <div className="boot-content">
@@ -221,10 +221,10 @@ function HomePage() {
                 </div>
 
                 <hr />
-                
-                <div onClick={() => handleClick("Projetos")}> 📁 Projetos </div>
-                <div onClick={() => handleClick("Curriculum")}> 📄 Curriculum </div>
-                <div onClick={() => handleClick("Contatos")}> 📞 Contatos</div>
+
+                <button className="desktop-button" type="button" onClick={() => handleClick("Projetos")}> 📁 Projetos </button>
+                <button className="desktop-button" type="button" onClick={() => handleClick("Curriculum")}> 📄 Curriculum </button>
+                <button className="desktop-button" type="button" onClick={() => handleClick("Contatos")}> 📞 Contatos</button>
 
             </div>
             )
@@ -234,30 +234,30 @@ function HomePage() {
         {showForm && <SugestionsForm onClose={() => setShowForm(false) } unlockAchievements={unlockAchievements}/>}
 
         {showTerminal && (
-            <Terminal 
-            onClose={() => setShowTerminal(false)} 
-            setMatrixMode={setMatrixMode} 
-            setRaveMode={setRaveMode} 
+            <Terminal
+            onClose={() => setShowTerminal(false)}
+            setMatrixMode={setMatrixMode}
+            setRaveMode={setRaveMode}
             unlockAchievements={unlockAchievements}
             achievements={achievements}
             activatePet = {() => setPetActive(true)}
             deactivatePet={() => setPetActive(false)}
             />
         )}
-       
+
          <MatrixRain active={matrixMode}/>
 
-        
+
 
          {petActive && <Futebol booted={!systemLoading}  unlockAchievements ={unlockAchievements}/>}
-       
+
          {showStickers && <Suspense fallback={<div className="stickerbook-overlay" role="status">Carregando álbum...</div>}><StickerBook onClose={() => setShowStickers(false)} onContact={() => { setShowStickers(false); handleClick("Contatos") }} unlockAchievements={unlockAchievements}/></Suspense>}
 
         </div>
-        
+
         </>
-        
-      
+
+
     )
 }
 

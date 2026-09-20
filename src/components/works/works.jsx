@@ -1,140 +1,21 @@
 import "./work.css";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
-import ap from "../../assets/apple.jpg";
-import fl from "../../assets/fluter.jpg";
-import img from "../../assets/image.png";
-import tw from "../../assets/twilight.jpg";
-import gameA from "../../assets/matarhomis.png";
-import cas from "../../assets/cassino.png";
-import hqa from "../../assets/artes/quadrinnhuui.png";
+import { works, photos } from "../../data/works";
+const PongGame = lazy(() => import("../games/pong/pong"));
+const AlienGame = lazy(() => import("../games/alienGame/alienGame"));
+const CassinoGame = lazy(() => import("../games/cassino/cassino"));
 
-import PongGame from "../games/pong/pong";
-import AlienGame from "../games/alienGame/alienGame";
-import CassinoGame from "../games/cassino/cassino";
-import { Target } from "lucide-react";
 
 function Works({ unlockAchievements, theme }) {
-  const works = {
-    jogos: [
-      {
-        title: "Ping pong",
-        img: img,
-        desc: "Ping pong com estética retro bem legal",
-        version: "1.0",
-        developer: "André Michalsky",
-        ideia:
-          "Criar um mini jogo retrô jogável dentro do portfólio para demonstrar interação e criatividade.",
-      },
-      {
-        title: "Cassino Zee",
-        img: cas,
-        desc: "Cassino Retrô, teste sua sorte.",
-        version: "1.0",
-        developer: "Geração Zee",
-        ideia:
-          "Cassino recriado em JavaScript (Java convertido para p5.js) para ser um projeto grafico e interativo",
-      },
-      {
-        title: "Matar homis",
-        img: gameA,
-        desc: "Jogo de matar homis",
-        version: "1.0",
-        developer: "Geração Zee",
-        ideia:
-          "Jogo inspirado no galaga, com objetivo de fazer uma moça chegar em segurança em casa",
-      },
-    ],
-
-    artes: [
-      {
-        title: "Floral Study",
-        img: fl,
-        tech: "Digital painting",
-        year: "2024",
-        desc: "Estudo de cores e composição inspirado em botânica.",
-      },
-
-      {
-        title: "Character Sketch",
-        img: ap,
-        tech: "Digital sketch",
-        year: "2023",
-        desc: "Exploração de personagem em estilo estilizado.",
-      },
-
-      {
-        title: "Light Composition",
-        img: tw,
-        tech: "Digital illustration",
-        year: "2024",
-        desc: "Experimento com iluminação e atmosfera.",
-      },
-    ],
-
-    hqs: [
-      {
-        title: "Uma curiosa mancha no chão",
-        img: hqa,
-        desc: "Descrição do quadrinho (avaliar se é necessário)",
-        year: "2025",
-        pages: [hqa],
-      },
-    ],
-  };
-
-  const photos = [
-    {
-      src: "https://picsum.photos/800/500?random=1",
-      title: "Aurora no campo",
-      camera: "ISO 200 • f/2.8 • 1/500",
-      location: "São Paulo — 2024",
-    },
-
-    {
-      src: "https://picsum.photos/800/500?random=2",
-      title: "Luz da manhã",
-      camera: "ISO 100 • f/4 • 1/320",
-      location: "Curitiba — 2023",
-    },
-
-    {
-      src: "https://picsum.photos/800/500?random=3",
-      title: "Reflexos urbanos",
-      camera: "ISO 400 • f/5.6 • 1/125",
-      location: "Rio de Janeiro — 2024",
-    },
-
-    {
-      src: "https://picsum.photos/800/500?random=4",
-      title: "Foto teste 1",
-      camera: "ISO 200 • f/8 • 1/250",
-      location: "Florianópolis — 2023",
-    },
-    {
-      src: "https://picsum.photos/800/500?random=5",
-      title: "Foto teste 2",
-      camera: "ISO 200 • f/8 • 1/250",
-      location: "Florianópolis — 2023",
-    },
-    {
-      src: "https://picsum.photos/800/500?random=6",
-      title: "Foto teste 2",
-      camera: "ISO 200 • f/8 • 1/250",
-      location: "Florianópolis — 2023",
-    },
-  ];
-
   const [category, setCategory] = useState("jogos");
   const [selected, setSelected] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [navyHistory, setNavyHistory] = useState([]);
-  const [playing, setPlaying] = useState(false);
-  const [playingAlien, setPlayingAlien] = useState(false);
-  const [playingCassino, setPlayingCassino] = useState(false);
+  const [activeGame, setActiveGame] = useState(null);
   const [selectedArt, setSelectedArt] = useState(null);
-  console.log(navyHistory);
+
 
   const changeCategory = (cat) => {
     setCategory(cat);
@@ -142,58 +23,48 @@ function Works({ unlockAchievements, theme }) {
     setSelectedPhoto(null);
     setShowInfo(false);
 
-    setNavyHistory((prev) => {
-      const updated = [...prev, cat]
-
-      const target = ["hqs", "fotos", "jogos", "artes"]
-
-      let matchIndex = 0;
-
-      for (let item of updated) {
-        if (item === target[matchIndex]){
-            matchIndex++
-        }
-      }
-
-      if (matchIndex === target.length) {
-        unlockAchievements("Curador da galeria 🖼")
-      }
-      return updated.slice(-5)
-      
-    });
+    setSelectedArt(null);
+    const updated = [...navyHistory, cat];
+    const target = ["hqs", "fotos", "jogos", "artes"];
+    let matchIndex = 0;
+    for (const item of updated) {
+      if (item === target[matchIndex]) matchIndex++;
+    }
+    if (matchIndex === target.length) unlockAchievements("Curador da galeria 🖼");
+    setNavyHistory(updated.slice(-5));
   };
 
   return (
     <div className={`explorer-window theme-${theme}`}>
       <div className="explorer-body">
         <div className="explorer-sidebar">
-          <div
+          <button type="button"
             className={`folder ${category === "jogos" ? "active" : ""}`}
             onClick={() => changeCategory("jogos")}
           >
             📁 jogos
-          </div>
+          </button>
 
-          <div
+          <button type="button"
             className={`folder ${category === "fotos" ? "active" : ""}`}
             onClick={() => changeCategory("fotos")}
           >
             📁 Fotografias
-          </div>
+          </button>
 
-          <div
+          <button type="button"
             className={`folder ${category === "artes" ? "active" : ""}`}
             onClick={() => changeCategory("artes")}
           >
             📁 Artes
-          </div>
+          </button>
 
-          <div
+          <button type="button"
             className={`folder ${category === "hqs" ? "active" : ""}`}
             onClick={() => changeCategory("hqs")}
           >
             📁 Quadrinhos
-          </div>
+          </button>
         </div>
 
           <div className="explorer-content">
@@ -206,10 +77,10 @@ function Works({ unlockAchievements, theme }) {
                 category !== "artes" &&
                 category !== "hqs" && (
                   <div className="works-grid">
-                    {works[category].map((item, i) => (
-                      <div
+                    {works[category].map((item) => (
+                      <button type="button"
                         className="work-card"
-                        key={i}
+                        key={item.title}
                         onClick={() => setSelected(item)}
                       >
                         <img src={item.img} alt={item.title} />
@@ -218,7 +89,7 @@ function Works({ unlockAchievements, theme }) {
                           <h4>{item.title}</h4>
                           <p>{item.desc}</p>
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 )}
@@ -227,14 +98,14 @@ function Works({ unlockAchievements, theme }) {
 
               {category === "fotos" && (
                 <div className="photo-gallery">
-                  {photos.map((photo, i) => (
-                    <div
-                      key={i}
+                  {photos.map((photo) => (
+                    <button type="button"
+                      key={photo.src}
                       className="photo-card"
                       onClick={() => setSelectedPhoto(photo)}
                     >
-                      <img src={photo.src} alt="photo" />
-                    </div>
+                      <img src={photo.src} alt={photo.title} loading="lazy" />
+                    </button>
                   ))}
                 </div>
               )}
@@ -247,7 +118,7 @@ function Works({ unlockAchievements, theme }) {
                   onClick={() => setSelectedPhoto(null)}
                 >
                   <div className="photo-view-content">
-                    <img src={selectedPhoto.src} alt="view" />
+                    <img src={selectedPhoto.src} alt={selectedPhoto.title} />
 
                     <div className="photo-info">
                       <h3>{selectedPhoto.title}</h3>
@@ -264,18 +135,18 @@ function Works({ unlockAchievements, theme }) {
 
               {category === "artes" && (
                 <div className="art-gallery">
-                  {works.artes.map((art, i) => (
-                    <div
-                      key={i}
+                  {works.artes.map((art) => (
+                    <button type="button"
+                      key={art.title}
                       className="art-card"
                       onClick={() => setSelectedArt(art)}
                     >
-                      <img src={art.img} />
+                      <img src={art.img} alt={art.title} loading="lazy" />
 
                       <div className="art-overlay">
                         <h4>{art.title}</h4>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
@@ -302,17 +173,7 @@ function Works({ unlockAchievements, theme }) {
                         <button
                           className="play-btn"
                           onClick={() => {
-                            if (selected.title === "Ping pong") {
-                              setPlaying(true);
-                            }
-
-                            if (selected.title === "Matar homis") {
-                              setPlayingAlien(true);
-                            }
-
-                            if (selected.title === "Cassino Zee") {
-                              setPlayingCassino(true);
-                            }
+                            setActiveGame(selected.title);
                           }}
                         >
                           ▶ Jogar
@@ -332,13 +193,13 @@ function Works({ unlockAchievements, theme }) {
 
               {category === "hqs" && (
                 <div className="hq-grid">
-                  {works.hqs.map((hq, i) => (
-                    <div
-                      key={i}
+                  {works.hqs.map((hq) => (
+                    <button type="button"
+                      key={hq.title}
                       className="hq-card"
                       onClick={() => setSelected(hq)}
                     >
-                      <img src={hq.img} />
+                      <img src={hq.img} alt={hq.title} loading="lazy" />
 
                       <div className="hq-badge">NEW</div>
 
@@ -346,40 +207,18 @@ function Works({ unlockAchievements, theme }) {
                         <h3>{hq.title}</h3>
                         <p>{hq.year}</p>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
 
-              {/* PREVIEW ARTES */}
-
-              {selected &&
-                category !== "jogos" &&
-                category !== "fotos" &&
-                category !== "hqs" && (
-                  <div
-                    className="preview-modal"
-                    onClick={() => setSelected(null)}
-                  >
-                    <div className="preview-content">
-                      <img src={selected.img} alt={selected.title} />
-                      <h2>{selected.title}</h2>
-                      <p>{selected.desc}</p>
-                    </div>
-                  </div>
-                )}
-
               {/* JOGO */}
 
-              {playing && <PongGame onClose={() => setPlaying(false)} />}
-
-              {playingAlien && (
-                <AlienGame onClose={() => setPlayingAlien(false)} />
-              )}
-
-              {playingCassino && (
-                <CassinoGame onClose={() => setPlayingCassino(false)} />
-              )}
+              <Suspense fallback={<div className="game-loading" role="status">Carregando jogo...</div>}>
+                {activeGame === "Ping pong" && <PongGame onClose={() => setActiveGame(null)} />}
+                {activeGame === "Matar homis" && <AlienGame onClose={() => setActiveGame(null)} />}
+                {activeGame === "Cassino Zee" && <CassinoGame onClose={() => setActiveGame(null)} />}
+              </Suspense>
 
               {/* MODAL SOBRE */}
 
@@ -415,7 +254,7 @@ function Works({ unlockAchievements, theme }) {
               {selectedArt && (
                 <div className="art-view" onClick={() => setSelectedArt(null)}>
                   <div className="art-view-content">
-                    <img src={selectedArt.img} />
+                    <img src={selectedArt.img} alt={selectedArt.title} />
 
                     <div className="art-info">
                       <h2>{selectedArt.title}</h2>

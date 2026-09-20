@@ -1,291 +1,138 @@
-import { useEffect, useRef, useState } from "react"
-import "./futebol.css"
-
-function Futebol({ booted,  unlockAchievements}) {
-
-    const [x, setX] = useState(50)
-    const [direction, setDirection] = useState(1)
-    const [state, setState] = useState("walkRight")
-    const [locked, setLocked] = useState(false)
-    const [ball, setBall] = useState(null)
-    const [lastInteraction, setLastInteraction] = useState(Date.now())
-    const [petCount, setPetCount] = useState(0)
-
-    const rafRef = useRef(null)
-
-    /* ---------------- DETECÇÃO DE INTERAÇÃO ---------------- */
-
-    useEffect(() => {
-
-        let lastX = 0
-        let lastY = 0
-
-        const wakeUp = () => {
-            if (state === "sleep") {
-                setState("stretch")
-
-                setTimeout(() => {
-                    setLocked(false)
-                    setState(direction === 1 ? "walkRight" : "walkLeft")
-                }, 2000)
-            }
-        }
-
-        const handleMove = (e) => {
-
-            const dx = Math.abs(e.clientX - lastX)
-            const dy = Math.abs(e.clientY - lastY)
-
-            if (dx > 5 || dy > 5) {
-                setLastInteraction(Date.now())
-                wakeUp()
-
-                lastX = e.clientX
-                lastY = e.clientY
-            }
-        }
-
-        const handleClick = () => {
-            setLastInteraction(Date.now())
-            wakeUp()
-        }
-
-        window.addEventListener("mousemove", handleMove)
-        window.addEventListener("click", handleClick)
-
-        return () => {
-            window.removeEventListener("mousemove", handleMove)
-            window.removeEventListener("click", handleClick)
-        }
-
-    }, [state, direction])
-
-
-
-    /* ---------------- LOOP PRINCIPAL ---------------- */
-
-    useEffect(() => {
-
-        const loop = () => {
-
-            setX(prev => {
-
-                // 🔴 PRIORIDADE: BOLA
-                if (ball) {
-
-                    const diff = ball.x - prev
-
-                    if (Math.abs(diff) < 5) {
-
-                        if (!locked) {
-                            setLocked(true)
-                            setState("play")
-
-                            setTimeout(() => {
-                                setBall(null)
-                                setLocked(false)
-                                setState(direction === 1 ? "walkRight" : "walkLeft")
-                            }, 2000)
-                        }
-
-                        return prev
-                    }
-
-                    setState(diff > 0 ? "walkRight" : "walkLeft")
-
-                    return prev + Math.sign(diff) * 2
-                }
-
-                // 🔵 MOVIMENTO NORMAL
-                if (!locked && state !== "sleep") {
-
-                    let next = prev + direction * 1.2
-
-                    if (next > window.innerWidth - 96) {
-                        setDirection(-1)
-                        setState("walkLeft")
-                        return prev
-                    }
-
-                    if (next < 0) {
-                        setDirection(1)
-                        setState("walkRight")
-                        return prev
-                    }
-
-                    return next
-                }
-
-                return prev
-            })
-
-            rafRef.current = requestAnimationFrame(loop)
-        }
-
-        rafRef.current = requestAnimationFrame(loop)
-
-        return () => cancelAnimationFrame(rafRef.current)
-
-    }, [ball, direction, locked, state])
-
-
-
-    /* ---------------- CLICK → BOLINHA ---------------- */
-
-    useEffect(() => {
-
-        const handleClick = (e) => {
-
-            const isDesktop = e.target.closest(".desktop")
-            const isUI = e.target.closest(".icon, .window, .taskbar")
-
-            if (!isDesktop || isUI) return
-
-            setBall({ x: e.clientX })
-        }
-
-        window.addEventListener("click", handleClick)
-
-        return () => window.removeEventListener("click", handleClick)
-
-    }, [])
-
-
-
-    /* ---------------- IA ---------------- */
-
-    useEffect(() => {
-
-        const interval = setInterval(() => {
-
-            if (locked || ball || state === "sleep") return
-
-            const actions = [
-                { name: "idle", time: 3000 },
-                { name: "lick", time: 2500 },
-                { name: "stretch", time: 2000 },
-                { name: "sitJump", time: 2000, hasEnd: true },
-                { name: "jumpLong", time: 1000, hasEnd: true}
-            ]
-
-            if (Math.random() < 0.4) {
-
-                const action =
-                    actions[Math.floor(Math.random() * actions.length)]
-
-                setLocked(true)
-                setState(action.name)
-
-          setTimeout(() => {
-
-    if (action.name === "sitJump") {
-
-        setState("sitIdle")
-
-        setTimeout(() => {
-            setLocked(false)
-            setState(direction === 1 ? "walkRight" : "walkLeft")
-        }, 800)
-
-    } else if (action.name === "jumpLong") {
-
-        setState("jumpLand")
-
-        setTimeout(() => {
-            setLocked(false)
-            setState(direction === 1 ? "walkRight" : "walkLeft")
-        }, 400)
-
-    } else {
-        setLocked(false)
-        setState(direction === 1 ? "walkRight" : "walkLeft")
+import { useEffect, useEffectEvent, useRef, useState } from 'react'
+import { useTimeouts } from '../../hooks/useTimeouts'
+import './futebol.css'
+
+const ACTIONS = [
+  { name: 'idle', time: 3000 },
+  { name: 'lick', time: 2500 },
+  { name: 'stretch', time: 2000 },
+  { name: 'sitJump', time: 2000, end: 'sitIdle', endTime: 800 },
+  { name: 'jumpLong', time: 1000, end: 'jumpLand', endTime: 400 },
+]
+
+function Futebol({ booted, unlockAchievements }) {
+  const [state, setState] = useState('walkRight')
+  const [ball, setBall] = useState(null)
+  const [heart, setHeart] = useState(null)
+  const petRef = useRef(null)
+  const model = useRef({ x: 50, direction: 1, locked: false, state: 'walkRight', ball: null, lastInteraction: 0, pets: 0 })
+  const { schedule } = useTimeouts()
+
+  const transition = (next, locked = true) => {
+    model.current.state = next
+    model.current.locked = locked
+    setState(next)
+  }
+  const resume = () => transition(model.current.direction === 1 ? 'walkRight' : 'walkLeft', false)
+  const wake = () => {
+    model.current.lastInteraction = Date.now()
+    if (model.current.state === 'sleep') {
+      transition('stretch')
+      schedule('action', resume, 2000)
     }
+  }
 
-}, action.time)
-            }
-
-        }, 5000)
-
-        return () => clearInterval(interval)
-
-    }, [locked, ball, direction, state])
-
-
-
-    /* ---------------- SISTEMA DE SONO ---------------- */
-
-    useEffect(() => {
-
-        const interval = setInterval(() => {
-
-            const idleTime = Date.now() - lastInteraction
-
-            if (idleTime > 12000 && state !== "sleep" && !ball) {
-                setLocked(true)
-                setState("sleep")
-            }
-
+  const onFrame = useEffectEvent((elapsed) => {
+    const pet = model.current
+    const limit = Math.max(0, window.innerWidth - 96)
+    if (pet.ball !== null && !pet.locked) {
+      const target = Math.min(limit, pet.ball)
+      const difference = target - pet.x
+      if (Math.abs(difference) < 5) {
+        transition('play')
+        schedule('action', () => {
+          pet.ball = null
+          setBall(null)
+          resume()
         }, 2000)
-
-        return () => clearInterval(interval)
-
-    }, [lastInteraction, state, ball])
-
-
-
-    /* ---------------- CARINHO ---------------- */
-
-    const petCat = () => {
-
-        if (locked) return
-
-        setLocked(true)
-        setState("idle")
-
-        setPetCount(prev => {
-            const newCount = prev + 1
-
-            if (newCount === 3) {
-                unlockAchievements("Melhor Amiga 🐱")
-            }
-
-            return newCount
-        })
-
-        const heart = document.createElement("div")
-        heart.className = "heart"
-        heart.style.left = `${x}px`
-        document.body.appendChild(heart)
-
-        setTimeout(() => heart.remove(), 1000)
-
-        setTimeout(() => {
-            setLocked(false)
-            setState(direction === 1 ? "walkRight" : "walkLeft")
-        }, 2000)
+      } else {
+        pet.direction = Math.sign(difference)
+        pet.x += pet.direction * 2 * elapsed
+        const next = pet.direction === 1 ? 'walkRight' : 'walkLeft'
+        if (pet.state !== next) transition(next, false)
+      }
+    } else if (!pet.locked) {
+      pet.x += pet.direction * 1.2 * elapsed
+      if (pet.x >= limit || pet.x <= 0) {
+        pet.direction *= -1
+        resume()
+      }
     }
+    pet.x = Math.max(0, Math.min(limit, pet.x))
+    if (petRef.current) petRef.current.style.left = `${pet.x}px`
+  })
 
+  const onInteraction = useEffectEvent(wake)
+  const onDesktopClick = useEffectEvent((event) => {
+    if (!event.target.matches('.desktop, .icons')) return
+    wake()
+    model.current.ball = event.clientX
+    setBall({ x: event.clientX })
+  })
+  const onThink = useEffectEvent(() => {
+    const pet = model.current
+    if (pet.locked || pet.ball !== null || Math.random() >= 0.4) return
+    const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)]
+    transition(action.name)
+    schedule('action', () => {
+      if (action.end) {
+        transition(action.end)
+        schedule('action', resume, action.endTime)
+      } else resume()
+    }, action.time)
+  })
+  const onSleepCheck = useEffectEvent(() => {
+    const pet = model.current
+    if (Date.now() - pet.lastInteraction > 12000 && !pet.locked && pet.ball === null) transition('sleep')
+  })
 
+  useEffect(() => {
+    if (!booted) return
+    model.current.lastInteraction = Date.now()
+    let frame
+    let previous
+    const loop = time => {
+      const elapsed = previous === undefined ? 1 : Math.min(3, (time - previous) / (1000 / 60))
+      previous = time
+      onFrame(elapsed)
+      frame = requestAnimationFrame(loop)
+    }
+    frame = requestAnimationFrame(loop)
+    const think = setInterval(onThink, 5000)
+    const sleep = setInterval(onSleepCheck, 2000)
+    window.addEventListener('pointermove', onInteraction)
+    window.addEventListener('click', onInteraction)
+    window.addEventListener('click', onDesktopClick)
+    return () => {
+      cancelAnimationFrame(frame)
+      clearInterval(think)
+      clearInterval(sleep)
+      window.removeEventListener('pointermove', onInteraction)
+      window.removeEventListener('click', onInteraction)
+      window.removeEventListener('click', onDesktopClick)
+    }
+  }, [booted])
 
-    if (!booted) return null
+  const petCat = () => {
+    const pet = model.current
+    if (pet.locked) return
+    pet.lastInteraction = Date.now()
+    transition('idle')
+    pet.pets += 1
+    if (pet.pets === 3) unlockAchievements('Melhor Amiga 🐱')
+    setHeart(pet.x)
+    schedule('heart', () => setHeart(null), 1000)
+    schedule('action', resume, 2000)
+  }
 
-    return (
-        <>
-            <div
-                className="pet"
-                style={{ left: x, transform: "scale(3)" }}
-            >
-                <div
-                    className={`sprite pet-${state}`}
-                    onMouseEnter={petCat}
-                />
-            </div>
-
-            {ball && (
-                <div className="ball" style={{ left: ball.x }} />
-            )}
-        </>
-    )
+  if (!booted) return null
+  return <>
+    <div className="pet" ref={petRef} style={{ left: 50, transform: 'scale(3)' }}>
+      <button className={`sprite pet-${state}`} onMouseEnter={petCat} onClick={petCat} aria-label="Fazer carinho na Futebol" />
+    </div>
+    {ball && <div className="ball" style={{ left: ball.x }} />}
+    {heart !== null && <div className="heart" style={{ left: heart }} />}
+  </>
 }
 
 export default Futebol

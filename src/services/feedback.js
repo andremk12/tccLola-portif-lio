@@ -14,4 +14,3 @@ export function sendFeedback(values) {
     data: new Date().toLocaleString('pt-BR'),
   }, { publicKey: config.publicKey })
 }
-

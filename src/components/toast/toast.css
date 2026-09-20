@@ -16,3 +16,4 @@
      90% {opacity: 1;}
      100% {opacity: 0; transform: translateY(20px);}
 }
+.toast { max-width: calc(100vw - 40px); }

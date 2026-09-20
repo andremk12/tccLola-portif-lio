@@ -73,3 +73,7 @@
     50%{opacity: 0;}
     100%{opacity: 1;}
 }
+
+.terminal-window { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+.terminal-window input { min-width: 0; }
+.terminal-body { overflow-wrap: anywhere; }

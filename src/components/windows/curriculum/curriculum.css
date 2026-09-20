@@ -76,7 +76,7 @@
 .fill-70 {width: 70%;}
 .fill-60 {width: 60%;}
 
-h2, h3 {
+.curriculum-container h2, .curriculum-container h3 {
     margin-bottom: 15px;
 }
 
@@ -192,3 +192,11 @@ h2, h3 {
     }
 }
 
+
+
+.right-panel { min-width: 0; }
+.profile-photo { max-width: 100%; }
+@media (max-width: 760px) {
+  .curriculum-container { flex-direction: column; padding: 16px; }
+  .profile-photo { width: min(300px, 100%); }
+}

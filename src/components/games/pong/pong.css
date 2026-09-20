@@ -57,3 +57,7 @@
 .game-screen canvas {
     flex: 1;
 }
+
+.game-screen { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); height: auto; }
+.game-screen canvas { display: block; width: 100% !important; height: auto !important; max-height: calc(100dvh - 110px); object-fit: contain; touch-action: none; }
+.game-header { flex-shrink: 0; min-height: 40px; }

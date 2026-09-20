@@ -1,7 +1,9 @@
+import { useDialog } from "../../../hooks/useDialog"
 import { useEffect, useRef } from "react";
 import "./pong.css";
 
 function PongGame({ onClose }) {
+  const dialogRef = useDialog(onClose)
 
   const canvasRef = useRef(null);
 
@@ -48,6 +50,7 @@ function PongGame({ onClose }) {
       ballVY = (Math.random() * 4) - 2;
     }
 
+    let frameId;
     function draw() {
 
       ctx.fillStyle = "#020617";
@@ -78,7 +81,7 @@ function PongGame({ onClose }) {
           loading = false;
         }
 
-        requestAnimationFrame(draw);
+        frameId = requestAnimationFrame(draw);
         return;
       }
 
@@ -219,7 +222,7 @@ function PongGame({ onClose }) {
         aiY -= aiSpeed;
       }
 
-      requestAnimationFrame(draw);
+      frameId = requestAnimationFrame(draw);
     }
 
     draw();
@@ -229,45 +232,53 @@ function PongGame({ onClose }) {
     function move(e) {
       const rect = canvas.getBoundingClientRect();
 
-      playerY = e.clientY - rect.top - paddleHeight / 2;
+      playerY = (e.clientY - rect.top) * canvas.height / rect.height - paddleHeight / 2;
 
       if (playerY < 0) playerY = 0;
       if (playerY > canvas.height - paddleHeight)
         playerY = canvas.height - paddleHeight;
     }
 
-    window.addEventListener("mousemove", move);
+    canvas.addEventListener("pointermove", move);
 
     /* ================= RESTART ================= */
 
     function restart(e) {
-      if (e.key.toLowerCase() === "r") {
+      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        e.preventDefault();
+        playerY = Math.max(0, Math.min(canvas.height - paddleHeight, playerY + (e.key === "ArrowUp" ? -20 : 20)));
+      }
+      if (e.key.toLowerCase() === "r" && !e.repeat) {
+        cancelAnimationFrame(frameId);
         playerScore = 0;
         aiScore = 0;
         gameOver = false;
         winner = null;
         resetBall();
-        requestAnimationFrame(draw);
+        frameId = requestAnimationFrame(draw);
       }
     }
 
-    window.addEventListener("keydown", restart);
+    canvas.addEventListener("keydown", restart);
+    canvas.focus();
 
     return () => {
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("keydown", restart);
+      cancelAnimationFrame(frameId);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("keydown", restart);
     };
 
   }, []);
 
   return (
-    <div className="game-screen">
+    <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Pong" className="game-screen">
       <div className="game-header">
         <span>NeonPong.exe</span>
-        <button onClick={onClose}>X</button>
+        <button aria-label="Fechar Pong" onClick={onClose}>X</button>
       </div>
 
-      <canvas ref={canvasRef}></canvas>
+      <canvas ref={canvasRef} tabIndex={0} data-game aria-label="Pong. Mova o ponteiro para controlar a raquete; R reinicia."></canvas>
+      <button className="game-restart" onClick={() => canvasRef.current.dispatchEvent(new KeyboardEvent("keydown", { key: "r" }))}>Reiniciar</button>
     </div>
   );
 }

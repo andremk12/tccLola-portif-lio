@@ -25,4 +25,3 @@ export function useTimeouts() {
 
   return { schedule, cancel }
 }
-

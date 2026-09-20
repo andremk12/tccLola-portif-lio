@@ -1,13 +1,14 @@
+import { useDialog } from "../../hooks/useDialog"
 import { allAchievements } from "../../data/achievements"
 import { useTimeouts } from "../../hooks/useTimeouts"
 import "./terminal.css"
 import { useEffect, useState } from "react"
 
 function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achievements, activatePet, deactivatePet}) {
+  const dialogRef = useDialog(onClose)
 
     const { schedule } = useTimeouts()
     const [input, setInput] = useState("")
-    const [ready, setReady] = useState(false)
     const [history,setHistory] = useState([
         "Geração Zee OS Terminal v1.0",
         "Digite 'help' para ver os comandos"
@@ -146,7 +147,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     const handleKeyDown = (e) => {
         if (e.key === "Tab") {
             e.preventDefault()
-        
+
 
         const matches = commandList.filter(cmd => cmd.startsWith(input.toLowerCase()))
 
@@ -159,7 +160,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         e.preventDefault()
 
         if (commandHistory.length === 0) return
-        
+
         const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
 
         setHistoryIndex(newIndex)
@@ -170,7 +171,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
         e.preventDefault()
 
         if (historyIndex === -1) return
-        
+
         const newIndex = historyIndex + 1
 
         if(newIndex >= commandHistory.length) {
@@ -206,7 +207,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     }
 
     const handleSubmit = (e) => {
-        
+
         e.preventDefault()
 
         if (!input.trim()) return
@@ -220,12 +221,6 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
 
     }
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setReady(true)
-        },100)
-        return () => clearTimeout(timer)
-    }, [])
 
     useEffect(() => () => {
         setMatrixMode(false)
@@ -233,7 +228,7 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
     }, [setMatrixMode, setRaveMode])
 
     return (
-      <div className="terminal-overlay">
+      <div ref={dialogRef} tabIndex={-1} className="terminal-overlay">
             <div className="terminal-window">
                     <div className ="terminal-header">
                             <span>Terminal</span>
@@ -253,7 +248,6 @@ function Terminal({onClose, setMatrixMode, setRaveMode, unlockAchievements, achi
                             aria-label="Comando do terminal"
                             value={input}
                             onChange={(e) => {
-                                if(!ready) return
                                 setInput(e.target.value)
                             }}
                             onKeyDown={handleKeyDown}

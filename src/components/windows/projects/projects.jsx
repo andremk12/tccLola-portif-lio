@@ -3,7 +3,7 @@ import { useState } from "react"
 import { projectsData } from "../../../data/projects"
 
 function Projects ({theme}){
-    
+
     const [activeProject, setActiveProject] = useState(projectsData[0])
 
     return (
@@ -22,7 +22,7 @@ function Projects ({theme}){
                         )}
                 </div>
 
-            <div key = {activeProject.id} className = "projects-content" style ={{background: activeProject.color}}> 
+            <div key = {activeProject.id} className = "projects-content" style ={{background: activeProject.color}}>
                     <div className="projects-preview">
                             <div className="preview-box">
                                 <span>Preview</span>
@@ -31,7 +31,7 @@ function Projects ({theme}){
                     </div>
 
                     <div className="projects-text">
-                       
+
                         <div className="project-header">
                             <h2>{activeProject.name}</h2>
                             <span className="project-version">
@@ -45,8 +45,8 @@ function Projects ({theme}){
                         </div>
 
                         <div className="project-description">
-                            <p>{activeProject.description}</p> 
-                            <p>{activeProject.details}</p> 
+                            <p>{activeProject.description}</p>
+                            <p>{activeProject.details}</p>
                         </div>
 
                         <div className="project-actions">

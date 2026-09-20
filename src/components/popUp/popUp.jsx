@@ -1,3 +1,4 @@
+import { useDialog } from "../../hooks/useDialog"
 import './popUp.css'
 import { Minus, Square, X, Pin } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -9,6 +10,7 @@ import Customize from '../customize/customize'
 import SecretWindow from '../windows/segredo/segredo'
 
 function PopUp({ type, onClose, unlockAchievements, setDesktopTheme, setCursorStyle, setBackgroundStyle, theme, currentCursor, currentWallpaper }) {
+  const dialogRef = useDialog(onClose)
   const [windowState, setWindowState] = useState('normal')
   const [locked, setLocked] = useState(false)
   const windowRef = useRef(null)
@@ -65,7 +67,7 @@ function PopUp({ type, onClose, unlockAchievements, setDesktopTheme, setCursorSt
   }
 
   return (
-    <div className="window-overlay">
+    <div ref={dialogRef} tabIndex={-1} className="window-overlay">
       <section ref={windowRef} className={`window ${maximized ? 'window-maximized' : large ? 'window-large' : 'window-normal'} theme-${theme}`}
         role="dialog" aria-modal="true" aria-label={type}
         style={{ position: 'fixed', top: maximized ? 0 : position.y, left: maximized ? 0 : position.x }}>
@@ -88,4 +90,3 @@ function PopUp({ type, onClose, unlockAchievements, setDesktopTheme, setCursorSt
 }
 
 export default PopUp
-

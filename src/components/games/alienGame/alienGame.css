@@ -65,3 +65,7 @@
 
     overflow: hidden;
 }
+
+.alien-game-screen { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); height: auto; }
+.alien-game-canvas canvas { display: block; width: 100% !important; height: auto !important; max-height: calc(100dvh - 110px); object-fit: contain; touch-action: none; }
+.alien-game-header { flex-shrink: 0; min-height: 40px; }

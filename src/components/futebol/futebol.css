@@ -89,7 +89,7 @@
 }
 
 .pet-sitIdle{
-    background-position: -224px -224px; 
+    background-position: -224px -224px;
     animation: none;
 }
 @keyframes sitJump{
@@ -145,3 +145,5 @@
     from{opacity:1; transform: translateY(0) scale(1) rotate(45deg);}
     to{opacity:0; transform: translateY(-50px) scale(1.5) rotate(45deg);}
 }
+.sprite { border: 0; background-color: transparent; display: block; padding: 0; }
+.pet, .ball, .heart { z-index: 10; }

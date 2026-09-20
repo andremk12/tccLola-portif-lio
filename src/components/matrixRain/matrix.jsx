@@ -17,9 +17,14 @@ function MatrixRain({active}) {
 
         const letters = "01"
         const fontSize = 16
-        const columns = canvas.width / fontSize
-
-        const drops = Array(Math.floor(columns)).fill(1)
+        let drops = []
+        const resize = () => {
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            drops = Array(Math.ceil(canvas.width / fontSize)).fill(1)
+        }
+        resize()
+        window.addEventListener("resize", resize)
 
         const draw = () => {
 
@@ -46,7 +51,7 @@ function MatrixRain({active}) {
 
         const interval = setInterval(draw, 33)
 
-        return () => clearInterval(interval)
+        return () => { clearInterval(interval); window.removeEventListener("resize", resize) }
 
     }, [active])
 

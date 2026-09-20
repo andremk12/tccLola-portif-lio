@@ -24,4 +24,3 @@ export const projectsData = [
             version: "v2.1.4"
         },
     ]
-

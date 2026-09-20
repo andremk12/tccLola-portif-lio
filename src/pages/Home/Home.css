@@ -1,3 +1,11 @@
+.desktop-button {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+}
 /* ---------------- BOOT INICIAL  ---------------- */
 
 .initial-boot {
@@ -60,9 +68,9 @@
     position: relative;
     transition: background 0.4s ease, color 0.3s ease;
       user-select: none;
-    -webkit-user-select: none; 
-    -moz-user-select: none; 
-    -ms-user-select: none; 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /* ---------------- ICONS ---------------- */
@@ -174,7 +182,7 @@
     align-items: center;
 }
 
-.skills span {
+.skills span, .skills button {
     display: flex;
     align-items: center;
 }
@@ -200,7 +208,6 @@
 
 .clock {
     font-weight: bold;
-    padding-left: 20px;
     background: #3a3a3a;
     padding: 5px 10px;
     border-radius: 4px;
@@ -250,7 +257,7 @@
 }
 
 .achievement-list {
-    max-width: 100px;
+    max-height: 140px;
     overflow-y: auto;
     font-size: 12px;
 }
@@ -513,4 +520,26 @@
   60% { background: #ff00ff; }
   80% { background: #ffff00; }
   100% { background: #ff0080; }
+}
+
+.desktop { height: 100dvh; min-height: 420px; padding-bottom: 70px; }
+.taskbar { position: fixed; bottom: 0; left: 0; right: 0; min-height: 55px; z-index: 10; }
+.start-menu { position: fixed; z-index: 11; }
+.start-menu > button { text-align: left; }
+.icons { align-items: flex-start; }
+.icon img { width: 40px; height: 40px; object-fit: contain; }
+.boot-bar-container { max-width: calc(100vw - 32px); }
+.boot-status { padding: 0 16px; }
+@media (max-width: 760px) {
+  .icons { display: grid; grid-template-columns: repeat(2, minmax(0, 100px)); width: calc(100% - 120px); gap: 22px 10px; padding: 16px 8px; }
+  .icon { width: 100%; min-height: 85px; font-size: 14px; }
+  .help-icon, .notebook-icon, .form-icon { right: 8px; }
+  .taskbar { flex-wrap: wrap; height: auto; padding: 8px; gap: 8px; }
+  .skills { gap: 8px; }
+  .skills img { height: 23px; }
+  .taskbar-right { gap: 8px; }
+  .start-menu { bottom: 90px; }
+}
+@media (max-width: 420px) {
+  .taskbar-right { justify-content: flex-end; width: 100%; }
 }

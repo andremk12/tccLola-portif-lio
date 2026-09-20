@@ -22,4 +22,3 @@ export function saveContactOrder(contacts) {
     // Reordering still works in memory when the browser disables storage.
   }
 }
-

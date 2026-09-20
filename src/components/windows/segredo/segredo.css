@@ -104,14 +104,14 @@
 .secret-love {
   height: 100%;
   width: 100%;
-  padding: 8px; 
+  padding: 8px;
   display: flex;
 }
 
 .love-card-horizontal.big {
   display: flex;
   width: 100%;
-  height: 100%; 
+  height: 100%;
 
   border-radius: 12px;
   overflow: hidden;
@@ -201,7 +201,7 @@
   100% { transform: translateY(0); }
 }
 
-pony-mode {
+.pony-mode {
   background:
     radial-gradient(circle at top, #2d1b69 0%, transparent 40%),
     radial-gradient(circle at bottom right, #1b3a69 0%, transparent 40%),
@@ -227,7 +227,7 @@ pony-mode {
   padding: 14px;
   border-radius: 14px;
 
-  width: 260px; 
+  width: 260px;
   max-width: 90%;
 
   background: rgba(255,255,255,0.12);
@@ -243,7 +243,7 @@ pony-mode {
 
 
 .pony-img {
-  width: 95px; 
+  width: 95px;
   height: auto;
 
   filter: drop-shadow(0 0 10px rgba(255,255,255,0.8));
@@ -352,4 +352,13 @@ pony-mode {
   background: rgba(255,255,255,0.25);
 
   box-shadow: 0 0 15px rgba(255,255,255,.25);
+}
+
+.secret-container { min-height: 320px; height: auto; padding: 16px 8px; overflow: visible; }
+.code-inputs { gap: 6px; max-width: 100%; }
+.code-inputs input { width: min(50px, 13vw); }
+.photo-glow { pointer-events: none; }
+@media (max-width: 760px) {
+  .love-card-horizontal.big { flex-direction: column; }
+  .love-photo-wrapper, .love-content { width: 100%; }
 }

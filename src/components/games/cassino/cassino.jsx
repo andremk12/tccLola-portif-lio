@@ -1,8 +1,11 @@
+import { useDialog } from "../../../hooks/useDialog"
 import { useEffect, useRef, useState } from "react"
 import p5 from "p5"
+import { casinoFrames } from "../../../data/casinoFrames"
 import "./cassino.css"
 
 function CassinoGame({ onClose }) {
+  const dialogRef = useDialog(onClose)
 
     const containerRef = useRef(null)
     const p5Instance = useRef(null)
@@ -14,6 +17,7 @@ function CassinoGame({ onClose }) {
     useEffect(() => {
 
         let value = 0
+        let finish
 
         const interval = setInterval(() => {
 
@@ -24,7 +28,7 @@ function CassinoGame({ onClose }) {
                 value = 100
                 clearInterval(interval)
 
-                setTimeout(() => {
+                finish = setTimeout(() => {
                     setLoading(false)
                 }, 300)
 
@@ -34,7 +38,7 @@ function CassinoGame({ onClose }) {
 
         }, 70)
 
-        return () => clearInterval(interval)
+        return () => { clearInterval(interval); clearTimeout(finish) }
 
     }, [])
 
@@ -59,20 +63,13 @@ function CassinoGame({ onClose }) {
             let displayDelay = 60
             let lastDisplayTime = 0
 
-            const totalImages = 71
-
+            const images = new Map()
             p.preload = () => {
-
-                const base = import.meta.env.BASE_URL
-
-                for (let i = 0; i < totalImages; i++) {
-
-                    grupo1[i] = p.loadImage(base + `cassinoAssets/grupo1/grupo1foto${i}.jpg`)
-                    grupo2[i] = p.loadImage(base + `cassinoAssets/grupo2/grupo2foto${i}.jpg`)
-                    grupo3[i] = p.loadImage(base + `cassinoAssets/grupo3/grupo3foto${i}.jpg`)
-                    grupo4[i] = p.loadImage(base + `cassinoAssets/grupo4/grupo4foto${i}.jpg`)
-
-                }
+                const groups = casinoFrames.map(paths => paths.map(path => {
+                    if (!images.has(path)) images.set(path, p.loadImage(import.meta.env.BASE_URL + path))
+                    return images.get(path)
+                }))
+                ;[grupo1, grupo2, grupo3, grupo4] = groups
             }
 
             p.setup = () => {
@@ -82,10 +79,11 @@ function CassinoGame({ onClose }) {
 
                 p.pixelDensity(1)
 
-                grupo1.forEach(img => img.resize(1000, 600))
-                grupo2.forEach(img => img.resize(1000, 600))
-                grupo3.forEach(img => img.resize(1000, 600))
-                grupo4.forEach(img => img.resize(1000, 600))
+                images.forEach(img => img.resize(1000, 600))
+                canvas.elt.tabIndex = 0
+                canvas.elt.dataset.game = ""
+                canvas.elt.setAttribute("aria-label", "Cassino. Espaço ou toque para jogar.")
+                canvas.elt.focus()
 
             }
 
@@ -134,9 +132,9 @@ function CassinoGame({ onClose }) {
                 }
             }
 
-            p.keyPressed = () => {
+            const play = () => {
 
-                if (p.key === " ") {
+                {
 
                     if (isLooping) {
 
@@ -160,6 +158,16 @@ function CassinoGame({ onClose }) {
                     }
                 }
             }
+            p.keyPressed = () => {
+                if (document.activeElement === p.canvas && p.key === " ") { play(); return false }
+            }
+            p.mousePressed = event => {
+                if (event.target === p.canvas) { p.canvas.focus(); play(); return false }
+            }
+            p.touchStarted = event => {
+                if (event.target === p.canvas) { p.canvas.focus(); play(); return false }
+            }
+
         }
 
         // criar p5
@@ -177,11 +185,11 @@ function CassinoGame({ onClose }) {
 
     return (
 
-        <div className="cassino-overlay">
+        <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Cassino" className="cassino-overlay">
 
             <div className="cassino-header">
                 <span>Cassino.exe</span>
-                <button onClick={onClose}>X</button>
+                <button aria-label="Fechar Cassino" onClick={onClose}>X</button>
             </div>
 
             {loading ? (

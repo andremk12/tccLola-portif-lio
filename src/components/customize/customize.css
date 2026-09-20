@@ -124,12 +124,12 @@
   color: #e5e7eb;
 }
 
-.theme-dark button {
+.theme-dark .customize-container button {
   background: #374151;
   color: #e5e7eb;
 }
 
-.theme-dark button:hover {
+.theme-dark .customize-container button:hover {
   background: #4b5563;
 }
 
@@ -146,13 +146,13 @@
   color: #00ffff;
 }
 
-.theme-neon button {
+.theme-neon .customize-container button {
   background: #000;
   color: #00ffff;
   border: 1px solid #00ffff;
 }
 
-.theme-neon button:hover {
+.theme-neon .customize-container button:hover {
   background: #001a1a;
 }
 
@@ -173,16 +173,25 @@
   color: #ff00ff;
 }
 
-.theme-cyber button {
+.theme-cyber .customize-container button {
   background: #111;
   color: #ff00ff;
   border: 1px solid #ff00ff;
 }
 
-.theme-cyber button:hover {
+.theme-cyber .customize-container button:hover {
   background: #1b1025;
 }
 
 .theme-cyber .wallpaper-card.active {
   outline: 3px solid #ff00ff;
+}
+
+.customize-content { min-width: 0; }
+.wallpaper-card { border: 0; font: inherit; }
+.cursor-options { flex-wrap: wrap; }
+@media (max-width: 760px) {
+  .customize-container { flex-direction: column; height: auto; }
+  .customize-sidebar { width: 100%; padding: 12px; flex-direction: row; flex-wrap: wrap; gap: 12px; }
+  .customize-content { padding: 16px; overflow: visible; }
 }

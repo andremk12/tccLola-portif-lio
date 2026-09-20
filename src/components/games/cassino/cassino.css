@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
 
-    border: 3px solid #808080; 
+    border: 3px solid #808080;
 
 
     z-index: 1000;
@@ -99,12 +99,13 @@
     margin: 15px 0;
 }
 
-.loading-fill {
+.loading-fill { height: 100%; background: #00ff9c; }
 
-    height: 100%;
-    height: 18px;
 
-    border: 2px solid #00ff9c;
+.cassino-overlay { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); height: auto; }
+.cassino-game canvas { display: block; width: 100% !important; height: auto !important; max-height: calc(100dvh - 110px); object-fit: contain; touch-action: none; }
+.cassino-header { flex-shrink: 0; min-height: 40px; }
 
-    margin: 15px 0;
-}
+
+.cassino-loading { min-height: min(400px, 60dvh); }
+.loading-bar { max-width: calc(100vw - 48px); }

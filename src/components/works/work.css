@@ -1,4 +1,4 @@
-.explorer-container {
+.explorer-window {
   width: 100%;
   height: 100%;
   display: flex;
@@ -82,7 +82,7 @@
   border: 2px solid #c0c0c0;
 }
 
-.explorer-container * {
+.explorer-window * {
   box-sizing: border-box;
 }
 
@@ -133,32 +133,6 @@
   padding: 15px;
   background: linear-gradient(transparent, rgba(0,0,0,0.65));
   color: white;
-}
-
-/* PREVIEW */
-
-.preview-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.preview-content {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 700px;
-  text-align: center;
-}
-
-.preview-content img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
 }
 
 /* LAUNCHER */
@@ -394,7 +368,7 @@
   background: #f4d35e;
   border: 4px solid black;
   cursor: pointer;
-  transition: transform 0.15s ease, box shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   transform-origin: center;
 }
 
@@ -493,7 +467,7 @@
 .hq-close {
   position: absolute;
   top: 30px;
-  right: 545px;
+  right: 20px;
 
   background: #ff3b3b;
   color: white;
@@ -539,22 +513,22 @@
 
 /* THEMES */
 
-.theme-default .explorer-container {
+.theme-default .explorer-window {
   background: #d4d4d4;
   color: black;
 }
 
-.theme-dark .explorer-container {
+.theme-dark .explorer-window {
   background: #111827;
   color: #e5e7eb;
 }
 
-.theme-neon .explorer-container {
+.theme-neon .explorer-window {
   background: #020617;
   color: #00ffff;
 }
 
-.theme-cyber .explorer-container {
+.theme-cyber .explorer-window {
   background: #050510;
   color: #ff00ff;
 }
@@ -615,4 +589,26 @@
   background: #ff00ff;
   color: black;
   box-shadow: 0 0 12px #ff00ff;
+}
+
+.explorer-content, .explorer-files { min-width: 0; }
+.explorer-sidebar { flex-shrink: 0; }
+.explorer-window button.folder { font: inherit; text-align: left; background-color: transparent; }
+.work-card, .photo-card, .art-card { padding: 0; border: 0; font: inherit; text-align: left; }
+.hq-card { padding: 0; font: inherit; text-align: left; }
+.launcher-window, .info-window { max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); overflow: auto; }
+.photo-view, .art-view, .hq-modal { z-index: 1000; padding: 12px; overflow: auto; }
+.photo-view-content img { max-height: 70dvh; object-fit: contain; }
+.hq-reader img { max-width: 90vw; }
+.game-loading { position: fixed; inset: 0; z-index: 1200; display: grid; place-items: center; background: #020617; color: white; }
+@media (max-width: 760px) {
+  .explorer-body { flex-direction: column; }
+  .explorer-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; }
+  .explorer-files { padding: 8px; }
+  .works-grid, .art-gallery, .hq-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); padding: 8px; gap: 16px; }
+  .photo-gallery { padding: 8px; gap: 12px; }
+}
+@media (max-width: 500px) {
+  .launcher-body { grid-template-columns: 1fr; }
+  .launcher-body img { max-width: 100%; }
 }

@@ -1,22 +1,13 @@
+import { useDialog } from "../../hooks/useDialog"
 import "./sticker.css";
 import HTMLFlipBook from "react-pageflip";
 
-import gato1 from "../../assets/stickers/gato1.png";
-import gato2 from "../../assets/stickers/gato2.png";
-import gato3 from "../../assets/stickers/gato3.png";
-import gato4 from "../../assets/stickers/gato4.png";
-import gato5 from "../../assets/stickers/gato5.png";
-import gato6 from "../../assets/stickers/gato6.png";
-import gato7 from "../../assets/stickers/gato7.png";
-import gato8 from "../../assets/stickers/gato8.png";
-import globo from "../../assets/stickers/globooopronto.png";
-import morango from "../../assets/stickers/moranguus.png";
-import camarao from "../../assets/stickers/camaraoManeiro.png"
-import penguim from "../../assets/stickers/penguim.png"
-
 import { useState, useRef, useEffect } from "react";
+import { stickers } from "../../data/stickers";
+import { collectPack, purchaseSticker, stickerPrices } from "../../utils/stickers";
+import { useTimeouts } from "../../hooks/useTimeouts";
 
-function StickerSLot({ sticker, collected, animatingStickers }) {
+function StickerSlot({ sticker, collected, animatingStickers }) {
   const isCollected = collected.includes(sticker.id);
 
   const isAnimating = animatingStickers.some(s => s.id === sticker.id)
@@ -27,6 +18,7 @@ function StickerSLot({ sticker, collected, animatingStickers }) {
         {(isCollected || isAnimating) ? (
           <img
             src={sticker.img}
+            alt={sticker.name}
             className={`sticker ${sticker.type} ${isAnimating ? "sticker-glue" : ""}`} />
         ) : (
           <div className="empty-slot">
@@ -38,37 +30,23 @@ function StickerSLot({ sticker, collected, animatingStickers }) {
   );
 }
 
-function StickerBook({ onClose, unlockAchievements }) {
- const stickers = [
-  { id: 1, img: gato1, name: "Gato Laranja", type: "cat", rarity: "common" },
-  { id: 2, img: gato2, name: "Gato Preto e Branco", type: "cat", rarity: "legendary" }, // MAIS RARO
-  { id: 3, img: gato3, name: "Gato Preto", type: "cat", rarity: "rare" },
-  { id: 4, img: gato4, name: "Gato Branco", type: "cat", rarity: "common" },
-  { id: 5, img: gato5, name: "Gato Siamês", type: "cat", rarity: "rare" },
-  { id: 6, img: gato6, name: "Gato Cinza", type: "cat", rarity: "common" },
-  { id: 7, img: gato7, name: "Gato Rajado", type: "cat", rarity: "rare" },
-  { id: 8, img: gato8, name: "Gato Laranja Claro", type: "cat", rarity: "common" },
-
-  { id: 9, img: globo, name: "Disco", type: "disco", rarity: "legendary" },
-  { id: 10, img: morango, name: "Morango", type: "morango", rarity: "common" },
-
-  { id: 11, img: camarao, name: "Camarão", type: "camarao", rarity: "rare" },
-  { id: 12, img: penguim, name: "Pinguim", type: "penguim", rarity: "common" },
-];
+function StickerBook({ onClose, onContact, unlockAchievements }) {
+  const dialogRef = useDialog(onClose)
   const bookRef = useRef(null);
+  const flipInstance = useRef(null);
+  const { schedule, cancel } = useTimeouts();
+  useEffect(() => () => {
+    flipInstance.current?.destroy();
+    flipInstance.current = null;
+  }, []);
+
 
   const nextPage = () => {
-    if (!bookRef.current) return;
-
-    const page = bookRef.current.pageFlip().getCurrentPageIndex();
-    bookRef.current.pageFlip().flip(page + 1);
+    bookRef.current?.pageFlip()?.flipNext();
   };
 
   const prevPage = () => {
-    if (!bookRef.current) return;
-
-    const page = bookRef.current.pageFlip().getCurrentPageIndex();
-    bookRef.current.pageFlip().flip(page - 1);
+    bookRef.current?.pageFlip()?.flipPrev();
   };
 
 
@@ -76,13 +54,20 @@ function StickerBook({ onClose, unlockAchievements }) {
   const [showPack, setShowPack] = useState(false);
 
   const [packStickers, setPackStickers] = useState([]);
-  const [collected, setCollected] = useState([]);
+  const [collection, setCollection] = useState({ collected: [], coins: 0 });
+  const collectionRef = useRef(collection);
+  const { collected, coins } = collection;
+  const updateCollection = next => {
+    collectionRef.current = next;
+    setCollection(next);
+    if (next.collected.length === stickers.length) unlockAchievements("Colecionador 🎉");
+  };
   const [animatingStickers, setAnimatingStickers] = useState([])
   const [pendingSticker, setPendingSticker] = useState([])
 
-  const randomFrom = (arr) => 
+  const randomFrom = (arr) =>
     arr[Math.floor(Math.random() * arr.length)]
-  
+
 
   const getRandomSticker = () => {
     const rand = Math.random()
@@ -109,86 +94,44 @@ function StickerBook({ onClose, unlockAchievements }) {
 
   setPackStickers(pack)
 }
-  
-  const [coins, setCoins] = useState(0)
 
-
-
-  useEffect(() => {
-    if (collected.length === stickers.length) {
-      unlockAchievements("Colecionador 🎉")
-    }
-  }, [collected])
-
- useEffect(() => {
-  if (pendingSticker.length === 0) return;
-
-  setTimeout(() => {
-    setAnimatingStickers(pendingSticker);
-
-    setCollected(prev => {
-      const ids = new Set(prev);
-
-      pendingSticker.forEach(s => {
-        if (ids.has(s.id)) {
-          if (s.rarity === "common") setCoins(c => c + 1);
-          if (s.rarity === "rare") setCoins(c => c + 3);
-          if (s.rarity === "legendary") setCoins(c => c + 8);
-        } else {
-          ids.add(s.id);
-          setCoins(c => c + 1);
-        }
-      });
-
-      return [...ids];
-    });
-
-    setAnimatingStickers([]);
-    setPendingSticker([]);
-  }, 1200);
-}, [pendingSticker]);
-
-const [showShop, setShowShop] = useState(false)
-
-const getPrice = (rarity) => {
-  if (rarity === "common") return 5
-  if (rarity === "rare") return 12
-  if (rarity === "legendary") return 25
-}
-
-const buySticker = (sticker) => {
-  const price = getPrice(sticker.rarity)
-
-  if (coins < price) return
-
-  setCoins(c => c - price)
-
-  setCollected(prev => {
-    if (prev.includes(sticker.id)) return prev
-    return [...prev, sticker.id]
-  })
-}
+  const [showShop, setShowShop] = useState(false)
+  const getPrice = rarity => stickerPrices[rarity]
+  const buySticker = sticker => updateCollection(purchaseSticker(collectionRef.current, sticker))
+  const savePack = () => {
+    if (pendingSticker.length) return
+    const pack = packStickers
+    setPendingSticker(pack)
+    setShowPack(false)
+    schedule("collect", () => {
+      updateCollection(collectPack(collectionRef.current, pack))
+      setAnimatingStickers(pack)
+      setPendingSticker([])
+      schedule("glue", () => setAnimatingStickers([]), 800)
+    }, 1200)
+  }
 
 
 return (
-  <div className="stickerbook-overlay">
-    <button className="nav-left" onClick={prevPage}>
+  <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Álbum de figurinhas" className="stickerbook-overlay">
+    <button className="nav-left" aria-label="Página anterior" onClick={prevPage}>
       ◀
     </button>
 
-    <button className="nav-right" onClick={nextPage}>
+    <button className="nav-right" aria-label="Próxima página" onClick={nextPage}>
       ▶
     </button>
 
     <div className="stickerbook-window">
       <div className="album-header">
-        
+
         <button onClick={() => setShowShop(true)} className="open-pack">
             🛒 Loja
         </button>
-        
+
         <button
           className="open-pack"
+          disabled={pendingSticker.length > 0}
           onClick={() => {
             generateRandomPack();
             setShowPack(true);
@@ -198,12 +141,18 @@ return (
           🎁 Abrir pacote
         </button>
 
-        <button className="close-book" onClick={onClose}>
+        <button className="close-book" aria-label="Fechar álbum" onClick={onClose}>
           ✖
         </button>
       </div>
 
       <HTMLFlipBook
+        onInit={event => { flipInstance.current = event.object }}
+        size="stretch"
+        minWidth={240}
+        maxWidth={420}
+        minHeight={314}
+        maxHeight={550}
         width={420}
         height={550}
         showCover={true}
@@ -225,7 +174,7 @@ return (
 
             <div className="sticker-grid">
               {stickers.slice(0, 4).map((sticker) => (
-                <StickerSLot
+                <StickerSlot
                   key={sticker.id}
                   sticker={sticker}
                   collected={collected}
@@ -242,7 +191,7 @@ return (
 
             <div className="sticker-grid">
               {stickers.slice(4, 8).map((sticker) => (
-                <StickerSLot
+                <StickerSlot
                   key={sticker.id}
                   sticker={sticker}
                   collected={collected}
@@ -259,7 +208,7 @@ return (
 
             <div className="sticker-grid">
               {stickers.slice(8, 12).map((sticker) => (
-                <StickerSLot
+                <StickerSlot
                   key={sticker.id}
                   sticker={sticker}
                   collected={collected}
@@ -283,8 +232,8 @@ return (
       <div className="pack-overlay">
         <div className={`pack ${packStage}`}>
           <button
-            className="close-pack-top"
-            onClick={() => setShowPack(false)}
+            className="close-pack-top" aria-label="Fechar pacote"
+            onClick={() => { cancel("tear"); setShowPack(false) }}
           >
             ✕
           </button>
@@ -295,7 +244,7 @@ return (
               onClick={() => {
                 setPackStage("opening");
 
-                setTimeout(() => {
+                schedule("tear", () => {
                   setPackStage("opened");
                 }, 600);
               }}
@@ -312,7 +261,7 @@ return (
                 <div className="sticker-wrapper">
                   <div className="sticker-card">
                     <img
-                      src={s.img}
+                      src={s.img} alt={s.name}
                       className={`revealed-sticker ${s.type}`}
                     />
                   </div>
@@ -322,10 +271,7 @@ return (
 
             <button
               className="close-pack"
-              onClick={() => {
-                setPendingSticker(packStickers)
-                setShowPack(false)
-              }}>
+              onClick={savePack}>
               Guardar
             </button>
           </div>
@@ -337,10 +283,10 @@ return (
     {showShop && (
       <div className="shop-overlay">
         <div className="shop-window">
-            <button className="close-shop" onClick={() => setShowShop(false)}>
+            <button className="close-shop" aria-label="Fechar loja" onClick={() => setShowShop(false)}>
               ✕
             </button>
-            
+
             <h2>🛒 Loja de Figurinhas (Compra em desenvolvimento)</h2>
 
             <div className="physical-banner">
@@ -350,7 +296,7 @@ return (
 
                   <button
                     className="btn-contact-s"
-                    onClick={onClose}
+                    onClick={onContact}
                   >
                       📲 Entrar em contato
                   </button>
@@ -363,12 +309,12 @@ return (
             <div className="shop-grid">
                 {stickers.map(s => (
                   <div key= {s.id} className={`shop-item ${s.rarity}`}>
-                      <img src={s.img} className={`shop-img ${s.type}`}/>
+                      <img src={s.img} alt={s.name} className={`shop-img ${s.type}`}/>
 
                       <p>{s.name}</p>
                       <span>{s.rarity}</span>
 
-                      <button disabled={coins < getPrice(s.rarity)} onClick={() => buySticker(s)} className={`btn btn-buy ${s.rarity}`}>
+                      <button disabled={collected.includes(s.id) || coins < getPrice(s.rarity)} onClick={() => buySticker(s)} className={`btn btn-buy ${s.rarity}`}>
                           Comprar ({getPrice(s.rarity)})
                       </button>
 

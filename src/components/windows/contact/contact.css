@@ -16,7 +16,7 @@
     font-size: 14px;
 }
 
-.contact-sider h3 {
+.contact-sidebar h3 {
     margin-bottom: 10px;
 }
 
@@ -154,9 +154,6 @@
     transition: transform 0.2s ease;
 }
 
-.contact-item:active .icon-wrapper {
-    transform: scale(0.95);
-}
 
 .contact-item:active .icon-wrapper {
     transform: translateY(2px) scale(0.98);
@@ -191,7 +188,7 @@
 
 .theme-default .contact-container {
     background: #cfd8dc;
-    
+
 }
 
 .theme-default .contact-sidebar {
@@ -294,4 +291,15 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.contact-main { min-width: 0; }
+.contact-toolbar { flex-wrap: wrap; gap: 8px; }
+.toolbar-left { flex-wrap: wrap; }
+.contact-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+.theme-dark .contact-item { color: #e5e7eb; }
+@media (max-width: 760px) {
+  .contact-container { flex-direction: column; height: auto; }
+  .contact-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 12px; }
+  .contact-grid { padding: 16px; }
 }

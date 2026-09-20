@@ -1,15 +1,23 @@
+import { useDialog } from "../../hooks/useDialog"
 import "./canvas.css"
+import { canvasPoint } from "../../utils/canvas"
 import { useRef, useState } from "react"
 
 function Canvas({ onClose, unlockAchievements }) {
+  const dialogRef = useDialog(onClose)
 
     const canvasRef = useRef(null)
 
-    const [drawing, setDrawing] = useState(false)
+    const drawing = useRef(false)
     const [color, setColor] = useState("#000000")
     const [size, setSize] = useState(3)
     const [tool, setTool] = useState("brush")
-    const [drawCount, setDrawCount] = useState(0)
+    const drawCount = useRef(0)
+    const getPoint = event => {
+        const canvas = canvasRef.current
+        const bounds = canvas.getBoundingClientRect()
+        return canvasPoint(event.clientX, event.clientY, { left: bounds.left + canvas.clientLeft, top: bounds.top + canvas.clientTop, width: canvas.clientWidth, height: canvas.clientHeight }, canvas.width, canvas.height)
+    }
 
 
     const startDraw = (e) => {
@@ -18,9 +26,11 @@ function Canvas({ onClose, unlockAchievements }) {
         const ctx = canvas.getContext("2d")
 
         ctx.beginPath()
-        ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY)
+        const point = getPoint(e)
+        ctx.moveTo(point.x, point.y)
+        canvas.setPointerCapture(e.pointerId)
 
-        setDrawing(true)
+        drawing.current = true
     }
 
     const spray = (x, y) => {
@@ -49,13 +59,12 @@ function Canvas({ onClose, unlockAchievements }) {
 
    const draw = (e) => {
 
-        if (!drawing) return
+        if (!drawing.current) return
 
         const canvas = canvasRef.current
         const ctx = canvas.getContext("2d")
 
-        const x = e.nativeEvent.offsetX
-        const y = e.nativeEvent.offsetY
+        const { x, y } = getPoint(e)
 
         ctx.lineCap = "round"
 
@@ -87,20 +96,12 @@ function Canvas({ onClose, unlockAchievements }) {
 
         }
 
-        setDrawCount(prev => {
-
-            const newCount = prev + 1
-
-            if (newCount === 200) {
-                unlockAchievements?.("Artista do Caos 🔥")
-            }
-
-            return newCount
-        })
+        drawCount.current += 1
+        if (drawCount.current === 200) unlockAchievements("Artista do Caos 🔥")
     }
 
     const stopDraw = () => {
-        setDrawing(false)
+        drawing.current = false
     }
 
     const clearCanvas = () => {
@@ -113,20 +114,21 @@ function Canvas({ onClose, unlockAchievements }) {
 
     return (
 
-        <div className="canvas-overlay">
+        <div ref={dialogRef} tabIndex={-1} className="canvas-overlay">
 
             <div className="paint-window">
 
 
                 <div className="paint-titlebar">
                     <span>Geração Zee Paint</span>
-                    <button onClick={onClose}>✕</button>
+                    <button onClick={onClose} aria-label="Fechar Paint">✕</button>
                 </div>
 
 
                 <div className="paint-toolbar">
 
                     <button
+                        aria-label="Pincel" aria-pressed={tool === "brush"}
                         className={tool === "brush" ? "active" : ""}
                         onClick={() => setTool("brush")}
                     >
@@ -134,6 +136,7 @@ function Canvas({ onClose, unlockAchievements }) {
                     </button>
 
                     <button
+                        aria-label="Borracha" aria-pressed={tool === "eraser"}
                         className={tool === "eraser" ? "active" : ""}
                         onClick={() => setTool("eraser")}
                     >
@@ -141,13 +144,14 @@ function Canvas({ onClose, unlockAchievements }) {
                     </button>
 
                     <button
-                      className={tool === "pixo" ? "active" : ""}
+                      aria-label="Spray" aria-pressed={tool === "pixo"}
+                        className={tool === "pixo" ? "active" : ""}
                       onClick={() => setTool("pixo")}
                     >
                         🧴
                     </button>
 
-                    <button onClick={clearCanvas}>
+                    <button onClick={clearCanvas} aria-label="Limpar desenho">
                         🧹
                     </button>
 
@@ -156,7 +160,7 @@ function Canvas({ onClose, unlockAchievements }) {
                         <span>Espessura</span>
 
                         <input
-                            type="range"
+                            type="range" aria-label="Espessura"
                             min="1"
                             max="30"
                             value={size}
@@ -175,10 +179,12 @@ function Canvas({ onClose, unlockAchievements }) {
                         width={700}
                         height={400}
                         className={`paint-canvas ${tool==="pixo" ? "pixo" : ""}`}
-                        onMouseDown={startDraw}
-                        onMouseMove={draw}
-                        onMouseUp={stopDraw}
-                        onMouseLeave={stopDraw}
+                        onPointerDown={startDraw}
+                        onPointerMove={draw}
+                        onPointerUp={stopDraw}
+                        onPointerCancel={stopDraw}
+                        onLostPointerCapture={stopDraw}
+                        aria-label="Área para desenhar"
                     />
 
                 </div>
@@ -186,16 +192,16 @@ function Canvas({ onClose, unlockAchievements }) {
 
                 <div className="paint-colors">
 
-                    <button style={{ background: "#000" }} onClick={() => setColor("#000")} />
-                    <button style={{ background: "#ff0000" }} onClick={() => setColor("#ff0000")} />
-                    <button style={{ background: "#00ff00" }} onClick={() => setColor("#00ff00")} />
-                    <button style={{ background: "#0000ff" }} onClick={() => setColor("#0000ff")} />
-                    <button style={{ background: "#ffff00" }} onClick={() => setColor("#ffff00")} />
-                    <button style={{ background: "#ff00ff" }} onClick={() => setColor("#ff00ff")} />
-                    <button style={{ background: "#00ffff" }} onClick={() => setColor("#00ffff")} />
+                    <button aria-label="Cor #000" style={{ background: "#000" }} onClick={() => setColor("#000")} />
+                    <button aria-label="Cor #ff0000" style={{ background: "#ff0000" }} onClick={() => setColor("#ff0000")} />
+                    <button aria-label="Cor #00ff00" style={{ background: "#00ff00" }} onClick={() => setColor("#00ff00")} />
+                    <button aria-label="Cor #0000ff" style={{ background: "#0000ff" }} onClick={() => setColor("#0000ff")} />
+                    <button aria-label="Cor #ffff00" style={{ background: "#ffff00" }} onClick={() => setColor("#ffff00")} />
+                    <button aria-label="Cor #ff00ff" style={{ background: "#ff00ff" }} onClick={() => setColor("#ff00ff")} />
+                    <button aria-label="Cor #00ffff" style={{ background: "#00ffff" }} onClick={() => setColor("#00ffff")} />
 
                     <input
-                        type="color"
+                        type="color" aria-label="Escolher cor"
                         value={color}
                         onChange={(e) => setColor(e.target.value)}
                         className="color-picker"

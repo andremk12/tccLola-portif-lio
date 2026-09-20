@@ -13,27 +13,27 @@ function CurriculumWindow ({theme}) {
         <div className={`curriculum-container theme-${theme}`}>
             <div className="left-panel">
 
-        
+
             <div className="photo-card-c">
                 <img alt="Lola, Geração Zee" src={perfil} className="profile-photo"/>
             </div>
             <div className="languages-card">
                 <h3> <Languages size ={18}/>IDIOMAS</h3>
-                
+
                  <div className="language-item">
                     <span>Português</span>
                     <div className="progress-bar">
                         <div className="progress fill-100"></div>
                     </div>
                  </div>
-                 
+
                  <div className="language-item">
                     <span>Inglês</span>
                     <div className="progress-bar">
                         <div className="progress fill-70"></div>
                     </div>
                  </div>
-                 
+
                  <div className="language-item">
                     <span>Italiano</span>
                     <div className="progress-bar">

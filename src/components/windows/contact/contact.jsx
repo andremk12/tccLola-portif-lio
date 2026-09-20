@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 
 function ContactContent({theme}) {
-    
+
     const iconMap = {
         LinkedIn: <Linkedin size={50} />,
         Instagram: <Instagram size={50} />,
@@ -60,7 +60,7 @@ function ContactContent({theme}) {
 
             <div className = "contact-main">
 
-            
+
                 <div className = "contact-toolbar">
                         <div className="toolbar-left">
                             <button>📁 Arquivo</button>
@@ -73,10 +73,10 @@ function ContactContent({theme}) {
 
                 </div>
 
-        
+
                 <div className="contact-grid">
                     {contacts.map((item, i) => (
-                        <a 
+                        <a
                             key={item.name}
                             href={item.link && item.link !== "#" ? item.link : undefined}
                             aria-disabled={!item.link || item.link === "#"}
@@ -111,7 +111,7 @@ function ContactContent({theme}) {
 
                     }
                 </div>
-         </div>  
+         </div>
         </div>
     )
 }
